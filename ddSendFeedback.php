@@ -1,31 +1,30 @@
 <?php
 /**
  * ddSendFeedback.php
- * @version 1.6 (2012-10-30)
+ * @version 1.7 (2013-06-30)
  * 
- * @desc Snippet for sending feedback.
+ * @desc A snippet for sending users' feedback messages to a required email. It is very useful along with ajax technology.
  * 
- * @uses snippet ddSendMail 1.3
- * @uses snippet ddGetDocumentField 2.2 might be used if field getting is required
+ * @uses snippet ddSendMail 1.5.1
+ * @uses snippet ddGetDocumentField 2.4 is used if field getting is required
  * 
- * @param email {string} - Mailing address. @required
- * @param getEmail {string} - Field name with required mail address.
- * @param getId {integer} - ID of the document with required field name with mail address.
- * @param getPublished {0; 1} - Document with required mail field publication status. Default: 1.
- * @param tpl {string: chunkName} - Using template (chunk name). @required
- * @param text {string} - Message text. It`s sending makes ignoring of template using.
+ * @param email {string} - Mailing address (to whom). @required
+ * @param getEmail {string} - Field name/TV containing the address to mail.
+ * @param getId {integer} - ID of a document with the required field contents.
+ * @param tpl {string: chunkName} - The template of a letter (chunk name). Available placeholders: [+userUrl+] — the address that the request has been sent from, ($_SERVER['HTTP_REFERER']) the array components $_POST. @required
+ * @param text {string} - Message text. The template parameter will be ignored if the text is defined. It is useful when $modx->runSnippets() uses.
  * @param subject {string} - Message subject. Default: 'Обратная связь'.
- * @param from {string} - Mailer address. Default: 'info@divandesign.ru'.
- * @param fromField {string} - $_POST array element with mailer name.
- * @param titleTrue {string} - Informating message title if everything is ok. Default: 'Заявка успешно отправлена'.
- * @param titleFalse {string} - Informating message title if everything is not ok. Default: 'Непредвиденная ошибка =('.
- * @param msgTrue {string} - Informating message if everything is ok. Default: 'Наш специалист свяжется с вами в ближайшее время.'.
- * @param msgFalse {string} - Informating message if everything is not ok. Default: 'Во время отправки заявки что-то произошло.<br />Пожалуйста, попробуйте чуть позже.'.
- * @param filesFields {comma separated string} - Separated by comma input tags names from which files for sending are taken. Default: ''.
+ * @param from {string} - Mailer address (from who). Default: 'info@divandesign.ru'.
+ * @param fromField {string} - An element of $_POST containing mailer address. The “from” parameter will be ignored if “fromField” is defined and is not empty.
+ * @param titleTrue {string} - The title that will be returned if the letter sending is successful (the «title» field of the returned JSON). Default: 'Заявка успешно отправлена'.
+ * @param titleFalse {string} - The title that will be returned if the letter sending is failed somehow (the «title» field of the returned JSON). Default: 'Непредвиденная ошибка =('.
+ * @param msgTrue {string} - The message that will be returned if the letter sending is successful (the «message» field of the returned JSON). Default: 'Наш специалист свяжется с вами в ближайшее время.'.
+ * @param msgFalse {string} -  	The message that will be returned if the letter sending is failed somehow (the «message» field of the returned JSON). Default: 'Во время отправки заявки что-то произошло.<br />Пожалуйста, попробуйте чуть позже.'.
+ * @param filesFields {comma separated string} - Input tags names separated by commas that files are required to be taken from. Used if files are sending in the request ($_FILES array). Default: ''.
  * 
- * @link http://code.divandesign.biz/modx/ddsendfeedback/1.6
+ * @link http://code.divandesign.biz/modx/ddsendfeedback/1.7
  * 
- * @copyright 2012, DivanDesign
+ * @copyright 2013, DivanDesign
  * http://www.DivanDesign.biz
  */
 
@@ -33,7 +32,6 @@
 if (isset($getEmail)){
 	$email = $modx->runSnippet('ddGetDocumentField', array(
 		'id' => $getId,
-		'published' => $getPublished,
 		'field' => $getEmail
 	));
 }
@@ -50,21 +48,26 @@ if ((isset($tpl) || isset($text)) && isset($email) && ($email != '')){
 	$subject = isset($subject) ? $subject : 'Обратная связь';
 	
 	//Проверяем нужно ли брать имя отправителя из поста
-	if (isset($fromField) && $_POST[$fromField] != '') $from = $_POST[$fromField];
+	if (isset($fromField) && $_POST[$fromField] != ''){
+		$from = $_POST[$fromField];
+	}
 	
 	//Проверяем передан ли текст сообщения
 	if (!isset($text)){
 		$param = array();
+		
 		//Перебираем пост, записываем в массив значения полей
 		foreach ($_POST as $key=>$val){
 			$param[$key] = nl2br($_POST[$key]);
 		}
+		
 		//Добавим адрес страницы, с которой пришёл запрос
 		$param['userUrl'] = $_SERVER['HTTP_REFERER'];
 		$text = $modx->evalSnippets($modx->parseChunk($tpl, $param, '[+','+]'));
 	}
 	
-	$res = $modx->runSnippet('ddSendMail', array(
+	//Отправляем письмо
+	$sendMailRes = $modx->runSnippet('ddSendMail', array(
 		'email' => $email,
 		'from' => $from,
 		'subject' => $subject,
@@ -72,6 +75,31 @@ if ((isset($tpl) || isset($text)) && isset($email) && ($email != '')){
 		'inputName' => $filesFields
 	));
 	
-	return json_encode(array('status' => $res, 'title' => $titles[$res], 'message' => $message[$res]));
+	$res = 0;
+	
+	//Если отправляли на один адрес
+	if (is_numeric($sendMailRes)){
+		//Просто запомним статус отправки
+		$res = $sendMailRes;
+	}else{
+		$sendMailRes = json_decode($sendMailRes);
+		
+		//Перебираем все статусы отправки
+		foreach ($sendMailRes as $res_elem){
+			//Запоминаем
+			$res = $res_elem;
+			
+			//Если не отправлось хоть на один адрес, считаем, что всё плохо
+			if ($res == 0){
+				break;
+			}
+		}
+	}
+	
+	return json_encode(array(
+		'status' => $res,
+		'title' => $titles[$res],
+		'message' => $message[$res]
+	));
 }
 ?>
