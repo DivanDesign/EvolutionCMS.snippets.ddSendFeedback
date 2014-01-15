@@ -1,7 +1,7 @@
 <?php
 /**
  * ddSendFeedback.php
- * @version 1.5 (2011-08-18)
+ * @version 1.6 (2012-10-30)
  * 
  * @desc Snippet for sending feedback.
  * 
@@ -21,10 +21,11 @@
  * @param titleFalse {string} - Informating message title if everything is not ok. Default: 'Непредвиденная ошибка =('.
  * @param msgTrue {string} - Informating message if everything is ok. Default: 'Наш специалист свяжется с вами в ближайшее время.'.
  * @param msgFalse {string} - Informating message if everything is not ok. Default: 'Во время отправки заявки что-то произошло.<br />Пожалуйста, попробуйте чуть позже.'.
+ * @param filesFields {comma separated string} - Separated by comma input tags names from which files for sending are taken. Default: ''.
  * 
- * @link http://code.divandesign.biz/modx/ddsendfeedback/1.5
+ * @link http://code.divandesign.biz/modx/ddsendfeedback/1.6
  * 
- * @copyright 2011, DivanDesign
+ * @copyright 2012, DivanDesign
  * http://www.DivanDesign.biz
  */
 
@@ -60,10 +61,16 @@ if ((isset($tpl) || isset($text)) && isset($email) && ($email != '')){
 		}
 		//Добавим адрес страницы, с которой пришёл запрос
 		$param['userUrl'] = $_SERVER['HTTP_REFERER'];
-		$text = $modx->parseChunk($tpl, $param, '[+','+]');
+		$text = $modx->evalSnippets($modx->parseChunk($tpl, $param, '[+','+]'));
 	}
 	
-	$res = $modx->runSnippet('ddSendMail', array('email' => $email, 'from' => $from, 'subject' => $subject, 'text' => $text));
+	$res = $modx->runSnippet('ddSendMail', array(
+		'email' => $email,
+		'from' => $from,
+		'subject' => $subject,
+		'text' => $text,
+		'inputName' => $filesFields
+	));
 	
 	return json_encode(array('status' => $res, 'title' => $titles[$res], 'message' => $message[$res]));
 }
