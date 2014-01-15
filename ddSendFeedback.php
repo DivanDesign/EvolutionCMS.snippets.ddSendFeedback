@@ -1,7 +1,7 @@
 <?php
 /**
  * ddSendFeedback.php
- * @version 1.8 (2013-08-22)
+ * @version 1.8.1 (2013-08-29)
  * 
  * @desc A snippet for sending users' feedback messages to a required email. It is very useful along with ajax technology.
  * 
@@ -23,7 +23,7 @@
  * @param msgFalse {string} - The message that will be returned if the letter sending is failed somehow (the «message» field of the returned JSON). Default: 'Во время отправки заявки что-то произошло.<br />Пожалуйста, попробуйте чуть позже.'.
  * @param filesFields {comma separated string} - Input tags names separated by commas that files are required to be taken from. Used if files are sending in the request ($_FILES array). Default: ''.
  * 
- * @link http://code.divandesign.biz/modx/ddsendfeedback/1.8
+ * @link http://code.divandesign.biz/modx/ddsendfeedback/1.8.1
  * 
  * @copyright 2013, DivanDesign
  * http://www.DivanDesign.biz
@@ -61,8 +61,11 @@ if ((isset($tpl) || isset($text)) && isset($email) && ($email != '')){
 		$param = array();
 		
 		//Перебираем пост, записываем в массив значения полей
-		foreach ($_POST as $key=>$val){
-			$param[$key] = nl2br($_POST[$key]);
+		foreach ($_POST as $key => $val){
+			//Если это строка (может быть массив, например, в случае с файлами)
+			if (is_string($_POST[$key])){
+				$param[$key] = nl2br($_POST[$key]);
+			}
 		}
 		
 		//Добавим адрес страницы, с которой пришёл запрос
