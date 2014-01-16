@@ -1,7 +1,7 @@
 <?php
 /**
  * ddSendFeedback.php
- * @version 1.8.1 (2013-08-29)
+ * @version 1.8.2 (2014-01-15)
  * 
  * @desc A snippet for sending users' feedback messages to a required email. It is very useful along with ajax technology.
  * 
@@ -12,7 +12,7 @@
  * @param email {string} - Mailing address (to whom). @required
  * @param getEmail {string} - Field name/TV containing the address to mail.
  * @param getId {integer} - ID of a document with the required field contents.
- * @param tpl {string: chunkName} - The template of a letter (chunk name). Available placeholders: [+userUrl+] — the address that the request has been sent from, ($_SERVER['HTTP_REFERER']) the array components $_POST. @required
+ * @param tpl {string: chunkName} - The template of a letter (chunk name). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. Use [(site_url)][~[+docId+]~] to generate the url of a document ([(site_url)] is required because of need for using the absolute links in the emails). @required
  * @param text {string} - Message text. The template parameter will be ignored if the text is defined. It is useful when $modx->runSnippets() uses. Default: ''.
  * @param subject {string} - Message subject. Default: 'Обратная связь'.
  * @param from {string} - Mailer address (from who). Default: 'info@divandesign.ru'.
@@ -23,9 +23,9 @@
  * @param msgFalse {string} - The message that will be returned if the letter sending is failed somehow (the «message» field of the returned JSON). Default: 'Во время отправки заявки что-то произошло.<br />Пожалуйста, попробуйте чуть позже.'.
  * @param filesFields {comma separated string} - Input tags names separated by commas that files are required to be taken from. Used if files are sending in the request ($_FILES array). Default: ''.
  * 
- * @link http://code.divandesign.biz/modx/ddsendfeedback/1.8.1
+ * @link http://code.divandesign.biz/modx/ddsendfeedback/1.8.2
  * 
- * @copyright 2013, DivanDesign
+ * @copyright 2014, DivanDesign
  * http://www.DivanDesign.biz
  */
 
@@ -70,7 +70,7 @@ if ((isset($tpl) || isset($text)) && isset($email) && ($email != '')){
 		
 		//Добавим адрес страницы, с которой пришёл запрос
 		$param['docId'] = ddTools::getDocumentIdByUrl($_SERVER['HTTP_REFERER']);
-		$text = $modx->evalSnippets($modx->rewriteUrls($modx->parseChunk($tpl, $param, '[+','+]')));
+		$text = ddTools::parseSource($modx->parseChunk($tpl, $param, '[+','+]'));
 	}
 	
 	//Отправляем письмо
