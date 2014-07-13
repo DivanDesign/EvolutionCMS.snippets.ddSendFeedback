@@ -44,14 +44,28 @@ if (isset($docField)){
 
 //Если всё хорошо
 if ((isset($tpl) || isset($text)) && isset($email) && ($email != '')){
-	$titles = array(); $message = array();
+	//Получаем язык админки
+	$lang = $modx->getConfig('manager_language');
 	
-	$titles[1] = isset($titleTrue) ? $titleTrue : 'Заявка успешно отправлена';
-	$titles[0] = isset($titleFalse) ? $titleFalse : 'Непредвиденная ошибка =(';
-	$message[1] = isset($msgTrue) ? $msgTrue : 'Наш специалист свяжется с вами в ближайшее время.';
-	$message[0] = isset($msgFalse) ? $msgFalse : 'Во время отправки заявки что-то произошло.<br />Пожалуйста, попробуйте чуть позже.';
-	$from = isset($from) ? $from : 'info@divandesign.ru';
-	$subject = isset($subject) ? $subject : 'Обратная связь';
+	//Если язык русский
+	if($lang == 'russian-UTF8' || $lang == 'russian'){
+		$titleTrue = isset($titleTrue) ? $titleTrue : 'Заявка успешно отправлена';
+		$titleFalse = isset($titleFalse) ? $titleFalse : 'Непредвиденная ошибка =(';
+		$msgTrue = isset($msgTrue) ? $msgTrue : 'Наш специалист свяжется с вами в ближайшее время.';
+		$msgFalse = isset($msgFalse) ? $msgFalse : 'Во время отправки заявки что-то произошло.<br />Пожалуйста, попробуйте чуть позже.';
+		$subject = isset($subject) ? $subject : 'Обратная связь';
+	}else{
+		$titleTrue = isset($titleTrue) ? $titleTrue : 'Message sent successfully.';
+		$titleFalse = isset($titleFalse) ? $titleFalse : 'Unexpected error =(';
+		$msgTrue = isset($msgTrue) ? $msgTrue : 'We will contact you later.';
+		$msgFalse = isset($msgFalse) ? $msgFalse : 'Something happened while sending the message.<br />Please try again later.';
+		$subject = isset($subject) ? $subject : 'Feedback';
+	}
+	
+	$titles = array($titleFalse, $titleTrue);
+	$message = array($msgFalse, $msgTrue);
+	
+	$from = isset($from) ? $from : 'info@divandesign.biz';
 	
 	//Проверяем нужно ли брать имя отправителя из поста
 	if (isset($fromField) && $_POST[$fromField] != ''){
