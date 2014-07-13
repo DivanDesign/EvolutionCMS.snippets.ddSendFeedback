@@ -5,11 +5,10 @@
  * 
  * @desc A snippet for sending users' feedback messages to a required email. It is very useful along with ajax technology.
  * 
- * @uses Library modx.ddTools 0.9.
- * @uses Snippet ddSendMail 1.5.1.
+ * @uses Library MODX.ddTools 0.13.
  * @uses Snippet ddGetDocumentField 2.4 might be used if field getting is required.
  * 
- * @param email {string} - Mailing address (to whom). @required
+ * @param email {comma separated string} - Mailing addresses (to whom). @required
  * @param getEmail {string} - Field name/TV containing the address to mail.
  * @param getId {integer} - ID of a document with the required field contents.
  * @param tpl {string: chunkName} - The template of a letter (chunk name). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. Use [(site_url)][~[+docId+]~] to generate the url of a document ([(site_url)] is required because of need for using the absolute links in the emails). @required
@@ -74,32 +73,18 @@ if ((isset($tpl) || isset($text)) && isset($email) && ($email != '')){
 	}
 	
 	//Отправляем письмо
-	$sendMailRes = $modx->runSnippet('ddSendMail', array(
-		'email' => $email,
-		'from' => $from,
-		'subject' => $subject,
-		'text' => $text,
-		'inputName' => $filesFields
-	));
+	$sendMailRes = ddTools::sendMail(explode(',', $email), $text, $from, $subject, explode(',', $filesFields));
 	
 	$res = 0;
 	
-	//Если отправляли на один адрес
-	if (is_numeric($sendMailRes)){
-		//Просто запомним статус отправки
-		$res = $sendMailRes;
-	}else{
-		$sendMailRes = json_decode($sendMailRes);
+	//Перебираем все статусы отправки
+	foreach ($sendMailRes as $res_elem){
+		//Запоминаем
+		$res = $res_elem;
 		
-		//Перебираем все статусы отправки
-		foreach ($sendMailRes as $res_elem){
-			//Запоминаем
-			$res = $res_elem;
-			
-			//Если не отправлось хоть на один адрес, считаем, что всё плохо
-			if ($res == 0){
-				break;
-			}
+		//Если не отправлось хоть на один адрес, считаем, что всё плохо
+		if ($res == 0){
+			break;
 		}
 	}
 	
