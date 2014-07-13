@@ -9,8 +9,8 @@
  * @uses Snippet ddGetDocumentField 2.4 might be used if field getting is required.
  * 
  * @param email {comma separated string} - Mailing addresses (to whom). @required
- * @param getEmail {string} - Field name/TV containing the address to mail.
- * @param getId {integer} - ID of a document with the required field contents.
+ * @param $docField {string} - Field name/TV containing the address to mail. Default: —.
+ * @param $docId {integer} - ID of a document with the required field contents. Default: —.
  * @param tpl {string: chunkName} - The template of a letter (chunk name). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. Use [(site_url)][~[+docId+]~] to generate the url of a document ([(site_url)] is required because of need for using the absolute links in the emails). @required
  * @param text {string} - Message text. The template parameter will be ignored if the text is defined. It is useful when $modx->runSnippets() uses. Default: ''.
  * @param subject {string} - Message subject. Default: 'Обратная связь'.
@@ -31,11 +31,17 @@
 //Подключаем modx.ddTools
 require_once $modx->config['base_path'].'assets/snippets/ddTools/modx.ddtools.class.php';
 
+//Для обратной совместимости
+extract(ddTools::verifyRenamedParams($params, array(
+	'docField' => 'getEmail',
+	'docId' => 'getId'
+)));
+
 //Если задано имя поля почты, которое необходимо получить
-if (isset($getEmail)){
+if (isset($docField)){
 	$email = $modx->runSnippet('ddGetDocumentField', array(
-		'id' => $getId,
-		'field' => $getEmail
+		'id' => $docId,
+		'field' => $docField
 	));
 }
 
