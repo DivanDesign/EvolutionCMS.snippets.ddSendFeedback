@@ -6,7 +6,6 @@
  * @desc A snippet for sending users' feedback messages to a required email. It is very useful along with ajax technology.
  * 
  * @uses Library MODX.ddTools 0.13.
- * @uses Snippet ddGetDocumentField 2.4 might be used if field getting is required.
  * 
  * @param email {comma separated string} - Mailing addresses (to whom). @required
  * @param $docField {string} - Field name/TV containing the address to mail. Default: —.
@@ -39,10 +38,8 @@ extract(ddTools::verifyRenamedParams($params, array(
 
 //Если задано имя поля почты, которое необходимо получить
 if (isset($docField)){
-	$email = $modx->runSnippet('ddGetDocumentField', array(
-		'id' => $docId,
-		'field' => $docField
-	));
+	$email = ddTools::getTemplateVarOutput(array($docField), $docId);
+	$email = $email[$docField];
 }
 
 //Если всё хорошо
