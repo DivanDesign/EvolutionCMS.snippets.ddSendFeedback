@@ -78,8 +78,8 @@ if ((isset($tpl) || isset($text)) && isset($email) && ($email != '')){
 		
 		//Перебираем пост, записываем в массив значения полей
 		foreach ($_POST as $key => $val){
-			//Если это строка (может быть массив, например, в случае с файлами)
-			if (is_string($_POST[$key])){
+			//Если это строка или число (может быть массив, например, в случае с файлами)
+			if (is_string($_POST[$key]) || is_numeric($_POST[$key])){
 				$param[$key] = nl2br($_POST[$key]);
 			}
 		}
