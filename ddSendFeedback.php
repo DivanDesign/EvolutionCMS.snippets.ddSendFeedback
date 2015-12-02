@@ -28,7 +28,7 @@
  */
 
 //Подключаем modx.ddTools
-require_once $modx->config['base_path'].'assets/snippets/ddTools/modx.ddtools.class.php';
+require_once $modx->getConfig('base_path').'assets/snippets/ddTools/modx.ddtools.class.php';
 
 //Для обратной совместимости
 extract(ddTools::verifyRenamedParams($params, array(
