@@ -15,10 +15,10 @@
  * @param $subject {string} — Message subject. Default: 'Feedback'.
  * @param $from {string} — Mailer address (from who). Default: 'info@divandesign.biz'.
  * @param $fromField {string} — An element of $_POST containing mailer address. The “from” parameter will be ignored if “fromField” is defined and is not empty. Default: ''.
- * @param $titleTrue {string} — The title that will be returned if the letter sending is successful (the «title» field of the returned JSON). Default: 'Message sent successfully'.
- * @param $titleFalse {string} — The title that will be returned if the letter sending is failed somehow (the «title» field of the returned JSON). Default: 'Unexpected error =('.
- * @param $msgTrue {string} — The message that will be returned if the letter sending is successful (the «message» field of the returned JSON). Default: 'We will contact you later.'.
- * @param $msgFalse {string} — The message that will be returned if the letter sending is failed somehow (the «message» field of the returned JSON). Default: 'Something happened while sending the message.<br />Please try again later.'.
+ * @param $result_titleSuccess {string} — The title that will be returned if the letter sending is successful (the «title» field of the returned JSON). Default: 'Message sent successfully'.
+ * @param $result_titleFail {string} — The title that will be returned if the letter sending is failed somehow (the «title» field of the returned JSON). Default: 'Unexpected error =('.
+ * @param $result_messageSuccess {string} — The message that will be returned if the letter sending is successful (the «message» field of the returned JSON). Default: 'We will contact you later.'.
+ * @param $result_messageFail {string} — The message that will be returned if the letter sending is failed somehow (the «message» field of the returned JSON). Default: 'Something happened while sending the message.<br />Please try again later.'.
  * @param $filesFields {comma separated string} — Input tags names separated by commas that files are required to be taken from. Used if files are sending in the request ($_FILES array). Default: ''.
  * 
  * @link http://code.divandesign.biz/modx/ddsendfeedback/1.9.1
@@ -32,7 +32,11 @@ require_once $modx->getConfig('base_path').'assets/snippets/ddTools/modx.ddtools
 //Для обратной совместимости
 extract(ddTools::verifyRenamedParams($params, array(
 	'docField' => 'getEmail',
-	'docId' => 'getId'
+	'docId' => 'getId',
+	'result_titleSuccess' => 'titleTrue',
+	'result_titleFail' => 'titleFalse',
+	'result_messageSuccess' => 'msgTrue',
+	'result_messageFail' => 'msgFalse'
 )));
 
 //Если задано имя поля почты, которое необходимо получить
@@ -48,21 +52,21 @@ if ((isset($tpl) || isset($text)) && isset($email) && ($email != '')){
 	
 	//Если язык русский
 	if($lang == 'russian-UTF8' || $lang == 'russian'){
-		$titleTrue = isset($titleTrue) ? $titleTrue : 'Заявка успешно отправлена';
-		$titleFalse = isset($titleFalse) ? $titleFalse : 'Непредвиденная ошибка =(';
-		$msgTrue = isset($msgTrue) ? $msgTrue : 'Наш специалист свяжется с вами в ближайшее время.';
-		$msgFalse = isset($msgFalse) ? $msgFalse : 'Во время отправки заявки что-то произошло.<br />Пожалуйста, попробуйте чуть позже.';
+		$result_titleSuccess = isset($result_titleSuccess) ? $result_titleSuccess : 'Заявка успешно отправлена';
+		$result_titleFail = isset($result_titleFail) ? $result_titleFail : 'Непредвиденная ошибка =(';
+		$result_messageSuccess = isset($result_messageSuccess) ? $result_messageSuccess : 'Наш специалист свяжется с вами в ближайшее время.';
+		$result_messageFail = isset($result_messageFail) ? $result_messageFail : 'Во время отправки заявки что-то произошло.<br />Пожалуйста, попробуйте чуть позже.';
 		$subject = isset($subject) ? $subject : 'Обратная связь';
 	}else{
-		$titleTrue = isset($titleTrue) ? $titleTrue : 'Message sent successfully';
-		$titleFalse = isset($titleFalse) ? $titleFalse : 'Unexpected error =(';
-		$msgTrue = isset($msgTrue) ? $msgTrue : 'We will contact you later.';
-		$msgFalse = isset($msgFalse) ? $msgFalse : 'Something happened while sending the message.<br />Please try again later.';
+		$result_titleSuccess = isset($result_titleSuccess) ? $result_titleSuccess : 'Message sent successfully';
+		$result_titleFail = isset($result_titleFail) ? $result_titleFail : 'Unexpected error =(';
+		$result_messageSuccess = isset($result_messageSuccess) ? $result_messageSuccess : 'We will contact you later.';
+		$result_messageFail = isset($result_messageFail) ? $result_messageFail : 'Something happened while sending the message.<br />Please try again later.';
 		$subject = isset($subject) ? $subject : 'Feedback';
 	}
 	
-	$titles = array($titleFalse, $titleTrue);
-	$message = array($msgFalse, $msgTrue);
+	$titles = array($result_titleFail, $result_titleSuccess);
+	$message = array($result_messageFail, $result_messageSuccess);
 	
 	$from = isset($from) ? $from : 'info@divandesign.biz';
 	
