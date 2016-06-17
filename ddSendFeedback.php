@@ -5,16 +5,16 @@
  * 
  * @desc A snippet for sending users' feedback messages to a required email. It is very useful along with ajax technology.
  * 
- * @uses The library MODX.ddTools 0.13.
+ * @uses The library MODX.ddTools 0.15.4.
  * 
  * @param $email {comma separated string} — Mailing addresses (to whom). @required
- * @param $docField {string} — Field name/TV containing the address to mail. Default: —.
- * @param $docId {integer} — ID of a document with the required field contents. Default: —.
+ * @param $email_docField {string} — Field name/TV containing the address to mail. Default: —.
+ * @param $email_docId {integer} — ID of a document with the required field contents. Default: —.
  * @param $tpl {string: chunkName} — The template of a letter (chunk name). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. Use [(site_url)][~[+docId+]~] to generate the url of a document ([(site_url)] is required because of need for using the absolute links in the emails). @required
  * @param $text {string} — Message text. The template parameter will be ignored if the text is defined. It is useful when $modx->runSnippets() uses. Default: ''.
  * @param $subject {string} — Message subject. Default: 'Feedback'.
  * @param $from {string} — Mailer address (from who). Default: 'info@divandesign.biz'.
- * @param $fromField {string} — An element of $_POST containing mailer address. The “from” parameter will be ignored if “fromField” is defined and is not empty. Default: ''.
+ * @param $from_formField {string} — An element of $_POST containing mailer address. The “from” parameter will be ignored if “from_formField” is defined and is not empty. Default: ''.
  * @param $result_titleSuccess {string} — The title that will be returned if the letter sending is successful (the «title» field of the returned JSON). Default: 'Message sent successfully'.
  * @param $result_titleFail {string} — The title that will be returned if the letter sending is failed somehow (the «title» field of the returned JSON). Default: 'Unexpected error =('.
  * @param $result_messageSuccess {string} — The message that will be returned if the letter sending is successful (the «message» field of the returned JSON). Default: 'We will contact you later.'.
@@ -27,12 +27,13 @@
  */
 
 //Подключаем MODX.ddTools
-require_once $modx->getConfig('base_path').'assets/snippets/ddTools/modx.ddtools.class.php';
+require_once $modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.class.php';
 
 //Для обратной совместимости
 extract(ddTools::verifyRenamedParams($params, array(
-	'docField' => 'getEmail',
-	'docId' => 'getId',
+	'email_docField' => array('docField', 'getEmail'),
+	'email_docId' => array('docId', 'getId'),
+	'from_formField' => 'fromField',
 	'result_titleSuccess' => 'titleTrue',
 	'result_titleFail' => 'titleFalse',
 	'result_messageSuccess' => 'msgTrue',
@@ -40,9 +41,9 @@ extract(ddTools::verifyRenamedParams($params, array(
 )));
 
 //Если задано имя поля почты, которое необходимо получить
-if (isset($docField)){
-	$email = ddTools::getTemplateVarOutput(array($docField), $docId);
-	$email = $email[$docField];
+if (isset($email_docField)){
+	$email = ddTools::getTemplateVarOutput(array($email_docField), $email_docId);
+	$email = $email[$email_docField];
 }
 
 //Если всё хорошо
@@ -71,8 +72,8 @@ if ((isset($tpl) || isset($text)) && isset($email) && ($email != '')){
 	$from = isset($from) ? $from : 'info@divandesign.biz';
 	
 	//Проверяем нужно ли брать имя отправителя из поста
-	if (isset($fromField) && $_POST[$fromField] != ''){
-		$from = $_POST[$fromField];
+	if (isset($from_formField) && $_POST[$from_formField] != ''){
+		$from = $_POST[$from_formField];
 	}
 	
 	//Проверяем передан ли текст сообщения
