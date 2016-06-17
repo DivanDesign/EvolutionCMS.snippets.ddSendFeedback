@@ -15,11 +15,11 @@
  * @param $subject {string} — Message subject. Default: 'Feedback'.
  * @param $from {string} — Mailer address (from who). Default: 'info@divandesign.biz'.
  * @param $from_formField {string} — An element of $_POST containing mailer address. The “from” parameter will be ignored if “from_formField” is defined and is not empty. Default: ''.
+ * @param $filesFields {comma separated string} — Input tags names separated by commas that files are required to be taken from. Used if files are sending in the request ($_FILES array). Default: ''.
  * @param $result_titleSuccess {string} — The title that will be returned if the letter sending is successful (the «title» field of the returned JSON). Default: 'Message sent successfully'.
  * @param $result_titleFail {string} — The title that will be returned if the letter sending is failed somehow (the «title» field of the returned JSON). Default: 'Unexpected error =('.
  * @param $result_messageSuccess {string} — The message that will be returned if the letter sending is successful (the «message» field of the returned JSON). Default: 'We will contact you later.'.
  * @param $result_messageFail {string} — The message that will be returned if the letter sending is failed somehow (the «message» field of the returned JSON). Default: 'Something happened while sending the message.<br />Please try again later.'.
- * @param $filesFields {comma separated string} — Input tags names separated by commas that files are required to be taken from. Used if files are sending in the request ($_FILES array). Default: ''.
  * 
  * @link http://code.divandesign.biz/modx/ddsendfeedback/1.9.1
  * 
@@ -47,7 +47,11 @@ if (isset($email_docField)){
 }
 
 //Если всё хорошо
-if ((isset($tpl) || isset($text)) && isset($email) && ($email != '')){
+if (
+	(isset($tpl) || isset($text)) &&
+	isset($email) &&
+	($email != '')
+){
 	//Получаем язык админки
 	$lang = $modx->getConfig('manager_language');
 	
@@ -67,7 +71,7 @@ if ((isset($tpl) || isset($text)) && isset($email) && ($email != '')){
 	}
 	
 	$titles = array($result_titleFail, $result_titleSuccess);
-	$message = array($result_messageFail, $result_messageSuccess);
+	$messages = array($result_messageFail, $result_messageSuccess);
 	
 	$from = isset($from) ? $from : 'info@divandesign.biz';
 	
@@ -94,25 +98,26 @@ if ((isset($tpl) || isset($text)) && isset($email) && ($email != '')){
 	}
 	
 	//Отправляем письмо
-	$sendMailRes = ddTools::sendMail(explode(',', $email), $text, $from, $subject, explode(',', $filesFields));
+	$sendMailResult = ddTools::sendMail(explode(',', $email), $text, $from, $subject, explode(',', $filesFields));
 	
-	$res = 0;
+	//Fail by default
+	$result_status = 0;
 	
 	//Перебираем все статусы отправки
-	foreach ($sendMailRes as $res_elem){
+	foreach ($sendMailResult as $sendMailResult_item){
 		//Запоминаем
-		$res = $res_elem;
+		$result_status = $sendMailResult_item;
 		
 		//Если не отправлось хоть на один адрес, считаем, что всё плохо
-		if ($res == 0){
+		if ($result_status == 0){
 			break;
 		}
 	}
 	
 	return json_encode(array(
-		'status' => (bool) $res,
-		'title' => $titles[$res],
-		'message' => $message[$res]
+		'status' => (bool) $result_status,
+		'title' => $titles[$result_status],
+		'message' => $messages[$result_status]
 	));
 }
 ?>
