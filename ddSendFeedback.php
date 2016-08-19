@@ -12,6 +12,7 @@
  * @param $email_docField {string} — Field name/TV containing the address to mail. Default: —.
  * @param $email_docId {integer} — ID of a document with the required field contents. Default: —.
  * @param $tpl {string: chunkName} — The template of a letter (chunk name). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. Use [(site_url)][~[+docId+]~] to generate the url of a document ([(site_url)] is required because of need for using the absolute links in the emails). @required
+ * @param $tpl_placeholders {string: queryStringFormat} — Additional data as query string (https://en.wikipedia.org/wiki/Query_string) has to be passed into “tpl”. E. g. “pladeholder1=value1&pagetitle=My awesome pagetitle!”. Arrays are supported too: “some[a]=one&some[b]=two” => “[+some.a+]”, “[+some.b+]”; “some[]=one&some[]=two” => “[+some.0+]”, “[some.1]”. Default: ''.
  * @param $text {string} — Message text. The template parameter will be ignored if the text is defined. It is useful when $modx->runSnippets() uses. Default: ''.
  * @param $subject {string} — Message subject. Default: 'Feedback'.
  * @param $from {string} — Mailer address (from who). Default: 'info@divandesign.biz'.
@@ -89,22 +90,38 @@ if (
 	
 	//Проверяем передан ли текст сообщения
 	if (!isset($text)){
-		$param = [];
+		//Данные, которые необоходимо передать в шаблон
+		if (isset($tpl_placeholders)){
+			//Parse a query string
+			parse_str($tpl_placeholders, $tpl_placeholders);
+			//Unfold for arrays support (e. g. “some[a]=one&some[b]=two” => “[+some.a+]”, “[+some.b+]”; “some[]=one&some[]=two” => “[+some.0+]”, “[some.1]”)
+			$tpl_placeholders = ddTools::unfoldArray($tpl_placeholders);
+		}
+		//Корректно инициализируем при необходимости
+		if (
+			!isset($tpl_placeholders) ||
+			!is_array($tpl_placeholders)
+		){
+			$tpl_placeholders = [];
+		}
 		
 		//Перебираем пост, записываем в массив значения полей
 		foreach ($_POST as $key => $val){
-			//Если это строка или число (может быть массив, например, в случае с файлами)
 			if (
-				is_string($_POST[$key]) ||
-				is_numeric($_POST[$key])
+				!isset($tpl_placeholders[$key]) &&
+				//Если это строка или число (может быть массив, например, в случае с файлами)
+				(
+					is_string($_POST[$key]) ||
+					is_numeric($_POST[$key])
+				)
 			){
-				$param[$key] = nl2br($_POST[$key]);
+				$tpl_placeholders[$key] = nl2br($_POST[$key]);
 			}
 		}
 		
 		//Добавим адрес страницы, с которой пришёл запрос
-		$param['docId'] = ddTools::getDocumentIdByUrl($_SERVER['HTTP_REFERER']);
-		$text = ddTools::parseSource($modx->parseChunk($tpl, $param, '[+', '+]'));
+		$tpl_placeholders['docId'] = ddTools::getDocumentIdByUrl($_SERVER['HTTP_REFERER']);
+		$text = ddTools::parseSource($modx->parseChunk($tpl, $tpl_placeholders, '[+', '+]'));
 	}
 	
 	//Отправляем письмо
