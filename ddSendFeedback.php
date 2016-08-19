@@ -56,7 +56,10 @@ if (
 	$lang = $modx->getConfig('manager_language');
 	
 	//Если язык русский
-	if($lang == 'russian-UTF8' || $lang == 'russian'){
+	if(
+		$lang == 'russian-UTF8' ||
+		$lang == 'russian'
+	){
 		$result_titleSuccess = isset($result_titleSuccess) ? $result_titleSuccess : 'Заявка успешно отправлена';
 		$result_titleFail = isset($result_titleFail) ? $result_titleFail : 'Непредвиденная ошибка =(';
 		$result_messageSuccess = isset($result_messageSuccess) ? $result_messageSuccess : 'Наш специалист свяжется с вами в ближайшее время.';
@@ -76,7 +79,10 @@ if (
 	$from = isset($from) ? $from : 'info@divandesign.biz';
 	
 	//Проверяем нужно ли брать имя отправителя из поста
-	if (isset($from_formField) && $_POST[$from_formField] != ''){
+	if (
+		isset($from_formField) &&
+		$_POST[$from_formField] != ''
+	){
 		$from = $_POST[$from_formField];
 	}
 	
@@ -87,7 +93,10 @@ if (
 		//Перебираем пост, записываем в массив значения полей
 		foreach ($_POST as $key => $val){
 			//Если это строка или число (может быть массив, например, в случае с файлами)
-			if (is_string($_POST[$key]) || is_numeric($_POST[$key])){
+			if (
+				is_string($_POST[$key]) ||
+				is_numeric($_POST[$key])
+			){
 				$param[$key] = nl2br($_POST[$key]);
 			}
 		}
