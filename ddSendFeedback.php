@@ -5,6 +5,7 @@
  * 
  * @desc A snippet for sending users' feedback messages to a required email. It is very useful along with ajax technology.
  * 
+ * @uses PHP >= 5.4.
  * @uses The library MODX.ddTools 0.15.4.
  * 
  * @param $email {comma separated string} — Mailing addresses (to whom). @required
@@ -30,19 +31,19 @@
 require_once $modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.class.php';
 
 //Для обратной совместимости
-extract(ddTools::verifyRenamedParams($params, array(
-	'email_docField' => array('docField', 'getEmail'),
-	'email_docId' => array('docId', 'getId'),
+extract(ddTools::verifyRenamedParams($params, [
+	'email_docField' => ['docField', 'getEmail'],
+	'email_docId' => ['docId', 'getId'],
 	'from_formField' => 'fromField',
 	'result_titleSuccess' => 'titleTrue',
 	'result_titleFail' => 'titleFalse',
 	'result_messageSuccess' => 'msgTrue',
 	'result_messageFail' => 'msgFalse'
-)));
+]));
 
 //Если задано имя поля почты, которое необходимо получить
 if (isset($email_docField)){
-	$email = ddTools::getTemplateVarOutput(array($email_docField), $email_docId);
+	$email = ddTools::getTemplateVarOutput([$email_docField], $email_docId);
 	$email = $email[$email_docField];
 }
 
@@ -73,8 +74,8 @@ if (
 		$subject = isset($subject) ? $subject : 'Feedback';
 	}
 	
-	$titles = array($result_titleFail, $result_titleSuccess);
-	$messages = array($result_messageFail, $result_messageSuccess);
+	$titles = [$result_titleFail, $result_titleSuccess];
+	$messages = [$result_messageFail, $result_messageSuccess];
 	
 	$from = isset($from) ? $from : 'info@divandesign.biz';
 	
@@ -88,7 +89,7 @@ if (
 	
 	//Проверяем передан ли текст сообщения
 	if (!isset($text)){
-		$param = array();
+		$param = [];
 		
 		//Перебираем пост, записываем в массив значения полей
 		foreach ($_POST as $key => $val){
@@ -123,10 +124,10 @@ if (
 		}
 	}
 	
-	return json_encode(array(
+	return json_encode([
 		'status' => (bool) $result_status,
 		'title' => $titles[$result_status],
 		'message' => $messages[$result_status]
-	));
+	]);
 }
 ?>
