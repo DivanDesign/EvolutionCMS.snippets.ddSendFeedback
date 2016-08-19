@@ -1,7 +1,7 @@
 <?php
 /**
  * ddSendFeedback.php
- * @version 1.9.2 (2016-06-17)
+ * @version 1.10 (2016-08-19)
  * 
  * @desc A snippet for sending users' feedback messages to a required email. It is very useful along with ajax technology.
  * 
@@ -23,7 +23,7 @@
  * @param $result_messageSuccess {string} — The message that will be returned if the letter sending is successful (the «message» field of the returned JSON). Default: 'We will contact you later.'.
  * @param $result_messageFail {string} — The message that will be returned if the letter sending is failed somehow (the «message» field of the returned JSON). Default: 'Something happened while sending the message.<br />Please try again later.'.
  * 
- * @link http://code.divandesign.biz/modx/ddsendfeedback/1.9.2
+ * @link http://code.divandesign.biz/modx/ddsendfeedback/1.10
  * 
  * @copyright 2010–2016 DivanDesign {@link http://www.DivanDesign.biz }
  */
