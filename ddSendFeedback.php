@@ -6,12 +6,13 @@
  * @desc A snippet for sending users' feedback messages to a required email. It is very useful along with ajax technology.
  * 
  * @uses PHP >= 5.4.
+ * @uses MODXEvo >= 1.1.
  * @uses The library MODX.ddTools 0.15.4.
  * 
  * @param $email {comma separated string} — Mailing addresses (to whom). @required
  * @param $email_docField {string} — Field name/TV containing the address to mail. Default: —.
  * @param $email_docId {integer} — ID of a document with the required field contents. Default: —.
- * @param $tpl {string: chunkName} — The template of a letter (chunk name). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. Use [(site_url)][~[+docId+]~] to generate the url of a document ([(site_url)] is required because of need for using the absolute links in the emails). @required
+ * @param $tpl {string: chunkName|string} — The template of a letter (chunk name or code via “@CODE:” prefix). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. Use [(site_url)][~[+docId+]~] to generate the url of a document ([(site_url)] is required because of need for using the absolute links in the emails). @required
  * @param $tpl_placeholders {string: queryStringFormat} — Additional data as query string (https://en.wikipedia.org/wiki/Query_string) has to be passed into “tpl”. E. g. “pladeholder1=value1&pagetitle=My awesome pagetitle!”. Arrays are supported too: “some[a]=one&some[b]=two” => “[+some.a+]”, “[+some.b+]”; “some[]=one&some[]=two” => “[+some.0+]”, “[some.1]”. Default: ''.
  * @param $text {string} — Message text. The template parameter will be ignored if the text is defined. It is useful when $modx->runSnippets() uses. Default: ''.
  * @param $subject {string} — Message subject. Default: 'Feedback'.
@@ -121,7 +122,7 @@ if (
 		
 		//Добавим адрес страницы, с которой пришёл запрос
 		$tpl_placeholders['docId'] = ddTools::getDocumentIdByUrl($_SERVER['HTTP_REFERER']);
-		$text = ddTools::parseSource($modx->parseChunk($tpl, $tpl_placeholders, '[+', '+]'));
+		$text = ddTools::parseSource(ddTools::parseText($modx->getTpl($tpl), $tpl_placeholders, '[+', '+]'));
 	}
 	
 	//Отправляем письмо
