@@ -124,7 +124,8 @@ if (
 		$tpl_placeholders['docId'] = ddTools::getDocumentIdByUrl($_SERVER['HTTP_REFERER']);
 		$text = ddTools::parseSource(ddTools::parseText([
 			'text' => $modx->getTpl($tpl),
-			'data' => $tpl_placeholders
+			'data' => $tpl_placeholders,
+			'removeEmptyPlaceholders' => true
 		]));
 	}
 	
