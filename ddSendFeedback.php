@@ -7,7 +7,7 @@
  * 
  * @uses PHP >= 5.4.
  * @uses MODXEvo >= 1.1.
- * @uses The library MODX.ddTools 0.15.4.
+ * @uses MODXEvo.library.ddTools >= 0.16.
  * 
  * @param $email {comma separated string} — Mailing addresses (to whom). @required
  * @param $email_docField {string} — Field name/TV containing the address to mail. Default: —.
@@ -122,11 +122,20 @@ if (
 		
 		//Добавим адрес страницы, с которой пришёл запрос
 		$tpl_placeholders['docId'] = ddTools::getDocumentIdByUrl($_SERVER['HTTP_REFERER']);
-		$text = ddTools::parseSource(ddTools::parseText($modx->getTpl($tpl), $tpl_placeholders, '[+', '+]'));
+		$text = ddTools::parseSource(ddTools::parseText([
+			'text' => $modx->getTpl($tpl),
+			'data' => $tpl_placeholders
+		]));
 	}
 	
 	//Отправляем письмо
-	$sendMailResult = ddTools::sendMail(explode(',', $email), $text, $from, $subject, explode(',', $filesFields));
+	$sendMailResult = ddTools::sendMail([
+		'to' => explode(',', $email),
+		'text' => $text,
+		'from' => $from,
+		'subject' => $subject,
+		'fileInputNames' => explode(',', $filesFields)
+	]);
 	
 	//Fail by default
 	$result_status = 0;
