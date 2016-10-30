@@ -1,7 +1,7 @@
 <?php
 /**
- * ddSendFeedback.php
- * @version 1.10 (2016-08-19)
+ * ddSendFeedback
+ * @version 1.11 (2016-10-30)
  * 
  * @desc A snippet for sending users' feedback messages to a required email. It is very useful along with ajax technology.
  * 
@@ -9,22 +9,22 @@
  * @uses MODXEvo >= 1.1.
  * @uses MODXEvo.library.ddTools >= 0.16.
  * 
- * @param $email {comma separated string} — Mailing addresses (to whom). @required
+ * @param $email {string_commaSeparated} — Mailing addresses (to whom). @required
  * @param $email_docField {string} — Field name/TV containing the address to mail. Default: —.
  * @param $email_docId {integer} — ID of a document with the required field contents. Default: —.
- * @param $tpl {string: chunkName|string} — The template of a letter (chunk name or code via “@CODE:” prefix). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. Use [(site_url)][~[+docId+]~] to generate the url of a document ([(site_url)] is required because of need for using the absolute links in the emails). @required
- * @param $tpl_placeholders {string: queryStringFormat} — Additional data as query string (https://en.wikipedia.org/wiki/Query_string) has to be passed into “tpl”. E. g. “pladeholder1=value1&pagetitle=My awesome pagetitle!”. Arrays are supported too: “some[a]=one&some[b]=two” => “[+some.a+]”, “[+some.b+]”; “some[]=one&some[]=two” => “[+some.0+]”, “[some.1]”. Default: ''.
+ * @param $tpl {string_chunkName|string} — The template of a letter (chunk name or code via “@CODE:” prefix). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. Use [(site_url)][~[+docId+]~] to generate the url of a document ([(site_url)] is required because of need for using the absolute links in the emails). @required
+ * @param $tpl_placeholders {string_queryString} — Additional data as query string (https://en.wikipedia.org/wiki/Query_string) has to be passed into “tpl”. E. g. “pladeholder1=value1&pagetitle=My awesome pagetitle!”. Arrays are supported too: “some[a]=one&some[b]=two” => “[+some.a+]”, “[+some.b+]”; “some[]=one&some[]=two” => “[+some.0+]”, “[some.1]”. Default: ''.
  * @param $text {string} — Message text. The template parameter will be ignored if the text is defined. It is useful when $modx->runSnippets() uses. Default: ''.
  * @param $subject {string} — Message subject. Default: 'Feedback'.
  * @param $from {string} — Mailer address (from who). Default: 'info@divandesign.biz'.
  * @param $from_formField {string} — An element of $_POST containing mailer address. The “from” parameter will be ignored if “from_formField” is defined and is not empty. Default: ''.
- * @param $filesFields {comma separated string} — Input tags names separated by commas that files are required to be taken from. Used if files are sending in the request ($_FILES array). Default: ''.
+ * @param $filesFields {string_commaSeparated} — Input tags names separated by commas that files are required to be taken from. Used if files are sending in the request ($_FILES array). Default: ''.
  * @param $result_titleSuccess {string} — The title that will be returned if the letter sending is successful (the «title» field of the returned JSON). Default: 'Message sent successfully'.
  * @param $result_titleFail {string} — The title that will be returned if the letter sending is failed somehow (the «title» field of the returned JSON). Default: 'Unexpected error =('.
  * @param $result_messageSuccess {string} — The message that will be returned if the letter sending is successful (the «message» field of the returned JSON). Default: 'We will contact you later.'.
  * @param $result_messageFail {string} — The message that will be returned if the letter sending is failed somehow (the «message» field of the returned JSON). Default: 'Something happened while sending the message.<br />Please try again later.'.
  * 
- * @link http://code.divandesign.biz/modx/ddsendfeedback/1.10
+ * @link http://code.divandesign.biz/modx/ddsendfeedback/1.11
  * 
  * @copyright 2010–2016 DivanDesign {@link http://www.DivanDesign.biz }
  */
