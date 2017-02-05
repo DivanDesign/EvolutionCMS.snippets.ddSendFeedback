@@ -17,7 +17,6 @@
  * @param $text {string} — Message text. The template parameter will be ignored if the text is defined. It is useful when $modx->runSnippets() uses. Default: ''.
  * @param $subject {string} — Message subject. Default: 'Feedback'.
  * @param $from {string} — Mailer address (from who). Default: 'info@divandesign.biz'.
- * @param $from_formField {string} — An element of $_POST containing mailer address. The “from” parameter will be ignored if “from_formField” is defined and is not empty. Default: ''.
  * @param $filesFields {string_commaSeparated} — Input tags names separated by commas that files are required to be taken from. Used if files are sending in the request ($_FILES array). Default: ''.
  * @param $result_titleSuccess {string} — The title that will be returned if the letter sending is successful (the «title» field of the returned JSON). Default: 'Message sent successfully'.
  * @param $result_titleFail {string} — The title that will be returned if the letter sending is failed somehow (the «title» field of the returned JSON). Default: 'Unexpected error =('.
@@ -36,7 +35,6 @@ require_once $modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.cla
 extract(ddTools::verifyRenamedParams($params, [
 	'email_docField' => ['docField', 'getEmail'],
 	'email_docId' => ['docId', 'getId'],
-	'from_formField' => 'fromField',
 	'result_titleSuccess' => 'titleTrue',
 	'result_titleFail' => 'titleFalse',
 	'result_messageSuccess' => 'msgTrue',
@@ -80,14 +78,6 @@ if (
 	$messages = [$result_messageFail, $result_messageSuccess];
 	
 	$from = isset($from) ? $from : 'info@divandesign.biz';
-	
-	//Проверяем нужно ли брать имя отправителя из поста
-	if (
-		isset($from_formField) &&
-		$_POST[$from_formField] != ''
-	){
-		$from = $_POST[$from_formField];
-	}
 	
 	//Проверяем передан ли текст сообщения
 	if (!isset($text)){
