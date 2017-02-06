@@ -2,18 +2,11 @@
 namespace ddSendFeedback\Sender\Slack;
 
 class Sender extends \ddSendFeedback\Sender\Sender {
-	private
+	protected
 		$url = '',
 		$channel = '',
 		$botName = 'ddSendFeedback',
 		$botIcon = ':ghost:';
-	
-	public function __construct($params = []){
-		//Call base constructor
-		parent::__construct($params);
-		$this->url = $params['url'];
-		$this->channel = $params['channel'];
-	}
 	
 	/**
 	 * send

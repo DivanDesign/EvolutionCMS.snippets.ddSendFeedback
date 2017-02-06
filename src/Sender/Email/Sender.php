@@ -2,7 +2,7 @@
 namespace ddSendFeedback\Sender\Email;
 
 class Sender extends \ddSendFeedback\Sender\Sender {
-	private
+	protected
 		$to = [],
 		$from = '',
 		$subject = '',
@@ -11,9 +11,6 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	public function __construct($params = []){
 		//Call base constructor
 		parent::__construct($params);
-		$this->to = $params['to'];
-		$this->from = $params['from'];
-		$this->subject = isset($params['subject']) ? $params['subject'] : 'Feedback';
 		
 		//Comma separated string support
 		if (!is_array($this->to)){
