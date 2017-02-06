@@ -17,7 +17,7 @@
  * @param $result_messageFail {string} — The message that will be returned if the letter sending is failed somehow (the «message» field of the returned JSON). Default: 'Something happened while sending the message.<br />Please try again later.'.
  * 
  * Senders:
- * @param $senders {string_queryFormated} — Query-formated string determining which senders should be used.
+ * @param $senders {stirng_json|string_queryFormated} — JSON or query-formated string determining which senders should be used.
  * @param $senders[item] {array_associative} — Key is a sender name, value is sender parameters.
  * Email sender:
  * @param $senders['email'] {array_associative} — Sender params.
@@ -98,8 +98,13 @@ if (isset($senders)){
 	
 	$sendResults = [];
 	
-	//Prepare senders
-	parse_str($senders, $senders);
+	//JSON
+	if (substr($senders, 0, 1) == '{'){
+		$senders = json_decode($senders, true);
+	}else{
+		//Prepare senders
+		parse_str($senders, $senders);
+	}
 	
 	//Iterate through all senders to create their instances
 	foreach($senders as $senderName => $senderParams){
