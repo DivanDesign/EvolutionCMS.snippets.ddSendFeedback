@@ -1,7 +1,7 @@
 <?php
 /**
  * ddSendFeedback
- * @version 2.0 (2017-01-15)
+ * @version 2.0 (2017-02-06)
  * 
  * @desc A snippet for sending users' feedback messages to a required email. It is very useful along with ajax technology.
  * 
