@@ -15,6 +15,7 @@
  * @param $result_titleFail {string} — The title that will be returned if the letter sending is failed somehow (the «title» field of the returned JSON). Default: 'Unexpected error =('.
  * @param $result_messageSuccess {string} — The message that will be returned if the letter sending is successful (the «message» field of the returned JSON). Default: 'We will contact you later.'.
  * @param $result_messageFail {string} — The message that will be returned if the letter sending is failed somehow (the «message» field of the returned JSON). Default: 'Something happened while sending the message.<br />Please try again later.'.
+ * @param $result_show {bool} — Show result of snippet work? Default: true.
  * 
  * Senders:
  * @param $senders {stirng_json|string_queryFormated} — JSON or query-formated string determining which senders should be used.
@@ -144,5 +145,7 @@ if (isset($senders)){
 
 $result->setMeta($result_meta);
 
-return $result->toJSON();
+if (!isset($result_show)){
+	return $result->toJSON();
+}
 ?>
