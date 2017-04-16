@@ -29,7 +29,7 @@
  * @param $senders['email']['tpl_placeholders'][item] {string} — Key — a placeholder name, value — a placeholder value. Default: ''.
  * @param $senders['email']['subject'] {string} — Message subject. Default: 'Feedback'.
  * @param $senders['email']['from'] {string} — Mailer address (from who). Default: $modx->getConfig('emailsender').
- * @param $senders['email']['filesInputNames'] {string} — Input tags names separated by commas that files are required to be taken from. Used if files are sending in the request ($_FILES array). Default: ''.
+ * @param $senders['email']['fileInputNames'] {array|string_commaSeparated} — Input tags names separated by commas that files are required to be taken from. Used if files are sending in the request ($_FILES array). Default: ''.
  * Slack sender:
  * @param $senders['slack'] {array_associative} — Sender params.
  * @param $senders['slack']['url'] {string_url} — WebHook URL. @required
