@@ -61,7 +61,7 @@ abstract class Sender {
 	
 	/**
 	 * initPostPlaceholders
-	 * @version 1.0 (2017-01-25)
+	 * @version 1.1 (2017-06-06)
 	 * 
 	 * @desc Init placeholders to $this->tpl_placeholdersFromPost from $_POST.
 	 * 
@@ -73,6 +73,9 @@ abstract class Sender {
 		
 		//Перебираем пост, записываем в массив значения полей
 		foreach ($_POST as $key => $val){
+			if(is_array($val)){
+				$this->tpl_placeholdersFromPost[$key] = implode(',', $val);
+			}
 			if (
 				//Если это строка или число (может быть массив, например, в случае с файлами)
 				is_string($_POST[$key]) ||
