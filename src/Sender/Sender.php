@@ -33,7 +33,10 @@ abstract class Sender {
 		//Prepare text to send
 		$this->text = \ddTools::parseSource(\ddTools::parseText([
 			'text' => $modx->getTpl($this->tpl),
-			'data' => array_merge($this->tpl_placeholdersFromPost, $this->tpl_placeholders),
+			'data' => array_merge(
+				$this->tpl_placeholdersFromPost,
+				$this->tpl_placeholders
+			),
 			'removeEmptyPlaceholders' => true
 		]));
 	}
@@ -55,7 +58,10 @@ abstract class Sender {
 			require_once($senderPath);
 			return __NAMESPACE__.'\\'.$senderName.'\\'.'Sender';
 		}else{
-			throw new \Exception('Sender '.$senderName.' not found.', 500);
+			throw new \Exception(
+				'Sender '.$senderName.' not found.',
+				500
+			);
 		}
 	}
 	

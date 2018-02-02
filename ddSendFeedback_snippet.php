@@ -7,8 +7,8 @@
  * 
  * @uses PHP >= 5.4.
  * @uses MODXEvo >= 1.1.
- * @uses MODXEvo.library.ddTools >= 0.16.
- * @uses MODXEvo.snippet.ddMakeHttpRequest >= 1.3.
+ * @uses MODXEvo.libraries.ddTools >= 0.16 {@link http://code.divandesign.biz/modx/ddtools }.
+ * @uses MODXEvo.snippets.ddMakeHttpRequest >= 1.3 {@link http://code.divandesign.biz/modx/ddmakehttprequest }.
  * 
  * General:
  * @param $result_titleSuccess {string} — The title that will be returned if the letter sending is successful (the «title» field of the returned JSON). Default: 'Message sent successfully'.
@@ -19,7 +19,7 @@
  * Senders:
  * @param $senders {stirng_json|string_queryFormated} — JSON or query-formated string determining which senders should be used.
  * @param $senders[item] {array_associative} — Key is a sender name, value is sender parameters.
- * Email sender:
+ * Senders → Email:
  * @param $senders['email'] {array_associative} — Sender params.
  * @param $senders['email']['to'] {array|string_commaSeparated} — Mailing addresses (to whom). @required
  * @param $senders['email']['to'][i] {string_email} — An address. @required
@@ -29,7 +29,7 @@
  * @param $senders['email']['subject'] {string} — Message subject. Default: 'Feedback'.
  * @param $senders['email']['from'] {string} — Mailer address (from who). Default: $modx->getConfig('emailsender').
  * @param $senders['email']['fileInputNames'] {array|string_commaSeparated} — Input tags names separated by commas that files are required to be taken from. Used if files are sending in the request ($_FILES array). Default: ''.
- * Slack sender:
+ * Senders → Slack:
  * @param $senders['slack'] {array_associative} — Sender params.
  * @param $senders['slack']['url'] {string_url} — WebHook URL. @required
  * @param $senders['slack']['tpl'] {string_chunkName|string} — The template of a message (chunk name or code via “@CODE:” prefix). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. Use [(site_url)][~[+docId+]~] to generate the url of a document ([(site_url)] is required because of need for using the absolute links in the emails). @required
@@ -40,21 +40,26 @@
  * @param $senders['slack']['botIcon'] {string} — Bot icon. Default: ':ghost:'.
  * e.g. $senders = 'email[to]=info@divandesign.biz&email[tpl]=general_letters_feedbackToEmail&email[tpl_placeholders][testPlaceholder]=test&slack[url]=https://hooks.slack.com/services/WEBHOOK&slack[tpl]=general_letters_feedbackToSlack'.
  * 
+ * @return {string_json}
+ * 
+ * @link http://code.divandesign.biz/modx/ddsendfeedback/2.0
+ * 
  * @copyright 2010–2017 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
 namespace ddSendFeedback;
 
 if(is_file($modx->config['base_path'].'vendor/autoload.php')){
-	require_once($modx->config['base_path'].'vendor/autoload.php');
+	require_once $modx->getConfig('base_path').'vendor/autoload.php';
 }
 
+//Include MODXEvo.libraries.ddTools
 if(!class_exists('\ddTools')){
 	require_once $modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.class.php';
 }
 
 if(!class_exists('\ddSendFeedback\Sender\Sender')){
-	require_once($modx->getConfig('base_path').'assets/snippets/ddSendFeedback/require.php');
+	require_once $modx->getConfig('base_path').'assets/snippets/ddSendFeedback/require.php';
 }
 
 $result = \ddTools::getResponse();
@@ -113,7 +118,10 @@ if (isset($senders)){
 		//Passing parameters to senders's constructor
 		$sender = new $senderClass($senderParams);
 		//Send message (items with integer keys are not overwritten)
-		$sendResults = array_merge($sendResults, $sender->send());
+		$sendResults = array_merge(
+			$sendResults,
+			$sender->send()
+		);
 	}
 	
 	//Fail by default
