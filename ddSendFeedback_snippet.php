@@ -7,7 +7,7 @@
  * 
  * @uses PHP >= 5.4.
  * @uses MODXEvo >= 1.1.
- * @uses MODXEvo.libraries.ddTools >= 0.16 {@link http://code.divandesign.biz/modx/ddtools }.
+ * @uses MODXEvo.libraries.ddTools >= 0.21 {@link http://code.divandesign.biz/modx/ddtools }.
  * @uses MODXEvo.snippets.ddMakeHttpRequest >= 1.3 {@link http://code.divandesign.biz/modx/ddmakehttprequest }.
  * 
  * General:
@@ -17,7 +17,7 @@
  * @param $result_messageFail {string} — The message that will be returned if the letter sending is failed somehow (the «message» field of the returned JSON). Default: 'Something happened while sending the message.<br />Please try again later.'.
  * 
  * Senders:
- * @param $senders {stirng_json|string_queryFormated} — JSON or query-formated string determining which senders should be used.
+ * @param $senders {stirng_json|string_queryFormated} — JSON (https://en.wikipedia.org/wiki/JSON) or Query-formated string (https://en.wikipedia.org/wiki/Query_string) determining which senders should be used.
  * @param $senders[item] {array_associative} — Key is a sender name, value is sender parameters.
  * Senders → Email:
  * @param $senders['email'] {array_associative} — Sender params.
@@ -38,7 +38,18 @@
  * @param $senders['slack']['channel'] {string} — Channel in Slack to send. Default: Selected in Slack when you create WebHook.
  * @param $senders['slack']['botName'] {string} — Bot name. Default: 'ddSendFeedback'.
  * @param $senders['slack']['botIcon'] {string} — Bot icon. Default: ':ghost:'.
- * e.g. $senders = 'email[to]=info@divandesign.biz&email[tpl]=general_letters_feedbackToEmail&email[tpl_placeholders][testPlaceholder]=test&slack[url]=https://hooks.slack.com/services/WEBHOOK&slack[tpl]=general_letters_feedbackToSlack'.
+ * @example &senders=`{
+ * 	"email": {
+ * 		"to": "info@divandesign.biz",
+ * 		"tpl": "general_letters_feedbackToEmail",
+ * 		"tpl_placeholders": {"testPlaceholder": "test"}
+ * 	},
+ * 	"slack": {
+ * 		"url": "https://hooks.slack.com/services/WEBHOOK",
+ * 		"tpl": "general_letters_feedbackToSlack"
+ * 	}
+ * }`.
+ * @example &senders=`email[to]=info@divandesign.biz&email[tpl]=general_letters_feedbackToEmail&email[tpl_placeholders][testPlaceholder]=test&slack[url]=https://hooks.slack.com/services/WEBHOOK&slack[tpl]=general_letters_feedbackToSlack`.
  * 
  * @return {string_json}
  * 
@@ -103,13 +114,7 @@ if (isset($senders)){
 	
 	$sendResults = [];
 	
-	//JSON
-	if (substr($senders, 0, 1) == '{'){
-		$senders = json_decode($senders, true);
-	}else{
-		//Prepare senders
-		parse_str($senders, $senders);
-	}
+	$senders = \ddTools::encodedStringToArray($senders);
 	
 	//Iterate through all senders to create their instances
 	foreach($senders as $senderName => $senderParams){
