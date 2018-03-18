@@ -8,11 +8,11 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.0 (2017-10-08)
+	 * @version 1.0.1 (2018-03-18)
 	 * 
 	 * @uses ddMakeHttpRequest >= 1.3.
 	 * 
-	 * @desc Send sms.
+	 * @desc Send sms via sms.ru.
 	 * 
 	 * @return $result {array} — Returns the array of send status.
 	 * @return $result[0] {0|1} — Status.
@@ -43,13 +43,12 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			if ($requestResult['sms'][$this->to]['status'] == 'OK'){
 				$result[0] = 1;
 			}else{
-				//Если ошибка то залогируем
-				$modx->logEvent(
-					1,
-					1,
-					'<code><pre>'.print_r($requestResult, true).'</pre></code>',
-					'ddSendFeedback: Smsru'
-				);
+				//Если ошибка, то залогируем
+				\ddTools::logEvent([
+					'message' => '<code><pre>'.print_r($requestResult, true).'</pre></code>',
+					'source' => 'ddSendFeedback → Smsru',
+					'eventType' => 'error'
+				]);
 			}
 		}
 		
