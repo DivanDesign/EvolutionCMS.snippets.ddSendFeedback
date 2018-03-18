@@ -38,11 +38,11 @@
  * @param $senders['slack']['channel'] {string} — Channel in Slack to send. Default: Selected in Slack when you create WebHook.
  * @param $senders['slack']['botName'] {string} — Bot name. Default: 'ddSendFeedback'.
  * @param $senders['slack']['botIcon'] {string} — Bot icon. Default: ':ghost:'.
- * Sms sender:
- * @param $senders['sms'] {array_associative} — Sender params.
- * @param $senders['sms']['apiId'] {string} — Secret code from sms.ru. @required
- * @param $senders['sms']['tpl'] {string_chunkName|string} — The template of a message (chunk name or code via “@CODE:” prefix). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. @required
- * @param $senders['sms']['to'] {string} — A phone. @required
+ * Senders → Sms.ru:
+ * @param $senders['smsru'] {array_associative} — Sender params.
+ * @param $senders['smsru']['apiId'] {string} — Secret code from sms.ru. @required
+ * @param $senders['smsru']['tpl'] {string_chunkName|string} — The template of a message (chunk name or code via “@CODE:” prefix). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. @required
+ * @param $senders['smsru']['to'] {string} — A phone. @required
  * @example &senders=`{
  * 	"email": {
  * 		"to": "info@divandesign.biz",
@@ -53,13 +53,13 @@
  * 		"url": "https://hooks.slack.com/services/WEBHOOK",
  * 		"tpl": "general_letters_feedbackToSlack"
  * 	},
- * 	"sms": {
+ * 	"smsru": {
  * 		"apiId": "00000000-0000-0000-0000-000000000000",
+ * 		"to": "89999999999",
  * 		"tpl": "general_letters_feedbackToSMS"
- * 		"to": "89999999999"
  * 	}
  * }`.
- * @example &senders=`email[to]=info@divandesign.biz&email[tpl]=general_letters_feedbackToEmail&email[tpl_placeholders][testPlaceholder]=test&slack[url]=https://hooks.slack.com/services/WEBHOOK&slack[tpl]=general_letters_feedbackToSlack&sms[to]=89999999999&sms[tpl]=general_letters_feedbackToSMS&sms[apiId]=00000000-0000-0000-0000-000000000000`.
+ * @example &senders=`email[to]=info@divandesign.biz&email[tpl]=general_letters_feedbackToEmail&email[tpl_placeholders][testPlaceholder]=test&slack[url]=https://hooks.slack.com/services/WEBHOOK&slack[tpl]=general_letters_feedbackToSlack&smsru[to]=89999999999&smsru[tpl]=general_letters_feedbackToSMS&smsru[apiId]=00000000-0000-0000-0000-000000000000`.
  * 
  * @return {string_json}
  * 

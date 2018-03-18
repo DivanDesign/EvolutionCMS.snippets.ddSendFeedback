@@ -1,5 +1,5 @@
 <?php
-namespace ddSendFeedback\Sender\Sms;
+namespace ddSendFeedback\Sender\Smsru;
 
 class Sender extends \ddSendFeedback\Sender\Sender {
 	protected 
@@ -20,6 +20,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	public function send(){
 		global $modx;
+		
 		$result = [0 => 0];
 		
 		//Заполнены ли обязательные параметры
@@ -38,12 +39,17 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			
 			//разбиваем пришедшее сообщение
 			$requestResult = json_decode($requestResult, true);
-
-			if ($requestResult['sms'][$this->to]['status'] == 'OK') {
+			
+			if ($requestResult['sms'][$this->to]['status'] == 'OK'){
 				$result[0] = 1;
 			}else{
 				//Если ошибка то залогируем
-				$modx->logEvent(1, 1, '<code><pre>'.print_r($requestResult, true).'</pre></code>', 'ddSendFeedback: Sms');
+				$modx->logEvent(
+					1,
+					1,
+					'<code><pre>'.print_r($requestResult, true).'</pre></code>',
+					'ddSendFeedback: Smsru'
+				);
 			}
 		}
 		
