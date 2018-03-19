@@ -6,9 +6,12 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		$apiId = '',
 		$to = '';
 	
+	private
+		$url = 'https://sms.ru/sms/send?json=1';
+	
 	/**
 	 * send
-	 * @version 1.0.1 (2018-03-18)
+	 * @version 1.0.2 (2018-03-19)
 	 * 
 	 * @uses ddMakeHttpRequest >= 1.3.
 	 * 
@@ -34,7 +37,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		){
 			//отсылаем смс
 			$requestResult = $modx->runSnippet('ddMakeHttpRequest', [
-				'url' => 'https://sms.ru/sms/send?json=1&api_id='. $this->apiId .'&to='. $this->to .'&msg=' .urlencode($this->text),
+				'url' => $this->url.'&api_id='.$this->apiId.'&to='.$this->to.'&msg=' .urlencode($this->text),
 			]);
 			
 			//разбиваем пришедшее сообщение
