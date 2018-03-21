@@ -38,6 +38,10 @@
  * @param $senders['slack']['channel'] {string} — Channel in Slack to send. Default: Selected in Slack when you create WebHook.
  * @param $senders['slack']['botName'] {string} — Bot name. Default: 'ddSendFeedback'.
  * @param $senders['slack']['botIcon'] {string} — Bot icon. Default: ':ghost:'.
+ * Senders → Telegram:
+ * @param $senders['telegram'] {array_associative} — Sender params.
+ * @param $senders['telegram']['botToken'] {string} — Токен бота, который будет отправлять сообщение, вида “botId:HASH”. @required
+ * @param $senders['telegram']['chatId'] {string} — ID чата, в который будет отправлено сообщение. @required
  * Senders → Sms.ru:
  * @param $senders['smsru'] {array_associative} — Sender params.
  * @param $senders['smsru']['apiId'] {string} — Secret code from sms.ru. @required
@@ -57,6 +61,10 @@
  * 		"apiId": "00000000-0000-0000-0000-000000000000",
  * 		"to": "89999999999",
  * 		"tpl": "general_letters_feedbackToSMS"
+ * 	},
+ * 	"telegram": {
+ * 		"botToken": "123:AAAAAA",
+ * 		"chatId": "-11111"
  * 	}
  * }`.
  * @example &senders=`email[to]=info@divandesign.biz&email[tpl]=general_letters_feedbackToEmail&email[tpl_placeholders][testPlaceholder]=test&slack[url]=https://hooks.slack.com/services/WEBHOOK&slack[tpl]=general_letters_feedbackToSlack&smsru[to]=89999999999&smsru[tpl]=general_letters_feedbackToSMS&smsru[apiId]=00000000-0000-0000-0000-000000000000`.
