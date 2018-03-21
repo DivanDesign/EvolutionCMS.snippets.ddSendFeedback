@@ -12,8 +12,6 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	 * send
 	 * @version 1.0 (2017-01-16)
 	 * 
-	 * @uses ddMakeHttpRequest >= 1.3.
-	 * 
 	 * @desc Send message to Slack.
 	 * 
 	 * @return $result {array} — Returns the array of send status.

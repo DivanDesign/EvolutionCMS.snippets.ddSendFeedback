@@ -14,13 +14,16 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		
 		//Comma separated string support
 		if (!is_array($this->to)){
-			$this->to = explode(',', $this->to);
+			$this->to = explode(
+				',',
+				$this->to
+			);
 		}
 	}
 	
 	/**
 	 * send
-	 * @version 1.0 (2017-01-16)
+	 * @version 1.0.1 (2017-04-16)
 	 * 
 	 * @desc Send emails.
 	 * 
@@ -32,8 +35,14 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			'to' => $this->to,
 			'text' => $this->text,
 			'subject' => $this->subject,
-			'fileInputNames' => $this->fileInputNames
 		];
+		
+		if(!empty($this->fileInputNames)){
+			$sendMailParams['fileInputNames'] = explode(
+				',',
+				$this->fileInputNames
+			);
+		}
 		
 		if (!empty($this->from)){
 			$sendMailParams['from'] = $this->from;

@@ -1,14 +1,14 @@
 <?php
 /**
  * ddSendFeedback
- * @version 2.0 (2017-02-06)
+ * @version 2.1 (2018-03-21)
  * 
  * @desc A snippet for sending users' feedback messages to a required email. It is very useful along with ajax technology.
  * 
  * @uses PHP >= 5.4.
  * @uses MODXEvo >= 1.1.
- * @uses MODXEvo.library.ddTools >= 0.16.
- * @uses MODXEvo.snippet.ddMakeHttpRequest >= 1.3.
+ * @uses MODXEvo.libraries.ddTools >= 0.21 {@link http://code.divandesign.biz/modx/ddtools }.
+ * @uses MODXEvo.snippets.ddMakeHttpRequest >= 1.3 {@link http://code.divandesign.biz/modx/ddmakehttprequest }.
  * 
  * General:
  * @param $result_titleSuccess {string} — The title that will be returned if the letter sending is successful (the «title» field of the returned JSON). Default: 'Message sent successfully'.
@@ -17,9 +17,9 @@
  * @param $result_messageFail {string} — The message that will be returned if the letter sending is failed somehow (the «message» field of the returned JSON). Default: 'Something happened while sending the message.<br />Please try again later.'.
  * 
  * Senders:
- * @param $senders {stirng_json|string_queryFormated} — JSON or query-formated string determining which senders should be used.
+ * @param $senders {stirng_json|string_queryFormated} — JSON (https://en.wikipedia.org/wiki/JSON) or Query-formated string (https://en.wikipedia.org/wiki/Query_string) determining which senders should be used.
  * @param $senders[item] {array_associative} — Key is a sender name, value is sender parameters.
- * Email sender:
+ * Senders → Email:
  * @param $senders['email'] {array_associative} — Sender params.
  * @param $senders['email']['to'] {array|string_commaSeparated} — Mailing addresses (to whom). @required
  * @param $senders['email']['to'][i] {string_email} — An address. @required
@@ -28,8 +28,8 @@
  * @param $senders['email']['tpl_placeholders'][item] {string} — Key — a placeholder name, value — a placeholder value. Default: ''.
  * @param $senders['email']['subject'] {string} — Message subject. Default: 'Feedback'.
  * @param $senders['email']['from'] {string} — Mailer address (from who). Default: $modx->getConfig('emailsender').
- * @param $senders['email']['filesInputNames'] {string} — Input tags names separated by commas that files are required to be taken from. Used if files are sending in the request ($_FILES array). Default: ''.
- * Slack sender:
+ * @param $senders['email']['fileInputNames'] {array|string_commaSeparated} — Input tags names separated by commas that files are required to be taken from. Used if files are sending in the request ($_FILES array). Default: ''.
+ * Senders → Slack:
  * @param $senders['slack'] {array_associative} — Sender params.
  * @param $senders['slack']['url'] {string_url} — WebHook URL. @required
  * @param $senders['slack']['tpl'] {string_chunkName|string} — The template of a message (chunk name or code via “@CODE:” prefix). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. Use [(site_url)][~[+docId+]~] to generate the url of a document ([(site_url)] is required because of need for using the absolute links in the emails). @required
@@ -38,23 +38,59 @@
  * @param $senders['slack']['channel'] {string} — Channel in Slack to send. Default: Selected in Slack when you create WebHook.
  * @param $senders['slack']['botName'] {string} — Bot name. Default: 'ddSendFeedback'.
  * @param $senders['slack']['botIcon'] {string} — Bot icon. Default: ':ghost:'.
- * e.g. $senders = 'email[to]=info@divandesign.biz&email[tpl]=general_letters_feedbackToEmail&email[tpl_placeholders][testPlaceholder]=test&slack[url]=https://hooks.slack.com/services/WEBHOOK&slack[tpl]=general_letters_feedbackToSlack'.
+ * Senders → Telegram:
+ * @param $senders['telegram'] {array_associative} — Sender params.
+ * @param $senders['telegram']['botToken'] {string} — Токен бота, который будет отправлять сообщение, вида “botId:HASH”. @required
+ * @param $senders['telegram']['chatId'] {string} — ID чата, в который будет отправлено сообщение. @required
+ * @param $senders['telegram']['tpl'] {string_chunkName|string} — The template of a message (chunk name or code via “@CODE:” prefix). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. @required
+ * Senders → Sms.ru:
+ * @param $senders['smsru'] {array_associative} — Sender params.
+ * @param $senders['smsru']['apiId'] {string} — Secret code from sms.ru. @required
+ * @param $senders['smsru']['tpl'] {string_chunkName|string} — The template of a message (chunk name or code via “@CODE:” prefix). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. @required
+ * @param $senders['smsru']['to'] {string} — A phone. @required
+ * @example &senders=`{
+ * 	"email": {
+ * 		"to": "info@divandesign.biz",
+ * 		"tpl": "general_letters_feedbackToEmail",
+ * 		"tpl_placeholders": {"testPlaceholder": "test"}
+ * 	},
+ * 	"slack": {
+ * 		"url": "https://hooks.slack.com/services/WEBHOOK",
+ * 		"tpl": "general_letters_feedbackToSlack"
+ * 	},
+ * 	"smsru": {
+ * 		"apiId": "00000000-0000-0000-0000-000000000000",
+ * 		"to": "89999999999",
+ * 		"tpl": "general_letters_feedbackToSMS"
+ * 	},
+ * 	"telegram": {
+ * 		"botToken": "123:AAAAAA",
+ * 		"chatId": "-11111",
+ * 		"tpl": "@CODE:Test message from [(site_url)]!"
+ * 	}
+ * }`.
+ * @example &senders=`email[to]=info@divandesign.biz&email[tpl]=general_letters_feedbackToEmail&email[tpl_placeholders][testPlaceholder]=test&slack[url]=https://hooks.slack.com/services/WEBHOOK&slack[tpl]=general_letters_feedbackToSlack&smsru[to]=89999999999&smsru[tpl]=general_letters_feedbackToSMS&smsru[apiId]=00000000-0000-0000-0000-000000000000`.
  * 
- * @copyright 2010–2017 DivanDesign {@link http://www.DivanDesign.biz }
+ * @return {string_json}
+ * 
+ * @link http://code.divandesign.biz/modx/ddsendfeedback/2.1
+ * 
+ * @copyright 2010–2018 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
 namespace ddSendFeedback;
 
 if(is_file($modx->config['base_path'].'vendor/autoload.php')){
-	require_once($modx->config['base_path'].'vendor/autoload.php');
+	require_once $modx->getConfig('base_path').'vendor/autoload.php';
 }
 
+//Include MODXEvo.libraries.ddTools
 if(!class_exists('\ddTools')){
 	require_once $modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.class.php';
 }
 
 if(!class_exists('\ddSendFeedback\Sender\Sender')){
-	require_once($modx->getConfig('base_path').'assets/snippets/ddSendFeedback/require.php');
+	require_once $modx->getConfig('base_path').'assets/snippets/ddSendFeedback/require.php';
 }
 
 $result = \ddTools::getResponse();
@@ -98,13 +134,7 @@ if (isset($senders)){
 	
 	$sendResults = [];
 	
-	//JSON
-	if (substr($senders, 0, 1) == '{'){
-		$senders = json_decode($senders, true);
-	}else{
-		//Prepare senders
-		parse_str($senders, $senders);
-	}
+	$senders = \ddTools::encodedStringToArray($senders);
 	
 	//Iterate through all senders to create their instances
 	foreach($senders as $senderName => $senderParams){
@@ -113,7 +143,10 @@ if (isset($senders)){
 		//Passing parameters to senders's constructor
 		$sender = new $senderClass($senderParams);
 		//Send message (items with integer keys are not overwritten)
-		$sendResults = array_merge($sendResults, $sender->send());
+		$sendResults = array_merge(
+			$sendResults,
+			$sender->send()
+		);
 	}
 	
 	//Fail by default
