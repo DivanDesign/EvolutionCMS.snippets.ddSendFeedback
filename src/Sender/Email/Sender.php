@@ -13,10 +13,10 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		parent::__construct($params);
 		
 		//Comma separated string support
-		if (!is_array($this->to[0])){
+		if (!is_array($this->to)){
 			$this->to = explode(
 				',',
-				$this->to[0]
+				$this->to
 			);
 		}
 	}
