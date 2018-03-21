@@ -1,7 +1,7 @@
 <?php
 /**
  * ddSendFeedback
- * @version 2.0 (2017-02-06)
+ * @version 2.1 (2018-03-21)
  * 
  * @desc A snippet for sending users' feedback messages to a required email. It is very useful along with ajax technology.
  * 
@@ -42,6 +42,7 @@
  * @param $senders['telegram'] {array_associative} — Sender params.
  * @param $senders['telegram']['botToken'] {string} — Токен бота, который будет отправлять сообщение, вида “botId:HASH”. @required
  * @param $senders['telegram']['chatId'] {string} — ID чата, в который будет отправлено сообщение. @required
+ * @param $senders['telegram']['tpl'] {string_chunkName|string} — The template of a message (chunk name or code via “@CODE:” prefix). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. @required
  * Senders → Sms.ru:
  * @param $senders['smsru'] {array_associative} — Sender params.
  * @param $senders['smsru']['apiId'] {string} — Secret code from sms.ru. @required
@@ -64,16 +65,17 @@
  * 	},
  * 	"telegram": {
  * 		"botToken": "123:AAAAAA",
- * 		"chatId": "-11111"
+ * 		"chatId": "-11111",
+ * 		"tpl": "@CODE:Test message from [(site_url)]!"
  * 	}
  * }`.
  * @example &senders=`email[to]=info@divandesign.biz&email[tpl]=general_letters_feedbackToEmail&email[tpl_placeholders][testPlaceholder]=test&slack[url]=https://hooks.slack.com/services/WEBHOOK&slack[tpl]=general_letters_feedbackToSlack&smsru[to]=89999999999&smsru[tpl]=general_letters_feedbackToSMS&smsru[apiId]=00000000-0000-0000-0000-000000000000`.
  * 
  * @return {string_json}
  * 
- * @link http://code.divandesign.biz/modx/ddsendfeedback/2.0
+ * @link http://code.divandesign.biz/modx/ddsendfeedback/2.1
  * 
- * @copyright 2010–2017 DivanDesign {@link http://www.DivanDesign.biz }
+ * @copyright 2010–2018 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
 namespace ddSendFeedback;
