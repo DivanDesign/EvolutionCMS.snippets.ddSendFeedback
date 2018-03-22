@@ -5,17 +5,43 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	/**
 	 * @property $botToken {string} — Токен бота в вида “botId:HASH”.
 	 * @property $chatId {string_numeric} — ID чата, в который слать сообщение.
+	 * @property $messageMarkupSyntax {'Markdown'|'HTML'|''} — Синтаксис, в котором написано сообщение. Default: ''.
+	 * @property $disableWebPagePreview {boolean} — Disables link previews for links in this message. Default: false.
 	 */
 	protected
 		$botToken = '',
-		$chatId = '';
+		$chatId = '',
+		$messageMarkupSyntax = '',
+		$disableWebPagePreview = false;
 	
 	private
-		$url = 'https://api.telegram.org/bot[+botToken+]/sendMessage?chat_id=[+chatId+]&text=[+text+]';
+		$url = 'https://api.telegram.org/bot[+botToken+]/sendMessage?chat_id=[+chatId+]&text=[+text+]&parse_mode=[+messageMarkupSyntax+]&disable_web_page_preview=[+disableWebPagePreview+]';
+	
+	public function __construct($params = []){
+		//Call base constructor
+		parent::__construct($params);
+		
+		//Prepare “messageMarkupSyntax”
+		$this->messageMarkupSyntax = trim($this->messageMarkupSyntax);
+		//Allowable values
+		if (!in_array(
+			$this->messageMarkupSyntax,
+			[
+				'Markdown',
+				'HTML',
+				''
+			]
+		)){
+			$this->messageMarkupSyntax = '';
+		}
+		
+		//Prepare “disableWebPagePreview”
+		$this->disableWebPagePreview = boolval($this->disableWebPagePreview);
+	}
 	
 	/**
 	 * send
-	 * @version 1.0 (2018-03-20)
+	 * @version 1.1 (2018-03-22)
 	 * 
 	 * @desc Send messege to a Telegram channel.
 	 * 
@@ -46,7 +72,9 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 					'data' => [
 						'botToken' => $this->botToken,
 						'chatId' => $this->chatId,
-						'text' => urlencode($this->text)
+						'text' => urlencode($this->text),
+						'messageMarkupSyntax' => $this->messageMarkupSyntax,
+						'disableWebPagePreview' => intval($this->disableWebPagePreview)
 					],
 					'mergeAll' => false
 				])
