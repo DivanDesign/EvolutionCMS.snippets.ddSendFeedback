@@ -50,6 +50,7 @@
  * @param $senders['smsru']['apiId'] {string} — Secret code from sms.ru. @required
  * @param $senders['smsru']['tpl'] {string_chunkName|string} — The template of a message (chunk name or code via “@CODE:” prefix). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. @required
  * @param $senders['smsru']['to'] {string} — A phone. @required
+ * @param $senders['smsru']['from'] {string} — Sms sender name/phone.
  * @example &senders=`{
  * 	"email": {
  * 		"to": "info@divandesign.biz",
