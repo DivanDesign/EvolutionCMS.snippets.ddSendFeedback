@@ -1,7 +1,7 @@
 <?php
 /**
  * ddSendFeedback
- * @version 2.2 (2018-03-22)
+ * @version 2.3 (2018-10-09)
  * 
  * @desc A snippet for sending users' feedback messages to a required email. It is very useful along with ajax technology.
  * 
@@ -76,7 +76,7 @@
  * 
  * @return {string_json}
  * 
- * @link http://code.divandesign.biz/modx/ddsendfeedback/2.2
+ * @link http://code.divandesign.biz/modx/ddsendfeedback/2.3
  * 
  * @copyright 2010–2018 DivanDesign {@link http://www.DivanDesign.biz }
  */
