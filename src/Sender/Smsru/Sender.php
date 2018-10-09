@@ -4,14 +4,15 @@ namespace ddSendFeedback\Sender\Smsru;
 class Sender extends \ddSendFeedback\Sender\Sender {
 	protected 
 		$apiId = '',
-		$to = '';
+		$to = '',
+		$from = '';
 	
 	private
 		$url = 'https://sms.ru/sms/send?json=1';
 	
 	/**
 	 * send
-	 * @version 1.0.2 (2018-03-19)
+	 * @version 1.1 (2018-04-05)
 	 * 
 	 * @uses ddMakeHttpRequest >= 1.3.
 	 * 
@@ -35,9 +36,14 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			//и сообщение
 			isset($this->text)
 		){
+			$url = $this->url.'&api_id='.$this->apiId.'&to='.$this->to.'&msg=' .urlencode($this->text);
+			
+			if(isset($this->from)){
+				$url .= '&from=' . $this->from;
+			}
 			//отсылаем смс
 			$requestResult = $modx->runSnippet('ddMakeHttpRequest', [
-				'url' => $this->url.'&api_id='.$this->apiId.'&to='.$this->to.'&msg=' .urlencode($this->text),
+				'url' => $url,
 			]);
 			
 			//разбиваем пришедшее сообщение

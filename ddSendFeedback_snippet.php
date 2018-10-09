@@ -1,13 +1,13 @@
 <?php
 /**
  * ddSendFeedback
- * @version 2.2 (2018-03-22)
+ * @version 2.3 (2018-10-09)
  * 
  * @desc A snippet for sending users' feedback messages to a required email. It is very useful along with ajax technology.
  * 
  * @uses PHP >= 5.4.
  * @uses MODXEvo >= 1.1.
- * @uses MODXEvo.libraries.ddTools >= 0.21 {@link http://code.divandesign.biz/modx/ddtools }.
+ * @uses MODXEvo.libraries.ddTools >= 0.23 {@link http://code.divandesign.biz/modx/ddtools }.
  * @uses MODXEvo.snippets.ddMakeHttpRequest >= 1.3 {@link http://code.divandesign.biz/modx/ddmakehttprequest }.
  * 
  * General:
@@ -20,7 +20,7 @@
  * @param $senders {stirng_json|string_queryFormated} — JSON (https://en.wikipedia.org/wiki/JSON) or Query-formated string (https://en.wikipedia.org/wiki/Query_string) determining which senders should be used.
  * @param $senders[item] {array_associative} — Key is a sender name, value is sender parameters.
  * Senders → Email:
- * @param $senders['email'] {array_associative} — Sender params.
+ * @param $senders['email'] {array_associative} — Sender params. Send method (PHP mail() or SMTP) sets up in CMS config.
  * @param $senders['email']['to'] {array|string_commaSeparated} — Mailing addresses (to whom). @required
  * @param $senders['email']['to'][i] {string_email} — An address. @required
  * @param $senders['email']['tpl'] {string_chunkName|string} — The template of a letter (chunk name or code via “@CODE:” prefix). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. Use [(site_url)][~[+docId+]~] to generate the url of a document ([(site_url)] is required because of need for using the absolute links in the emails). @required
@@ -50,6 +50,7 @@
  * @param $senders['smsru']['apiId'] {string} — Secret code from sms.ru. @required
  * @param $senders['smsru']['tpl'] {string_chunkName|string} — The template of a message (chunk name or code via “@CODE:” prefix). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. @required
  * @param $senders['smsru']['to'] {string} — A phone. @required
+ * @param $senders['smsru']['from'] {string} — Sms sender name/phone.
  * @example &senders=`{
  * 	"email": {
  * 		"to": "info@divandesign.biz",
@@ -75,7 +76,7 @@
  * 
  * @return {string_json}
  * 
- * @link http://code.divandesign.biz/modx/ddsendfeedback/2.2
+ * @link http://code.divandesign.biz/modx/ddsendfeedback/2.3
  * 
  * @copyright 2010–2018 DivanDesign {@link http://www.DivanDesign.biz }
  */
