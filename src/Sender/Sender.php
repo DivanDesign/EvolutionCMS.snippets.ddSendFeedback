@@ -5,20 +5,25 @@ abstract class Sender {
 	private 
 		$tpl = '',
 		$tpl_placeholders = [],
-		$tpl_placeholdersFromPost;
+		$tpl_placeholdersFromPost
+	;
 	
 	protected
-		$text = '';
+		$text = ''
+	;
 	
 	/**
 	 * __construct
-	 * @version 1.0 (2017-01-25)
+	 * @version 1.0.1 (2019-04-25)
 	 */
 	public function __construct($params = []){
 		global $modx;
 		
 		//Все параметры задают свойства объекта
-		foreach ($params as $paramName => $paramValue){
+		foreach (
+			$params as
+			$paramName => $paramValue
+		){
 			//На всякий случай проверяем
 			if (isset($this->{$paramName})){
 				$this->{$paramName} = $paramValue;
@@ -43,23 +48,25 @@ abstract class Sender {
 	
 	/**
 	 * includeSenderByName
-	 * @version 1.0 (2017-01-25)
+	 * @version 1.0.1 (2019-04-25)
 	 * 
 	 * @param $senderName {string} — Sender name.
 	 * 
 	 * @return {string}
+	 * 
 	 * @throws \Exception
 	 */
 	public final static function includeSenderByName($senderName){
 		$senderName = ucfirst(strtolower($senderName));
-		$senderPath = $senderName.DIRECTORY_SEPARATOR.'Sender.php';
+		$senderPath = $senderName . DIRECTORY_SEPARATOR . 'Sender.php';
 		
-		if(is_file(__DIR__.DIRECTORY_SEPARATOR.$senderPath)){
+		if(is_file(__DIR__ . DIRECTORY_SEPARATOR . $senderPath)){
 			require_once($senderPath);
-			return __NAMESPACE__.'\\'.$senderName.'\\'.'Sender';
+			
+			return __NAMESPACE__ . '\\' . $senderName . '\\' . 'Sender';
 		}else{
 			throw new \Exception(
-				'Sender '.$senderName.' not found.',
+				'Sender ' . $senderName . ' not found.',
 				500
 			);
 		}
@@ -67,7 +74,7 @@ abstract class Sender {
 	
 	/**
 	 * initPostPlaceholders
-	 * @version 1.1 (2017-06-06)
+	 * @version 1.1.1 (2019-04-25)
 	 * 
 	 * @desc Init placeholders to $this->tpl_placeholdersFromPost from $_POST.
 	 * 
@@ -78,10 +85,17 @@ abstract class Sender {
 		$this->tpl_placeholdersFromPost = [];
 		
 		//Перебираем пост, записываем в массив значения полей
-		foreach ($_POST as $key => $val){
+		foreach (
+			$_POST as
+			$key => $val
+		){
 			if(is_array($val)){
-				$this->tpl_placeholdersFromPost[$key] = implode(',', $val);
+				$this->tpl_placeholdersFromPost[$key] = implode(
+					',',
+					$val
+				);
 			}
+			
 			if (
 				//Если это строка или число (может быть массив, например, в случае с файлами)
 				is_string($_POST[$key]) ||

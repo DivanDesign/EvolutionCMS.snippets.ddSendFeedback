@@ -5,10 +5,10 @@
  * 
  * @desc A snippet for sending users' feedback messages to a required email. It is very useful along with ajax technology.
  * 
- * @uses PHP >= 5.4.
- * @uses MODXEvo >= 1.1.
- * @uses MODXEvo.libraries.ddTools >= 0.23 {@link http://code.divandesign.biz/modx/ddtools }.
- * @uses MODXEvo.snippets.ddMakeHttpRequest >= 1.3 {@link http://code.divandesign.biz/modx/ddmakehttprequest }.
+ * @uses PHP >= 5.4
+ * @uses (MODX)EvolutionCMS >= 1.1
+ * @uses (MODX)EvolutionCMS.libraries.ddTools >= 0.23 {@link http://code.divandesign.biz/modx/ddtools }
+ * @uses (MODX)EvolutionCMS.snippets.ddMakeHttpRequest >= 1.3 {@link http://code.divandesign.biz/modx/ddmakehttprequest }
  * 
  * General:
  * @param $result_titleSuccess {string} — The title that will be returned if the letter sending is successful (the «title» field of the returned JSON). Default: 'Message sent successfully'.
@@ -76,24 +76,25 @@
  * 
  * @return {string_json}
  * 
- * @link http://code.divandesign.biz/modx/ddsendfeedback/2.3
+ * @link http://code.divandesign.biz/modx/ddsendfeedback
  * 
  * @copyright 2010–2018 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
 namespace ddSendFeedback;
 
-if(is_file($modx->config['base_path'].'vendor/autoload.php')){
-	require_once $modx->getConfig('base_path').'vendor/autoload.php';
+//TODO: Remove it
+if(is_file($modx->config['base_path'] . 'vendor/autoload.php')){
+	require_once $modx->getConfig('base_path') . 'vendor/autoload.php';
 }
 
-//Include MODXEvo.libraries.ddTools
+//Include (MODX)EvolutionCMS.libraries.ddTools
 if(!class_exists('\ddTools')){
-	require_once $modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.class.php';
+	require_once $modx->getConfig('base_path') . 'assets/libs/ddTools/modx.ddtools.class.php';
 }
 
 if(!class_exists('\ddSendFeedback\Sender\Sender')){
-	require_once $modx->getConfig('base_path').'assets/snippets/ddSendFeedback/require.php';
+	require_once $modx->getConfig('base_path') . 'assets/snippets/ddSendFeedback/require.php';
 }
 
 $result = \ddTools::getResponse();
@@ -113,15 +114,47 @@ if (isset($senders)){
 		$lang == 'russian-UTF8' ||
 		$lang == 'russian'
 	){
-		$result_titleSuccess = isset($result_titleSuccess) ? $result_titleSuccess : 'Заявка успешно отправлена';
-		$result_titleFail = isset($result_titleFail) ? $result_titleFail : 'Непредвиденная ошибка =(';
-		$result_messageSuccess = isset($result_messageSuccess) ? $result_messageSuccess : 'Наш специалист свяжется с вами в ближайшее время.';
-		$result_messageFail = isset($result_messageFail) ? $result_messageFail : 'Во время отправки заявки что-то произошло.<br />Пожалуйста, попробуйте чуть позже.';
+		$result_titleSuccess =
+			isset($result_titleSuccess) ?
+			$result_titleSuccess :
+			'Заявка успешно отправлена'
+		;
+		$result_titleFail =
+			isset($result_titleFail) ?
+			$result_titleFail :
+			'Непредвиденная ошибка =('
+		;
+		$result_messageSuccess =
+			isset($result_messageSuccess) ?
+			$result_messageSuccess :
+			'Наш специалист свяжется с вами в ближайшее время.'
+		;
+		$result_messageFail =
+			isset($result_messageFail) ?
+			$result_messageFail :
+			'Во время отправки заявки что-то произошло.<br />Пожалуйста, попробуйте чуть позже.'
+		;
 	}else{
-		$result_titleSuccess = isset($result_titleSuccess) ? $result_titleSuccess : 'Message sent successfully';
-		$result_titleFail = isset($result_titleFail) ? $result_titleFail : 'Unexpected error =(';
-		$result_messageSuccess = isset($result_messageSuccess) ? $result_messageSuccess : 'We will contact you later.';
-		$result_messageFail = isset($result_messageFail) ? $result_messageFail : 'Something happened while sending the message.<br />Please try again later.';
+		$result_titleSuccess =
+			isset($result_titleSuccess) ?
+			$result_titleSuccess :
+			'Message sent successfully'
+		;
+		$result_titleFail =
+			isset($result_titleFail) ?
+			$result_titleFail :
+			'Unexpected error =('
+		;
+		$result_messageSuccess =
+			isset($result_messageSuccess) ?
+			$result_messageSuccess :
+			'We will contact you later.'
+		;
+		$result_messageFail =
+			isset($result_messageFail) ?
+			$result_messageFail :
+			'Something happened while sending the message.<br />Please try again later.'
+		;
 	}
 	
 	$outputMessages = [
@@ -140,7 +173,10 @@ if (isset($senders)){
 	$senders = \ddTools::encodedStringToArray($senders);
 	
 	//Iterate through all senders to create their instances
-	foreach($senders as $senderName => $senderParams){
+	foreach(
+		$senders as
+		$senderName => $senderParams
+	){
 		$senderClass = \ddSendFeedback\Sender\Sender::includeSenderByName($senderName);
 		
 		//Passing parameters to senders's constructor
@@ -156,7 +192,10 @@ if (isset($senders)){
 	$sendResults_status = 0;
 	
 	//Перебираем все статусы отправки
-	foreach ($sendResults as $sendResults_item){
+	foreach (
+		$sendResults as
+		$sendResults_item
+	){
 		//Запоминаем
 		$sendResults_status = intval($sendResults_item);
 		

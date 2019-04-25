@@ -12,10 +12,12 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		$botToken = '',
 		$chatId = '',
 		$messageMarkupSyntax = '',
-		$disableWebPagePreview = false;
+		$disableWebPagePreview = false
+	;
 	
 	private
-		$url = 'https://api.telegram.org/bot[+botToken+]/sendMessage?chat_id=[+chatId+]&text=[+text+]&parse_mode=[+messageMarkupSyntax+]&disable_web_page_preview=[+disableWebPagePreview+]';
+		$url = 'https://api.telegram.org/bot[+botToken+]/sendMessage?chat_id=[+chatId+]&text=[+text+]&parse_mode=[+messageMarkupSyntax+]&disable_web_page_preview=[+disableWebPagePreview+]'
+	;
 	
 	public function __construct($params = []){
 		//Call base constructor
@@ -41,11 +43,9 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1 (2018-03-22)
+	 * @version 1.1.1 (2019-04-25)
 	 * 
 	 * @desc Send messege to a Telegram channel.
-	 * 
-	 * @uses MODXEvo.snippets.ddMakeHttpRequest >= 1.3 {@link http://code.divandesign.biz/modx/ddmakehttprequest }
 	 * 
 	 * @return $result {array} — Returns the array of send status.
 	 * @return $result[0] {0|1} — Status.
@@ -66,19 +66,22 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			isset($this->text)
 		){
 			//Отсылаем сообщение
-			$requestResult = $modx->runSnippet('ddMakeHttpRequest', [
-				'url' => \ddTools::parseText([
-					'text' => $this->url,
-					'data' => [
-						'botToken' => $this->botToken,
-						'chatId' => $this->chatId,
-						'text' => urlencode($this->text),
-						'messageMarkupSyntax' => $this->messageMarkupSyntax,
-						'disableWebPagePreview' => intval($this->disableWebPagePreview)
-					],
-					'mergeAll' => false
-				])
-			]);
+			$requestResult = $modx->runSnippet(
+				'ddMakeHttpRequest',
+				[
+					'url' => \ddTools::parseText([
+						'text' => $this->url,
+						'data' => [
+							'botToken' => $this->botToken,
+							'chatId' => $this->chatId,
+							'text' => urlencode($this->text),
+							'messageMarkupSyntax' => $this->messageMarkupSyntax,
+							'disableWebPagePreview' => intval($this->disableWebPagePreview)
+						],
+						'mergeAll' => false
+					])
+				]
+			);
 			
 			//Разбиваем пришедшее сообщение
 			$requestResult = json_decode(
@@ -96,7 +99,10 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			}else{
 				//Если ошибка, то залогируем
 				\ddTools::logEvent([
-					'message' => '<code><pre>'.print_r($requestResult, true).'</pre></code>',
+					'message' => '<code><pre>' . print_r(
+						$requestResult,
+						true
+					) . '</pre></code>',
 					'source' => 'ddSendFeedback → Telegram',
 					'eventType' => 'error'
 				]);

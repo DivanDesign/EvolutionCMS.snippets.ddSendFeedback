@@ -6,11 +6,12 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		$url = '',
 		$channel = '',
 		$botName = 'ddSendFeedback',
-		$botIcon = ':ghost:';
+		$botIcon = ':ghost:'
+	;
 	
 	/**
 	 * send
-	 * @version 1.0 (2017-01-16)
+	 * @version 1.0.1 (2019-04-25)
 	 * 
 	 * @desc Send message to Slack.
 	 * 
@@ -20,19 +21,23 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 
 	public function send(){
 		global $modx;
+		
 		$result = [0 => 0];
 		
-		$requestResult = $modx->runSnippet('ddMakeHttpRequest', [
-			'url' => $this->url,
-			'method' => 'post',
-			'postData' => json_encode([
-				'text' => $this->text,
-				'channel' => $this->channel,
-				'username' => $this->botName,
-				'icon_emoji' => $this->botIcon
-			]),
-			'headers' => 'application/json'
-		]);
+		$requestResult = $modx->runSnippet(
+			'ddMakeHttpRequest',
+			[
+				'url' => $this->url,
+				'method' => 'post',
+				'postData' => json_encode([
+					'text' => $this->text,
+					'channel' => $this->channel,
+					'username' => $this->botName,
+					'icon_emoji' => $this->botIcon
+				]),
+				'headers' => 'application/json'
+			]
+		);
 		
 		if ($requestResult == 'ok'){
 			$result[0] = 1;
