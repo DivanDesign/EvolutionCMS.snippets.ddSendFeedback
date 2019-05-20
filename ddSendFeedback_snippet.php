@@ -8,7 +8,7 @@
  * @uses PHP >= 5.4
  * @uses (MODX)EvolutionCMS >= 1.1
  * @uses (MODX)EvolutionCMS.libraries.ddTools >= 0.23 {@link http://code.divandesign.biz/modx/ddtools }
- * @uses (MODX)EvolutionCMS.snippets.ddMakeHttpRequest >= 1.3 {@link http://code.divandesign.biz/modx/ddmakehttprequest }
+ * @uses (MODX)EvolutionCMS.snippets.ddMakeHttpRequest >= 1.4 {@link http://code.divandesign.biz/modx/ddmakehttprequest }
  * 
  * General:
  * @param $result_titleSuccess {string} — The title that will be returned if the letter sending is successful (the «title» field of the returned JSON). Default: 'Message sent successfully'.
@@ -45,6 +45,7 @@
  * @param $senders['telegram']['tpl'] {string_chunkName|string} — The template of a message (chunk name or code via “@CODE:” prefix). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. @required
  * @param $senders['telegram']['messageMarkupSyntax'] {'Markdown'|'HTML'|''} — Синтаксис, в котором написано сообщение. Default: ''.
  * @param $senders['telegram']['disableWebPagePreview'] {boolean} — Disables link previews for links in this message. Default: false.
+ * @param $senders['telegram']['proxy'] {string} — Proxy server in format 'protocol://user:password@ip:port'. E. g. 'asan:gd324ukl@11.22.33.44:5555' or 'socks5://asan:gd324ukl@11.22.33.44:5555'. Default: —.
  * Senders → Sms.ru:
  * @param $senders['smsru'] {array_associative} — Sender params.
  * @param $senders['smsru']['apiId'] {string} — Secret code from sms.ru. @required

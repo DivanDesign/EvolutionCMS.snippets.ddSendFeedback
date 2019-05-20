@@ -7,12 +7,14 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	 * @property $chatId {string_numeric} — ID чата, в который слать сообщение.
 	 * @property $messageMarkupSyntax {'Markdown'|'HTML'|''} — Синтаксис, в котором написано сообщение. Default: ''.
 	 * @property $disableWebPagePreview {boolean} — Disables link previews for links in this message. Default: false.
+	 * @property $proxy {string} — Proxy server in format 'protocol://user:password@ip:port'. E. g. 'asan:gd324ukl@11.22.33.44:5555' or 'socks5://asan:gd324ukl@11.22.33.44:5555'. Default: —.
 	 */
 	protected
 		$botToken = '',
 		$chatId = '',
 		$messageMarkupSyntax = '',
-		$disableWebPagePreview = false
+		$disableWebPagePreview = false,
+		$proxy = ''
 	;
 	
 	private
@@ -79,7 +81,8 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 							'disableWebPagePreview' => intval($this->disableWebPagePreview)
 						],
 						'mergeAll' => false
-					])
+					]),
+					'proxy' => $this->proxy
 				]
 			);
 			
