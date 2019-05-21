@@ -6,7 +6,8 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		$to = [],
 		$from = '',
 		$subject = '',
-		$fileInputNames = [];
+		$fileInputNames = []
+	;
 	
 	public function __construct($params = []){
 		//Call base constructor

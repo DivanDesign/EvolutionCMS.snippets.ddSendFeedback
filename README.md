@@ -1,4 +1,4 @@
-# ddSendFeedback
+# (MODX)EvolutionCMS.snippets.ddSendFeedback
 
 A snippet for sending users' feedback messages to a required email. It is very useful along with ajax technology.
 ___
