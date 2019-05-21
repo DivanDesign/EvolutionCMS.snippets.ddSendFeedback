@@ -1,9 +1,9 @@
 <?php
 /**
  * ddSendFeedback
- * @version 2.3 (2018-10-09)
+ * @version 2.4 (2019-05-21)
  * 
- * @desc A snippet for sending users' feedback messages to a required email. It is very useful along with ajax technology.
+ * @desc A snippet for sending users' feedback messages to a required email, slack and telegram chats or SMS through sms.ru. It is very useful along with ajax technology.
  * 
  * @uses PHP >= 5.4
  * @uses (MODX)EvolutionCMS >= 1.1
@@ -79,7 +79,7 @@
  * 
  * @link http://code.divandesign.biz/modx/ddsendfeedback
  * 
- * @copyright 2010–2018 DivanDesign {@link http://www.DivanDesign.biz }
+ * @copyright 2010–2019 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
 namespace ddSendFeedback;

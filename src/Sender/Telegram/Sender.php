@@ -45,9 +45,9 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.1 (2019-04-25)
+	 * @version 1.2 (2019-05-20)
 	 * 
-	 * @desc Send messege to a Telegram channel.
+	 * @desc Send messege to a Telegram chat.
 	 * 
 	 * @return $result {array} — Returns the array of send status.
 	 * @return $result[0] {0|1} — Status.
