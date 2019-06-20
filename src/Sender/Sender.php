@@ -25,7 +25,10 @@ abstract class Sender {
 			$paramName => $paramValue
 		){
 			//На всякий случай проверяем
-			if (isset($this->{$paramName})){
+			if (property_exists(
+				$this,
+				$paramName
+			)){
 				$this->{$paramName} = $paramValue;
 			}
 		}
