@@ -14,7 +14,7 @@ abstract class Sender {
 	
 	/**
 	 * __construct
-	 * @version 1.0.1 (2019-04-25)
+	 * @version 1.0.2 (2019-06-22)
 	 */
 	public function __construct($params = []){
 		global $modx;
