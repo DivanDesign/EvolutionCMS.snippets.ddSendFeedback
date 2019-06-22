@@ -188,7 +188,8 @@ if (isset($senders)){
 	//Iterate through all senders to create their instances
 	foreach(
 		$senders as
-		$senderName => $senderParams
+		$senderName =>
+		$senderParams
 	){
 		\DDTools\ObjectTools::createChildInstance([
 			'parentDir' =>
