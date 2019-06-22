@@ -11,7 +11,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.0.1 (2019-04-25)
+	 * @version 1.0.2 (2019-06-22)
 	 * 
 	 * @desc Send message to Slack.
 	 * 
@@ -20,11 +20,9 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	 */
 
 	public function send(){
-		global $modx;
-		
 		$result = [0 => 0];
 		
-		$requestResult = $modx->runSnippet(
+		$requestResult = \ddTools::$modx->runSnippet(
 			'ddMakeHttpRequest',
 			[
 				'url' => $this->url,

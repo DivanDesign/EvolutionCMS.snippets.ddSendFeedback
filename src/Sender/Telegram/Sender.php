@@ -45,17 +45,14 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.2 (2019-05-20)
+	 * @version 1.2.1 (2019-06-22)
 	 * 
 	 * @desc Send messege to a Telegram chat.
 	 * 
 	 * @return $result {array} — Returns the array of send status.
 	 * @return $result[0] {0|1} — Status.
 	 */
-	
 	public function send(){
-		global $modx;
-		
 		$result = [0 => 0];
 		
 		//Заполнены ли обязательные параметры
@@ -68,7 +65,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			isset($this->text)
 		){
 			//Отсылаем сообщение
-			$requestResult = $modx->runSnippet(
+			$requestResult = \ddTools::$modx->runSnippet(
 				'ddMakeHttpRequest',
 				[
 					'url' => \ddTools::parseText([

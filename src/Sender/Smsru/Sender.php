@@ -14,7 +14,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.1 (2019-04-25)
+	 * @version 1.1.2 (2019-06-22)
 	 * 
 	 * @desc Send sms via sms.ru.
 	 * 
@@ -23,8 +23,6 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	 */
 	
 	public function send(){
-		global $modx;
-		
 		$result = [0 => 0];
 		
 		//Заполнены ли обязательные параметры
@@ -48,7 +46,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			}
 			
 			//отсылаем смс
-			$requestResult = $modx->runSnippet(
+			$requestResult = \ddTools::$modx->runSnippet(
 				'ddMakeHttpRequest',
 				[
 					'url' => $url,

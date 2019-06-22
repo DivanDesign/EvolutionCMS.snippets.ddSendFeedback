@@ -14,11 +14,9 @@ abstract class Sender {
 	
 	/**
 	 * __construct
-	 * @version 1.0.3 (2019-06-22)
+	 * @version 1.0.4 (2019-06-22)
 	 */
 	public function __construct($params = []){
-		global $modx;
-		
 		//All parameters must be set as properties
 		\DDTools\ObjectTools::setExistingProps([
 			'object' => $this,
@@ -32,7 +30,7 @@ abstract class Sender {
 		
 		//Prepare text to send
 		$this->text = \ddTools::parseSource(\ddTools::parseText([
-			'text' => $modx->getTpl($this->tpl),
+			'text' => \ddTools::$modx->getTpl($this->tpl),
 			'data' => array_merge(
 				$this->tpl_placeholdersFromPost,
 				$this->tpl_placeholders
