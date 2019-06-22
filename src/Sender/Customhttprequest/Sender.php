@@ -14,7 +14,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.0.1 (2019-06-22)
+	 * @version 1.0.2 (2019-06-22)
 	 * 
 	 * @desc Send message to Slack.
 	 * 
@@ -37,7 +37,8 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			]
 		);
 		
-		$result[0] = 1;
+		//TODO: Improve it
+		$result[0] = boolval($requestResult);
 		
 		return $result;
 	}
