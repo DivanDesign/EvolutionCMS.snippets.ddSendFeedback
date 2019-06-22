@@ -40,32 +40,6 @@ abstract class Sender {
 	}
 	
 	/**
-	 * includeSenderByName
-	 * @version 1.0.1 (2019-04-25)
-	 * 
-	 * @param $senderName {string} — Sender name.
-	 * 
-	 * @return {string}
-	 * 
-	 * @throws \Exception
-	 */
-	public final static function includeSenderByName($senderName){
-		$senderName = ucfirst(strtolower($senderName));
-		$senderPath = $senderName . DIRECTORY_SEPARATOR . 'Sender.php';
-		
-		if(is_file(__DIR__ . DIRECTORY_SEPARATOR . $senderPath)){
-			require_once($senderPath);
-			
-			return __NAMESPACE__ . '\\' . $senderName . '\\' . 'Sender';
-		}else{
-			throw new \Exception(
-				'Sender ' . $senderName . ' not found.',
-				500
-			);
-		}
-	}
-	
-	/**
 	 * initPostPlaceholders
 	 * @version 1.1.1 (2019-04-25)
 	 * 

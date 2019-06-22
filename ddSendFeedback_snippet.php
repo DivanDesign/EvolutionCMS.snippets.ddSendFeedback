@@ -94,6 +94,8 @@
 
 namespace ddSendFeedback;
 
+$snippetPath = $modx->getConfig('base_path') . 'assets/snippets/ddSendFeedback/';
+
 //TODO: Remove it
 if(is_file($modx->config['base_path'] . 'vendor/autoload.php')){
 	require_once $modx->getConfig('base_path') . 'vendor/autoload.php';
@@ -105,7 +107,7 @@ if(!class_exists('\ddTools')){
 }
 
 if(!class_exists('\ddSendFeedback\Sender\Sender')){
-	require_once $modx->getConfig('base_path') . 'assets/snippets/ddSendFeedback/require.php';
+	require_once $snippetPath . 'require.php';
 }
 
 $result = \ddTools::getResponse();
@@ -188,10 +190,19 @@ if (isset($senders)){
 		$senders as
 		$senderName => $senderParams
 	){
-		$senderClass = \ddSendFeedback\Sender\Sender::includeSenderByName($senderName);
+		\DDTools\ObjectTools::createChildInstance([
+			'parentDir' =>
+				$snippetPath .
+				'src' .
+				DIRECTORY_SEPARATOR .
+				'Sender'
+			,
+			'parentFullClassName' => 'ddSendFeedback\\Sender\\Sender',
+			'childName' => $senderName,
+			'childParams' => $senderParams,
+			'capitalizeChildName' => true
+		]);
 		
-		//Passing parameters to senders's constructor
-		$sender = new $senderClass($senderParams);
 		//Send message (items with integer keys are not overwritten)
 		$sendResults = array_merge(
 			$sendResults,
