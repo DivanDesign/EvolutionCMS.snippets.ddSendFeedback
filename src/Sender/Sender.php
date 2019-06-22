@@ -14,24 +14,16 @@ abstract class Sender {
 	
 	/**
 	 * __construct
-	 * @version 1.0.2 (2019-06-22)
+	 * @version 1.0.3 (2019-06-22)
 	 */
 	public function __construct($params = []){
 		global $modx;
 		
-		//Все параметры задают свойства объекта
-		foreach (
-			$params as
-			$paramName => $paramValue
-		){
-			//На всякий случай проверяем
-			if (property_exists(
-				$this,
-				$paramName
-			)){
-				$this->{$paramName} = $paramValue;
-			}
-		}
+		//All parameters must be set as properties
+		\DDTools\ObjectTools::setExistingProps([
+			'object' => $this,
+			'props' => $params
+		]);
 		
 		//If POST-placeholders is not initialized
 		if (!is_array($this->tpl_placeholdersFromPost)){

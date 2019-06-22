@@ -7,7 +7,7 @@
  * 
  * @uses PHP >= 5.4
  * @uses (MODX)EvolutionCMS >= 1.1
- * @uses (MODX)EvolutionCMS.libraries.ddTools >= 0.23 {@link http://code.divandesign.biz/modx/ddtools }
+ * @uses (MODX)EvolutionCMS.libraries.ddTools >= 0.25 {@link http://code.divandesign.biz/modx/ddtools }
  * @uses (MODX)EvolutionCMS.snippets.ddMakeHttpRequest >= 1.4 {@link http://code.divandesign.biz/modx/ddmakehttprequest }
  * 
  * General:
