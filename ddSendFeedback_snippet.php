@@ -191,7 +191,7 @@ if (isset($senders)){
 		$senderName =>
 		$senderParams
 	){
-		\DDTools\ObjectTools::createChildInstance([
+		$sender = \DDTools\ObjectTools::createChildInstance([
 			'parentDir' =>
 				$snippetPath .
 				'src' .
