@@ -12,12 +12,12 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	;
 	
 	private 
-		$postData
+		$requestParams
 	;
 	
 	/**
 	 * send
-	 * @version 1.0.2 (2019-06-22)
+	 * @version 1.2 (2019-06-22)
 	 * 
 	 * @desc Send message to Slack.
 	 * 
@@ -27,30 +27,33 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	public function send(){
 		$result = [0 => 0];
 		
-		//If method == 'get' need to append url. Else need to set postData
-		if (
-			$method == 'get'
-		){
-			$this->url = 
-				$this->url . 
-				'?' . 
-				$this->text
-			;
-		}else{
-			$this->postData = $this->text;
-		}
-		
-		$requestResult = \ddTools::$modx->runSnippet(
-			'ddMakeHttpRequest',
+		$requestParams =
 			[
-				'url' => $this->url,
 				'method' => $this->method,
-				'postData' => $this->postData,
 				'headers' => $this->headers,
 				'userAgent' => $this->userAgent,
 				'timeout' => $this->timeout,
 				'proxy' => $this->proxy
 			]
+		;
+		
+		//If method == 'get' need to append url. Else need to set postData
+		if (
+			$method == 'get'
+		){
+			$requestParams['url'] = 
+				$this->url . 
+				'?' . 
+				$this->text
+			;
+		}else{
+			$requestParams['url'] = $this->url;
+			$requestParams['postData'] = $this->text;
+		}
+		
+		$requestResult = \ddTools::$modx->runSnippet(
+			'ddMakeHttpRequest',
+			$requestParams
 		);
 		
 		//TODO: Improve it
