@@ -32,7 +32,7 @@
  * Senders → Slack:
  * @param $senders['slack'] {array_associative} — Sender params.
  * @param $senders['slack']['url'] {string_url} — WebHook URL. @required
- * @param $senders['slack']['tpl'] {string_chunkName|string} — The template of a message (chunk name or code via “@CODE:” prefix). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. Use [(site_url)][~[+docId+]~] to generate the url of a document ([(site_url)] is required because of need for using the absolute links in the emails). @required
+ * @param $senders['slack']['tpl'] {string_chunkName|string} — The template of a message (chunk name or code via “@CODE:” prefix). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. Use [(site_url)][~[+docId+]~] to generate the url of a document ([(site_url)] is required because of need for using the absolute links in the messages). @required
  * @param $senders['slack']['tpl_placeholders'] {array_associative} — Additional data has to be passed into “$senders['slack']['tpl']”. Default: ''.
  * @param $senders['slack']['tpl_placeholders'][item] {string} — Key — a placeholder name, value — a placeholder value. Default: ''.
  * @param $senders['slack']['channel'] {string} — Channel in Slack to send. Default: Selected in Slack when you create WebHook.
@@ -57,7 +57,7 @@
  * @param $senders['customhttprequest']['url'] {string} — The URL to request. @required
  * @param $senders['customhttprequest']['method'] {'get'|'post'} — Request type. Default: 'get'.
  * @param $senders['customhttprequest']['headers'] {string_queryFormated|array} — An array of HTTP header fields to set. E. g. '0=Accept: application/vnd.api+json&1=Content-Type: application/vnd.api+json'. Default: —.
- * @param $senders['customhttprequest']['tpl'] {string_chunkName|string} — The template of a data (chunk name or code via “@CODE:” prefix). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. Use [(site_url)][~[+docId+]~] to generate the url of a document ([(site_url)] is required because of need for using the absolute links in the emails). @required
+ * @param $senders['customhttprequest']['tpl'] {string_chunkName|string} — The template of a data (chunk name or code via “@CODE:” prefix). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. Use [(site_url)][~[+docId+]~] to generate the url of a document ([(site_url)] is required because of need for using the absolute links in the messages). @required
  * @param $senders['customhttprequest']['tpl_placeholders'] {array_associative} — Additional data has to be passed into “$senders['customhttprequest']['tpl']”. Default: ''.
  * @param $senders['customhttprequest']['tpl_placeholders'][item] {string} — Key — a placeholder name, value — a placeholder value. Default: ''.
  * @param $senders['customhttprequest']['userAgent'] {string} — The contents of the 'User-Agent: ' header to be used in a HTTP request. Default: —.  
