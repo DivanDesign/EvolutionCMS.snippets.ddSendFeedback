@@ -5,11 +5,14 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	protected
 		$url,
 		$method,
-		$postData,
 		$headers,
 		$userAgent,
 		$timeout,
 		$proxy
+	;
+	
+	private 
+		$postData
 	;
 	
 	/**
@@ -23,6 +26,19 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	 */
 	public function send(){
 		$result = [0 => 0];
+		
+		//If method == 'get' need to append url. Else need to set postData
+		if (
+			$method == 'get'
+		){
+			$this->url = 
+				$this->url . 
+				'?' . 
+				$this->text
+			;
+		}else{
+			$this->postData = $this->text;
+		}
 		
 		$requestResult = \ddTools::$modx->runSnippet(
 			'ddMakeHttpRequest',

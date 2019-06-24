@@ -56,8 +56,10 @@
  * @param $senders['customhttprequest'] {array_associative} — Sender params.
  * @param $senders['customhttprequest']['url'] {string} — The URL to request. @required
  * @param $senders['customhttprequest']['method'] {'get'|'post'} — Request type. Default: 'get'.
- * @param $senders['customhttprequest']['postData'] {string_queryFormated|array_associative|string} — The full data to post in a HTTP "POST" operation (https://en.wikipedia.org/wiki/Query_string). E. g. 'pladeholder1=value1&pagetitle=My awesome pagetitle!'. Default: —.
  * @param $senders['customhttprequest']['headers'] {string_queryFormated|array} — An array of HTTP header fields to set. E. g. '0=Accept: application/vnd.api+json&1=Content-Type: application/vnd.api+json'. Default: —.
+ * @param $senders['customhttprequest']['tpl'] {string_chunkName|string} — The template of a data (chunk name or code via “@CODE:” prefix). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. Use [(site_url)][~[+docId+]~] to generate the url of a document ([(site_url)] is required because of need for using the absolute links in the emails). @required
+ * @param $senders['customhttprequest']['tpl_placeholders'] {array_associative} — Additional data has to be passed into “$senders['customhttprequest']['tpl']”. Default: ''.
+ * @param $senders['customhttprequest']['tpl_placeholders'][item] {string} — Key — a placeholder name, value — a placeholder value. Default: ''.
  * @param $senders['customhttprequest']['userAgent'] {string} — The contents of the 'User-Agent: ' header to be used in a HTTP request. Default: —.  
  * @param $senders['customhttprequest']['timeout'] {integer} — The maximum number of seconds for execute request. Default: 60.  
  * @param $senders['customhttprequest']['proxy'] {string} — Proxy server in format 'protocol://user:password@ip:port'. E. g. 'http://asan:gd324ukl@11.22.33.44:5555' or 'socks5://asan:gd324ukl@11.22.33.44:5555'. Default: —.
