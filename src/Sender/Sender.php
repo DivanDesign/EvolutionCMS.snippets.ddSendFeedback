@@ -14,13 +14,14 @@ abstract class Sender {
 	
 	/**
 	 * __construct
-	 * @version 1.0.5 (2019-06-23)
+	 * @version 1.0.6 (2019-06-24)
 	 */
 	public function __construct($params = []){
 		//Все параметры задают свойства объекта
 		foreach (
 			$params as
-			$paramName => $paramValue
+			$paramName =>
+			$paramValue
 		){
 			//На всякий случай проверяем
 			if (property_exists(
@@ -49,7 +50,7 @@ abstract class Sender {
 	
 	/**
 	 * initPostPlaceholders
-	 * @version 1.1.1 (2019-04-25)
+	 * @version 1.1.2 (2019-06-24)
 	 * 
 	 * @desc Init placeholders to $this->tpl_placeholdersFromPost from $_POST.
 	 * 
@@ -62,7 +63,8 @@ abstract class Sender {
 		//Перебираем пост, записываем в массив значения полей
 		foreach (
 			$_POST as
-			$key => $val
+			$key =>
+			$val
 		){
 			if(is_array($val)){
 				$this->tpl_placeholdersFromPost[$key] = implode(
