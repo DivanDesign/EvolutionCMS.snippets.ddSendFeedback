@@ -25,6 +25,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		
 		$requestParams =
 			[
+				'url' => $this->url,
 				'method' => $this->method,
 				'headers' => $this->headers,
 				'userAgent' => $this->userAgent,
@@ -34,16 +35,13 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		;
 		
 		//If method == 'get' need to append url. Else need to set postData
-		if (
-			$method == 'get'
-		){
-			$requestParams['url'] = 
-				$this->url . 
+		if ($method == 'get')
+		{
+			$requestParams['url'] .= 
 				'?' . 
 				$this->text
 			;
 		}else{
-			$requestParams['url'] = $this->url;
 			$requestParams['postData'] = $this->text;
 		}
 		
