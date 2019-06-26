@@ -11,10 +11,6 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		$proxy
 	;
 	
-	private 
-		$requestParams
-	;
-	
 	/**
 	 * send
 	 * @version 1.2 (2019-06-22)
