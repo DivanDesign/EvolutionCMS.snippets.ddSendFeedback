@@ -13,7 +13,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.2 (2019-06-22)
+	 * @version 1.2.2 (2019-08-08)
 	 * 
 	 * @desc Send message to Slack.
 	 * 
@@ -35,9 +35,8 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		;
 		
 		//If method == 'get' need to append url. Else need to set postData
-		if ($method == 'get')
-		{
-			$requestParams['url'] .= 
+		if ($method == 'get'){
+			$requestParams['url'] .=
 				'?' . 
 				$this->text
 			;
