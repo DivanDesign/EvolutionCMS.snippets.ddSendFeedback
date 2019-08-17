@@ -193,17 +193,16 @@ if (isset($senders)){
 		$senderName =>
 		$senderParams
 	){
-		$sender = \DDTools\ObjectTools::createChildInstance([
+		$sender = \ddSendFeedback\Sender\Sender::createChildInstance([
+			'name' => $senderName,
 			'parentDir' =>
 				$snippetPath .
 				'src' .
 				DIRECTORY_SEPARATOR .
 				'Sender'
 			,
-			'parentFullClassName' => 'ddSendFeedback\\Sender\\Sender',
-			'childName' => $senderName,
-			'childParams' => $senderParams,
-			'capitalizeChildName' => true
+			//Passing parameters to senders's constructor
+			'params' => $senderParams
 		]);
 		
 		//Send message (items with integer keys are not overwritten)

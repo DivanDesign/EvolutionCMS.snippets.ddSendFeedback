@@ -1,7 +1,7 @@
 <?php
 namespace ddSendFeedback\Sender;
 
-abstract class Sender {
+abstract class Sender extends \DDTools\BaseClass {
 	private 
 		$tpl = '',
 		$tpl_placeholders = [],
@@ -14,23 +14,10 @@ abstract class Sender {
 	
 	/**
 	 * __construct
-	 * @version 1.0.6 (2019-06-24)
+	 * @version 1.0.7 (2019-08-17)
 	 */
 	public function __construct($params = []){
-		//Все параметры задают свойства объекта
-		foreach (
-			$params as
-			$paramName =>
-			$paramValue
-		){
-			//На всякий случай проверяем
-			if (property_exists(
-				$this,
-				$paramName
-			)){
-				$this->{$paramName} = $paramValue;
-			}
-		}
+		$this->setExistingProps($params);
 		
 		//If POST-placeholders is not initialized
 		if (!is_array($this->tpl_placeholdersFromPost)){
