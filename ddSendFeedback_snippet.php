@@ -1,9 +1,9 @@
 <?php
 /**
  * ddSendFeedback
- * @version 2.4 (2019-05-21)
+ * @version 2.5 (2019-12-15)
  * 
- * @desc A snippet for sending users' feedback messages to a required email, slack and telegram chats or SMS through sms.ru. It is very useful along with ajax technology.
+ * @desc A snippet for sending users' feedback messages to a required email, Slack and Telegram chats or SMS through sms.ru. It is very useful along with ajax technology.
  * 
  * @uses PHP >= 5.4
  * @uses (MODX)EvolutionCMS >= 1.1
