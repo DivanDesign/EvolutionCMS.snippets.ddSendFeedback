@@ -3,9 +3,14 @@ namespace ddSendFeedback\Sender\Smsru;
 
 class Sender extends \ddSendFeedback\Sender\Sender {
 	protected 
-		$apiId = NULL,
-		$to = NULL,
-		$from = ''
+		$apiId = '',
+		$to = '',
+		$from = '',
+		
+		$requiredProps = [
+			'apiId',
+			'to'
+		]
 	;
 	
 	private

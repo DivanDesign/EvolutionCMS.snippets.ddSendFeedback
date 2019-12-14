@@ -3,30 +3,38 @@ namespace ddSendFeedback\Sender;
 
 abstract class Sender extends \DDTools\BaseClass {
 	private 
-		$tpl = NULL,
+		$tpl = '',
 		$tpl_placeholders = [],
-		$tpl_placeholdersFromPost = false
+		$tpl_placeholdersFromPost
 	;
 	
 	protected
 		$text = '',
+		
+		$requiredProps = ['tpl'],
 		$canSend = true
 	;
 	
 	/**
 	 * __construct
-	 * @version 1.1 (2019-12-14)
+	 * @version 1.2 (2019-12-14)
 	 */
 	public function __construct($params = []){
 		$this->setExistingProps($params);
 		
+		//$this->tpl is always required in all senders
+		array_unshift(
+			$this->requiredProps,
+			'tpl'
+		);
+		
 		//Check required props
 		foreach (
-			$this as
-			$propValue
+			$this->requiredProps as
+			$requiredPropName
 		){
 			//If one of required properties is not set
-			if ($propValue === NULL){
+			if (empty($this->{$requiredPropName})){
 				//We can't send
 				$this->canSend = false;
 				
@@ -37,7 +45,7 @@ abstract class Sender extends \DDTools\BaseClass {
 		//If all required properties are set
 		if ($this->canSend){
 			//If POST-placeholders is not initialized
-			if ($this->tpl_placeholdersFromPost === false){
+			if (!is_array($this->tpl_placeholdersFromPost)){
 				$this->initPostPlaceholders();
 			}
 			

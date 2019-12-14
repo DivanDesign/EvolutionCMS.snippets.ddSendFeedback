@@ -10,11 +10,16 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	 * @property $proxy {string} — Proxy server in format 'protocol://user:password@ip:port'. E. g. 'asan:gd324ukl@11.22.33.44:5555' or 'socks5://asan:gd324ukl@11.22.33.44:5555'. Default: —.
 	 */
 	protected
-		$botToken = NULL,
-		$chatId = NULL,
+		$botToken = '',
+		$chatId = '',
 		$messageMarkupSyntax = '',
 		$disableWebPagePreview = false,
-		$proxy = ''
+		$proxy = '',
+		
+		$requiredProps = [
+			'botToken',
+			'chatId'
+		]
 	;
 	
 	private

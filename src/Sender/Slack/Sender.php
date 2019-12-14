@@ -3,10 +3,12 @@ namespace ddSendFeedback\Sender\Slack;
 
 class Sender extends \ddSendFeedback\Sender\Sender {
 	protected
-		$url = NULL,
+		$url = '',
 		$channel = '',
 		$botName = 'ddSendFeedback',
-		$botIcon = ':ghost:'
+		$botIcon = ':ghost:',
+		
+		$requiredProps = ['url']
 	;
 	
 	/**

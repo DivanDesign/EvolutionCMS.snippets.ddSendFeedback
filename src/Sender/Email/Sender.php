@@ -3,10 +3,12 @@ namespace ddSendFeedback\Sender\Email;
 
 class Sender extends \ddSendFeedback\Sender\Sender {
 	protected
-		$to = NULL,
+		$to = [],
 		$from = '',
 		$subject = '',
-		$fileInputNames = []
+		$fileInputNames = [],
+		
+		$requiredProps = ['to']
 	;
 	
 	/**
