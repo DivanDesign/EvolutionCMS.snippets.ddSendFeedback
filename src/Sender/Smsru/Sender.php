@@ -3,8 +3,8 @@ namespace ddSendFeedback\Sender\Smsru;
 
 class Sender extends \ddSendFeedback\Sender\Sender {
 	protected 
-		$apiId = '',
-		$to = '',
+		$apiId = NULL,
+		$to = NULL,
 		$from = ''
 	;
 	
@@ -14,26 +14,19 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.2 (2019-06-22)
+	 * @version 1.1.3 (2019-12-14)
 	 * 
 	 * @desc Send sms via sms.ru.
 	 * 
 	 * @return $result {array} — Returns the array of send status.
 	 * @return $result[0] {0|1} — Status.
 	 */
-	
 	public function send(){
-		$result = [0 => 0];
+		$result = [];
 		
-		//Заполнены ли обязательные параметры
-		if(
-			//Передали ли api_id
-			isset($this->apiId) &&
-			//телефон получателя
-			isset($this->to) &&
-			//и сообщение
-			isset($this->text)
-		){
+		if ($this->canSend){
+			$result = [0 => 0];
+			
 			$url =
 				$this->url .
 				'&api_id=' . $this->apiId .

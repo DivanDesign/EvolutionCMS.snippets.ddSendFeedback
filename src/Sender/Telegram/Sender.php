@@ -3,15 +3,15 @@ namespace ddSendFeedback\Sender\Telegram;
 
 class Sender extends \ddSendFeedback\Sender\Sender {
 	/**
-	 * @property $botToken {string} — Токен бота в вида “botId:HASH”.
-	 * @property $chatId {string_numeric} — ID чата, в который слать сообщение.
+	 * @property $botToken {string} — Токен бота в вида 'botId:HASH'. @required
+	 * @property $chatId {string_numeric} — ID чата, в который слать сообщение. @required
 	 * @property $messageMarkupSyntax {'Markdown'|'HTML'|''} — Синтаксис, в котором написано сообщение. Default: ''.
 	 * @property $disableWebPagePreview {boolean} — Disables link previews for links in this message. Default: false.
 	 * @property $proxy {string} — Proxy server in format 'protocol://user:password@ip:port'. E. g. 'asan:gd324ukl@11.22.33.44:5555' or 'socks5://asan:gd324ukl@11.22.33.44:5555'. Default: —.
 	 */
 	protected
-		$botToken = '',
-		$chatId = '',
+		$botToken = NULL,
+		$chatId = NULL,
 		$messageMarkupSyntax = '',
 		$disableWebPagePreview = false,
 		$proxy = ''
@@ -45,7 +45,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.2.1 (2019-06-22)
+	 * @version 1.2.2 (2019-12-14)
 	 * 
 	 * @desc Send messege to a Telegram chat.
 	 * 
@@ -53,17 +53,11 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	 * @return $result[0] {0|1} — Status.
 	 */
 	public function send(){
-		$result = [0 => 0];
+		$result = [];
 		
-		//Заполнены ли обязательные параметры
-		if(
-			//Передали ли botToken
-			!empty($this->botToken) &&
-			//Чат, в который отправлять сообщение
-			!empty($this->chatId) &&
-			//И сообщение
-			isset($this->text)
-		){
+		if ($this->canSend){
+			$result = [0 => 0];
+			
 			//Отсылаем сообщение
 			$requestResult = \ddTools::$modx->runSnippet(
 				'ddMakeHttpRequest',

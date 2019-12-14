@@ -3,36 +3,59 @@ namespace ddSendFeedback\Sender;
 
 abstract class Sender extends \DDTools\BaseClass {
 	private 
-		$tpl = '',
+		$tpl = NULL,
 		$tpl_placeholders = [],
-		$tpl_placeholdersFromPost
+		$tpl_placeholdersFromPost = false
 	;
 	
 	protected
-		$text = ''
+		$text = '',
+		$canSend = true
 	;
 	
 	/**
 	 * __construct
-	 * @version 1.0.7 (2019-08-17)
+	 * @version 1.1 (2019-12-14)
 	 */
 	public function __construct($params = []){
 		$this->setExistingProps($params);
 		
-		//If POST-placeholders is not initialized
-		if (!is_array($this->tpl_placeholdersFromPost)){
-			$this->initPostPlaceholders();
+		//Check required props
+		foreach (
+			$this as
+			$propValue
+		){
+			//If one of required properties is not set
+			if ($propValue === NULL){
+				//We can't send
+				$this->canSend = false;
+				
+				break;
+			}
 		}
 		
-		//Prepare text to send
-		$this->text = \ddTools::parseSource(\ddTools::parseText([
-			'text' => \ddTools::$modx->getTpl($this->tpl),
-			'data' => array_merge(
-				$this->tpl_placeholdersFromPost,
-				$this->tpl_placeholders
-			),
-			'removeEmptyPlaceholders' => true
-		]));
+		//If all required properties are set
+		if ($this->canSend){
+			//If POST-placeholders is not initialized
+			if ($this->tpl_placeholdersFromPost === false){
+				$this->initPostPlaceholders();
+			}
+			
+			//Prepare text to send
+			$this->text = trim(\ddTools::parseSource(\ddTools::parseText([
+				'text' => \ddTools::$modx->getTpl($this->tpl),
+				'data' => array_merge(
+					$this->tpl_placeholdersFromPost,
+					$this->tpl_placeholders
+				),
+				'removeEmptyPlaceholders' => true
+			])));
+			
+			//Text must not be empty for sending
+			if (empty($this->text)){
+				$this->canSend = false;
+			}
+		}
 	}
 	
 	/**

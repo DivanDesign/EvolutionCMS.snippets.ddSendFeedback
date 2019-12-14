@@ -3,17 +3,17 @@ namespace ddSendFeedback\Sender\Customhttprequest;
 
 class Sender extends \ddSendFeedback\Sender\Sender {
 	protected
-		$url,
+		$url = NULL,
 		$method = 'post',
-		$headers,
-		$userAgent,
-		$timeout,
-		$proxy
+		$headers = '',
+		$userAgent = '',
+		$timeout = '',
+		$proxy = ''
 	;
 	
 	/**
 	 * send
-	 * @version 1.2.3 (2019-12-14)
+	 * @version 1.2.4 (2019-12-14)
 	 * 
 	 * @desc Send message to Slack.
 	 * 
@@ -21,36 +21,51 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	 * @return $result[0] {0|1} — Status.
 	 */
 	public function send(){
-		$result = [0 => 0];
+		$result = [];
 		
-		$requestParams =
-			[
-				'url' => $this->url,
-				'method' => $this->method,
-				'headers' => $this->headers,
-				'userAgent' => $this->userAgent,
-				'timeout' => $this->timeout,
-				'proxy' => $this->proxy
-			]
-		;
-		
-		//If method == 'get' need to append url. Else need to set postData
-		if ($this->method == 'get'){
-			$requestParams['url'] .=
-				'?' . 
-				$this->text
+		if ($this->canSend){
+			$result = [0 => 0];
+			
+			$requestParams =
+				[
+					'url' => $this->url
+				]
 			;
-		}else{
-			$requestParams['postData'] = $this->text;
+			
+			//If method == 'get' need to append url. Else need to set postData
+			if ($this->method == 'get'){
+				$requestParams['url'] .=
+					'?' . 
+					$this->text
+				;
+			}else{
+				$requestParams['postData'] = $this->text;
+			}
+			
+			if (!empty($this->headers)){
+				$requestParams['headers'] = $this->headers;
+			}
+			
+			if (!empty($this->userAgent)){
+				$requestParams['userAgent'] = $this->userAgent;
+			}
+			
+			if (!empty($this->timeout)){
+				$requestParams['timeout'] = $this->timeout;
+			}
+			
+			if (!empty($this->proxy)){
+				$requestParams['proxy'] = $this->proxy;
+			}
+			
+			$requestResult = \ddTools::$modx->runSnippet(
+				'ddMakeHttpRequest',
+				$requestParams
+			);
+			
+			//TODO: Improve it
+			$result[0] = boolval($requestResult);
 		}
-		
-		$requestResult = \ddTools::$modx->runSnippet(
-			'ddMakeHttpRequest',
-			$requestParams
-		);
-		
-		//TODO: Improve it
-		$result[0] = boolval($requestResult);
 		
 		return $result;
 	}

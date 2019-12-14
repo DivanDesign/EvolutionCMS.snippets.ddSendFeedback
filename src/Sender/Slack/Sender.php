@@ -3,7 +3,7 @@ namespace ddSendFeedback\Sender\Slack;
 
 class Sender extends \ddSendFeedback\Sender\Sender {
 	protected
-		$url = '',
+		$url = NULL,
 		$channel = '',
 		$botName = 'ddSendFeedback',
 		$botIcon = ':ghost:'
@@ -11,34 +11,37 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.0.2 (2019-06-22)
+	 * @version 1.0.3 (2019-12-14)
 	 * 
 	 * @desc Send message to Slack.
 	 * 
 	 * @return $result {array} — Returns the array of send status.
 	 * @return $result[0] {0|1} — Status.
 	 */
-
 	public function send(){
-		$result = [0 => 0];
+		$result = [];
 		
-		$requestResult = \ddTools::$modx->runSnippet(
-			'ddMakeHttpRequest',
-			[
-				'url' => $this->url,
-				'method' => 'post',
-				'postData' => json_encode([
-					'text' => $this->text,
-					'channel' => $this->channel,
-					'username' => $this->botName,
-					'icon_emoji' => $this->botIcon
-				]),
-				'headers' => 'application/json'
-			]
-		);
-		
-		if ($requestResult == 'ok'){
-			$result[0] = 1;
+		if ($this->canSend){
+			$result = [0 => 0];
+			
+			$requestResult = \ddTools::$modx->runSnippet(
+				'ddMakeHttpRequest',
+				[
+					'url' => $this->url,
+					'method' => 'post',
+					'postData' => json_encode([
+						'text' => $this->text,
+						'channel' => $this->channel,
+						'username' => $this->botName,
+						'icon_emoji' => $this->botIcon
+					]),
+					'headers' => 'application/json'
+				]
+			);
+			
+			if ($requestResult == 'ok'){
+				$result[0] = 1;
+			}
 		}
 		
 		return $result;
