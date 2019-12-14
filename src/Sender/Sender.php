@@ -1,7 +1,7 @@
 <?php
 namespace ddSendFeedback\Sender;
 
-abstract class Sender {
+abstract class Sender extends \DDTools\BaseClass {
 	private 
 		$tpl = '',
 		$tpl_placeholders = [],
@@ -9,72 +9,70 @@ abstract class Sender {
 	;
 	
 	protected
-		$text = ''
+		$text = '',
+		$textMarkupSyntax = 'html',
+		
+		$requiredProps = ['tpl'],
+		$canSend = true
 	;
 	
 	/**
 	 * __construct
-	 * @version 1.0.1 (2019-04-25)
+	 * @version 1.3 (2019-12-14)
 	 */
 	public function __construct($params = []){
-		global $modx;
+		$this->setExistingProps($params);
 		
-		//Все параметры задают свойства объекта
+		//$this->tpl is always required in all senders
+		array_unshift(
+			$this->requiredProps,
+			'tpl'
+		);
+		
+		//Check required props
 		foreach (
-			$params as
-			$paramName => $paramValue
+			$this->requiredProps as
+			$requiredPropName
 		){
-			//На всякий случай проверяем
-			if (isset($this->{$paramName})){
-				$this->{$paramName} = $paramValue;
+			//If one of required properties is not set
+			if (empty($this->{$requiredPropName})){
+				//We can't send
+				$this->canSend = false;
+				
+				break;
 			}
 		}
 		
-		//If POST-placeholders is not initialized
-		if (!is_array($this->tpl_placeholdersFromPost)){
-			$this->initPostPlaceholders();
-		}
-		
-		//Prepare text to send
-		$this->text = \ddTools::parseSource(\ddTools::parseText([
-			'text' => $modx->getTpl($this->tpl),
-			'data' => array_merge(
-				$this->tpl_placeholdersFromPost,
-				$this->tpl_placeholders
-			),
-			'removeEmptyPlaceholders' => true
-		]));
-	}
-	
-	/**
-	 * includeSenderByName
-	 * @version 1.0.1 (2019-04-25)
-	 * 
-	 * @param $senderName {string} — Sender name.
-	 * 
-	 * @return {string}
-	 * 
-	 * @throws \Exception
-	 */
-	public final static function includeSenderByName($senderName){
-		$senderName = ucfirst(strtolower($senderName));
-		$senderPath = $senderName . DIRECTORY_SEPARATOR . 'Sender.php';
-		
-		if(is_file(__DIR__ . DIRECTORY_SEPARATOR . $senderPath)){
-			require_once($senderPath);
+		//If all required properties are set
+		if ($this->canSend){
+			//If POST-placeholders is not initialized
+			if (!is_array($this->tpl_placeholdersFromPost)){
+				$this->initPostPlaceholders();
+			}
 			
-			return __NAMESPACE__ . '\\' . $senderName . '\\' . 'Sender';
-		}else{
-			throw new \Exception(
-				'Sender ' . $senderName . ' not found.',
-				500
-			);
+			//Prepare “textMarkupSyntax”
+			$this->textMarkupSyntax = trim(strtolower($this->textMarkupSyntax));
+			
+			//Prepare text to send
+			$this->text = trim(\ddTools::parseSource(\ddTools::parseText([
+				'text' => \ddTools::$modx->getTpl($this->tpl),
+				'data' => array_merge(
+					$this->tpl_placeholdersFromPost,
+					$this->tpl_placeholders
+				),
+				'removeEmptyPlaceholders' => true
+			])));
+			
+			//Text must not be empty for sending
+			if (empty($this->text)){
+				$this->canSend = false;
+			}
 		}
 	}
 	
 	/**
 	 * initPostPlaceholders
-	 * @version 1.1.1 (2019-04-25)
+	 * @version 1.2 (2019-12-14)
 	 * 
 	 * @desc Init placeholders to $this->tpl_placeholdersFromPost from $_POST.
 	 * 
@@ -87,7 +85,8 @@ abstract class Sender {
 		//Перебираем пост, записываем в массив значения полей
 		foreach (
 			$_POST as
-			$key => $val
+			$key =>
+			$val
 		){
 			if(is_array($val)){
 				$this->tpl_placeholdersFromPost[$key] = implode(
@@ -101,7 +100,11 @@ abstract class Sender {
 				is_string($_POST[$key]) ||
 				is_numeric($_POST[$key])
 			){
-				$this->tpl_placeholdersFromPost[$key] = nl2br($_POST[$key]);
+				$this->tpl_placeholdersFromPost[$key] =
+					$this->textMarkupSyntax == 'html' ?
+					nl2br($_POST[$key]) :
+					$_POST[$key]
+				;
 			}
 		}
 		

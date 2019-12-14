@@ -5,7 +5,12 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	protected 
 		$apiId = '',
 		$to = '',
-		$from = ''
+		$from = '',
+		
+		$requiredProps = [
+			'apiId',
+			'to'
+		]
 	;
 	
 	private
@@ -14,28 +19,19 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.1 (2019-04-25)
+	 * @version 1.1.3 (2019-12-14)
 	 * 
 	 * @desc Send sms via sms.ru.
 	 * 
 	 * @return $result {array} — Returns the array of send status.
 	 * @return $result[0] {0|1} — Status.
 	 */
-	
 	public function send(){
-		global $modx;
+		$result = [];
 		
-		$result = [0 => 0];
-		
-		//Заполнены ли обязательные параметры
-		if(
-			//Передали ли api_id
-			isset($this->apiId) &&
-			//телефон получателя
-			isset($this->to) &&
-			//и сообщение
-			isset($this->text)
-		){
+		if ($this->canSend){
+			$result = [0 => 0];
+			
 			$url =
 				$this->url .
 				'&api_id=' . $this->apiId .
@@ -48,7 +44,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			}
 			
 			//отсылаем смс
-			$requestResult = $modx->runSnippet(
+			$requestResult = \ddTools::$modx->runSnippet(
 				'ddMakeHttpRequest',
 				[
 					'url' => $url,
