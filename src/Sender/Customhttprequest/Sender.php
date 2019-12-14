@@ -4,7 +4,7 @@ namespace ddSendFeedback\Sender\Customhttprequest;
 class Sender extends \ddSendFeedback\Sender\Sender {
 	protected
 		$url,
-		$method,
+		$method = 'post',
 		$headers,
 		$userAgent,
 		$timeout,
@@ -13,7 +13,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.2.2 (2019-08-08)
+	 * @version 1.2.3 (2019-12-14)
 	 * 
 	 * @desc Send message to Slack.
 	 * 
@@ -35,7 +35,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		;
 		
 		//If method == 'get' need to append url. Else need to set postData
-		if ($method == 'get'){
+		if ($this->method == 'get'){
 			$requestParams['url'] .=
 				'?' . 
 				$this->text
