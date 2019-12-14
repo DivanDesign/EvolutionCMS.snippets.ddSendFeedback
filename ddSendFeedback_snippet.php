@@ -43,7 +43,7 @@
  * @param $senders['telegram']['botToken'] {string} — Токен бота, который будет отправлять сообщение, вида “botId:HASH”. @required
  * @param $senders['telegram']['chatId'] {string} — ID чата, в который будет отправлено сообщение. @required
  * @param $senders['telegram']['tpl'] {string_chunkName|string} — The template of a message (chunk name or code via “@CODE:” prefix). Available placeholders: [+docId+] — the id of a document that the request has been sent from; the array components of $_POST. @required
- * @param $senders['telegram']['messageMarkupSyntax'] {'Markdown'|'HTML'|''} — Синтаксис, в котором написано сообщение. Default: ''.
+ * @param $senders['telegram']['textMarkupSyntax'] {'markdown'|'html'|''} — Синтаксис, в котором написано сообщение. Default: ''.
  * @param $senders['telegram']['disableWebPagePreview'] {boolean} — Disables link previews for links in this message. Default: false.
  * @param $senders['telegram']['proxy'] {string} — Proxy server in format 'protocol://user:password@ip:port'. E. g. 'asan:gd324ukl@11.22.33.44:5555' or 'socks5://asan:gd324ukl@11.22.33.44:5555'. Default: —.
  * Senders → Sms.ru:

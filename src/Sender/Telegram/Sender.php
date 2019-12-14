@@ -5,16 +5,16 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	/**
 	 * @property $botToken {string} — Токен бота в вида 'botId:HASH'. @required
 	 * @property $chatId {string_numeric} — ID чата, в который слать сообщение. @required
-	 * @property $messageMarkupSyntax {'Markdown'|'HTML'|''} — Синтаксис, в котором написано сообщение. Default: ''.
+	 * @property $textMarkupSyntax {'markdown'|'html'|''} — Синтаксис, в котором написано сообщение. Default: ''.
 	 * @property $disableWebPagePreview {boolean} — Disables link previews for links in this message. Default: false.
 	 * @property $proxy {string} — Proxy server in format 'protocol://user:password@ip:port'. E. g. 'asan:gd324ukl@11.22.33.44:5555' or 'socks5://asan:gd324ukl@11.22.33.44:5555'. Default: —.
 	 */
 	protected
 		$botToken = '',
 		$chatId = '',
-		$messageMarkupSyntax = '',
 		$disableWebPagePreview = false,
 		$proxy = '',
+		$textMarkupSyntax = '',
 		
 		$requiredProps = [
 			'botToken',
@@ -23,25 +23,39 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	;
 	
 	private
-		$url = 'https://api.telegram.org/bot[+botToken+]/sendMessage?chat_id=[+chatId+]&text=[+text+]&parse_mode=[+messageMarkupSyntax+]&disable_web_page_preview=[+disableWebPagePreview+]'
+		$url = 'https://api.telegram.org/bot[+botToken+]/sendMessage?chat_id=[+chatId+]&text=[+text+]&parse_mode=[+textMarkupSyntax+]&disable_web_page_preview=[+disableWebPagePreview+]'
 	;
 	
+	/**
+	 * __construct
+	 * @version 1.0.1 (2019-12-14)
+	 */
 	public function __construct($params = []){
+		//Backward compatibility
+		$params = array_merge(
+			$params,
+			\ddTools::verifyRenamedParams(
+				$params,
+				[
+					'textMarkupSyntax' => 'messageMarkupSyntax'
+				]
+			)
+		);
+		
 		//Call base constructor
 		parent::__construct($params);
 		
-		//Prepare “messageMarkupSyntax”
-		$this->messageMarkupSyntax = trim($this->messageMarkupSyntax);
-		//Allowable values
+		//Prepare “textMarkupSyntax”
 		if (!in_array(
-			$this->messageMarkupSyntax,
+			$this->textMarkupSyntax,
+			//Allowable values
 			[
-				'Markdown',
-				'HTML',
+				'markdown',
+				'html',
 				''
 			]
 		)){
-			$this->messageMarkupSyntax = '';
+			$this->textMarkupSyntax = '';
 		}
 		
 		//Prepare “disableWebPagePreview”
@@ -50,7 +64,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.2.2 (2019-12-14)
+	 * @version 1.2.3 (2019-12-14)
 	 * 
 	 * @desc Send messege to a Telegram chat.
 	 * 
@@ -73,7 +87,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 							'botToken' => $this->botToken,
 							'chatId' => $this->chatId,
 							'text' => urlencode($this->text),
-							'messageMarkupSyntax' => $this->messageMarkupSyntax,
+							'textMarkupSyntax' => $this->textMarkupSyntax,
 							'disableWebPagePreview' => intval($this->disableWebPagePreview)
 						],
 						'mergeAll' => false
