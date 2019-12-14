@@ -60,8 +60,8 @@
  * @param $senders['customhttprequest']['tpl_placeholders'][item] {string} — Key — a placeholder name, value — a placeholder value. Default: ''.
  * @param $senders['customhttprequest']['method'] {'get'|'post'} — Request type. Default: 'post'.
  * @param $senders['customhttprequest']['headers'] {string_queryFormated|array} — An array of HTTP header fields to set. E. g. '0=Accept: application/vnd.api+json&1=Content-Type: application/vnd.api+json'. Default: —.
- * @param $senders['customhttprequest']['userAgent'] {string} — The contents of the 'User-Agent: ' header to be used in a HTTP request. Default: —.  
- * @param $senders['customhttprequest']['timeout'] {integer} — The maximum number of seconds for execute request. Default: 60.  
+ * @param $senders['customhttprequest']['userAgent'] {string} — The contents of the 'User-Agent: ' header to be used in a HTTP request. Default: —.
+ * @param $senders['customhttprequest']['timeout'] {integer} — The maximum number of seconds for execute request. Default: 60.
  * @param $senders['customhttprequest']['proxy'] {string} — Proxy server in format 'protocol://user:password@ip:port'. E. g. 'http://asan:gd324ukl@11.22.33.44:5555' or 'socks5://asan:gd324ukl@11.22.33.44:5555'. Default: —.
  *  
  * @example &senders=`{
