@@ -10,6 +10,7 @@ abstract class Sender extends \DDTools\BaseClass {
 	
 	protected
 		$text = '',
+		$textMarkupSyntax = 'html',
 		
 		$requiredProps = ['tpl'],
 		$canSend = true
@@ -17,7 +18,7 @@ abstract class Sender extends \DDTools\BaseClass {
 	
 	/**
 	 * __construct
-	 * @version 1.2 (2019-12-14)
+	 * @version 1.3 (2019-12-14)
 	 */
 	public function __construct($params = []){
 		$this->setExistingProps($params);
@@ -49,6 +50,9 @@ abstract class Sender extends \DDTools\BaseClass {
 				$this->initPostPlaceholders();
 			}
 			
+			//Prepare “textMarkupSyntax”
+			$this->textMarkupSyntax = trim(strtolower($this->textMarkupSyntax));
+			
 			//Prepare text to send
 			$this->text = trim(\ddTools::parseSource(\ddTools::parseText([
 				'text' => \ddTools::$modx->getTpl($this->tpl),
@@ -68,7 +72,7 @@ abstract class Sender extends \DDTools\BaseClass {
 	
 	/**
 	 * initPostPlaceholders
-	 * @version 1.1.2 (2019-06-24)
+	 * @version 1.2 (2019-12-14)
 	 * 
 	 * @desc Init placeholders to $this->tpl_placeholdersFromPost from $_POST.
 	 * 
@@ -96,7 +100,11 @@ abstract class Sender extends \DDTools\BaseClass {
 				is_string($_POST[$key]) ||
 				is_numeric($_POST[$key])
 			){
-				$this->tpl_placeholdersFromPost[$key] = nl2br($_POST[$key]);
+				$this->tpl_placeholdersFromPost[$key] =
+					$this->textMarkupSyntax == 'html' ?
+					nl2br($_POST[$key]) :
+					$_POST[$key]
+				;
 			}
 		}
 		
