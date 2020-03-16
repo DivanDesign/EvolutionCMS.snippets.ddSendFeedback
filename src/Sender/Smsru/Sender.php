@@ -19,7 +19,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.3 (2019-12-14)
+	 * @version 1.1.4 (2020-03-16)
 	 * 
 	 * @desc Send sms via sms.ru.
 	 * 
@@ -62,10 +62,14 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			}else{
 				//Если ошибка, то залогируем
 				\ddTools::logEvent([
-					'message' => '<code><pre>' . print_r(
-						$requestResult,
-						true
-					) . '</pre></code>',
+					'message' =>
+						'<code><pre>' .
+						print_r(
+							$requestResult,
+							true
+						) .
+						'</pre></code>'
+					,
 					'source' => 'ddSendFeedback → Smsru',
 					'eventType' => 'error'
 				]);
