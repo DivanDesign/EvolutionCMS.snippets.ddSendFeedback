@@ -7,8 +7,8 @@
  * 
  * @uses PHP >= 5.4
  * @uses (MODX)EvolutionCMS >= 1.1
- * @uses (MODX)EvolutionCMS.libraries.ddTools >= 0.25 {@link http://code.divandesign.biz/modx/ddtools }
- * @uses (MODX)EvolutionCMS.snippets.ddMakeHttpRequest >= 1.4 {@link http://code.divandesign.biz/modx/ddmakehttprequest }
+ * @uses (MODX)EvolutionCMS.libraries.ddTools >= 0.25 {@link https://code.divandesign.biz/modx/ddtools }
+ * @uses (MODX)EvolutionCMS.snippets.ddMakeHttpRequest >= 1.4 {@link https://code.divandesign.biz/modx/ddmakehttprequest }
  * 
  * General:
  * @param $result_titleSuccess {string} — The title that will be returned if the letter sending is successful (the «title» field of the returned JSON). Default: 'Message sent successfully'.
@@ -89,9 +89,9 @@
  * 
  * @return {stringJson}
  * 
- * @link http://code.divandesign.biz/modx/ddsendfeedback
+ * @link https://code.divandesign.biz/modx/ddsendfeedback
  * 
- * @copyright 2010–2019 DivanDesign {@link http://www.DivanDesign.biz }
+ * @copyright 2010–2019 DD Group {@link https://DivanDesign.biz }
  */
 
 namespace ddSendFeedback;
@@ -102,7 +102,12 @@ $snippetPath =
 ;
 
 //TODO: Remove it
-if(is_file($modx->config['base_path'] . 'vendor/autoload.php')){
+if(
+	is_file(
+		$modx->config['base_path'] .
+		'vendor/autoload.php'
+	)
+){
 	require_once(
 		$modx->getConfig('base_path') .
 		'vendor/autoload.php'
