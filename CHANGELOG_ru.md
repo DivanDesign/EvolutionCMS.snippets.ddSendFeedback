@@ -1,6 +1,24 @@
 # (MODX)EvolutionCMS.snippets.ddSendFeedback changelog
 
 
+## Версия 2.6 (2021-01-18)
+* \* Attention! (MODX)EvolutionCMS.libraries.ddTools >= 0.32 is required.
+* \+ Параметры → `senders`: Также может быть задан, как нативный PHP объект или массив (например, для вызовов через `$modx->runSnippet`).
+* \+ REAMDE:
+	* \+ Описание результатов сниппета.
+	* \+ Использует.
+	* \+ Документация.
+	* \+ Ссылки.
+	* \+ Улучшения стиля.
+* \+ CHANGELOG.
+* \+ CHANGELOG_ru.
+* \+ Composer.json:
+	* \+ `keywords`: Дополнительные ключевые слова.
+	* \+ `homepage`.
+	* \+ `authors`.
+	* \+ `require`.
+
+
 ## Версия 2.5 (2019-12-15)
 * \* Внимание! Требуется (MODX)EvolutionCMS.libraries.ddTools >= 0.25.
 * \+ Параметры → `senders->customhttprequest`: Новый сендер.

@@ -1,13 +1,13 @@
 <?php
 /**
  * ddSendFeedback
- * @version 2.5 (2019-12-15)
+ * @version 2.6 (2021-01-18)
  * 
  * @see README.md
  * 
  * @link https://code.divandesign.biz/modx/ddsendfeedback
  * 
- * @copyright 2010–2019 DD Group {@link https://DivanDesign.biz }
+ * @copyright 2010–2021 DD Group {@link https://DivanDesign.biz }
  */
 
 namespace ddSendFeedback;
