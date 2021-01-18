@@ -10,6 +10,50 @@
 		"evo",
 		"evo cms",
 		"evolution cms",
-		"ddsendfeedback"
-	]
+		"ddsendfeedback",
+		"send feedback",
+		"send message",
+		"send email",
+		"send to telegram",
+		"send to slack",
+		"send sms",
+		"sms.ru"
+	],
+	"homepage": "https://code.divandesign.biz/modx/ddsendfeedback",
+	"authors": [
+		{
+			"name": "DD Group",
+			"email": "code@DivanDesign.biz",
+			"homepage": "https://code.divandesign.biz",
+			"role": "Owner"
+		},
+		{
+			"name": "Ilyas Ronef",
+			"email": "ilyas@DivanDesign.ru",
+			"homepage": "https://ronef.ru",
+			"role": "Developer"
+		},
+		{
+			"name": "Alexey Davydov",
+			"email": "davalemic@DivanDesign.ru",
+			"role": "Developer"
+		},
+		{
+			"name": "Vladislav Lavrov",
+			"role": "Developer"
+		},
+		{
+			"name": "Andrey Demchenko",
+			"role": "Developer"
+		},
+		{
+			"name": "Andrey Dunaev",
+			"role": "Developer"
+		}
+	],
+	"require": {
+		"php": ">=5.4.0",
+		"dd/evolutioncms-libraries-ddtools": ">=0.32.0",
+		"dd/evolutioncms-snippets-ddmakehttprequest": ">=1.4"
+	}
 }
