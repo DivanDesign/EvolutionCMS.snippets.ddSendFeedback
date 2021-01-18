@@ -7,7 +7,7 @@
  * 
  * @uses PHP >= 5.4
  * @uses (MODX)EvolutionCMS >= 1.1
- * @uses (MODX)EvolutionCMS.libraries.ddTools >= 0.25 {@link https://code.divandesign.biz/modx/ddtools }
+ * @uses (MODX)EvolutionCMS.libraries.ddTools >= 0.32 {@link https://code.divandesign.biz/modx/ddtools }
  * @uses (MODX)EvolutionCMS.snippets.ddMakeHttpRequest >= 1.4 {@link https://code.divandesign.biz/modx/ddmakehttprequest }
  * 
  * General:
@@ -17,7 +17,7 @@
  * @param $result_messageFail {string} — The message that will be returned if the letter sending is failed somehow (the «message» field of the returned JSON). Default: 'Something happened while sending the message.<br />Please try again later.'.
  * 
  * Senders:
- * @param $senders {stringJson|stringQueryFormated} — JSON (https://en.wikipedia.org/wiki/JSON) or Query-formated string (https://en.wikipedia.org/wiki/Query_string) determining which senders should be used.
+ * @param $senders {stringJson|stringQueryFormated|arrayAssociative|object} — JSON (https://en.wikipedia.org/wiki/JSON) or Query-formated string (https://en.wikipedia.org/wiki/Query_string) determining which senders should be used.
  * @param $senders[item] {arrayAssociative} — Key is a sender name, value is sender parameters.
  * Senders → Email:
  * @param senders->email {arrayAssociative} — Sender params. Send method (PHP mail() or SMTP) sets up in CMS config.

@@ -28,19 +28,17 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * __construct
-	 * @version 1.0.1 (2019-12-14)
+	 * @version 1.0.2 (2021-01-18)
 	 */
 	public function __construct($params = []){
 		//Backward compatibility
-		$params = array_merge(
-			$params,
-			\ddTools::verifyRenamedParams(
-				$params,
-				[
-					'textMarkupSyntax' => 'messageMarkupSyntax'
-				]
-			)
-		);
+		$params = \ddTools::verifyRenamedParams([
+			'params' => $params,
+			'compliance' => [
+				'textMarkupSyntax' => 'messageMarkupSyntax'
+			],
+			'returnCorrectedOnly' => false
+		]);
 		
 		//Call base constructor
 		parent::__construct($params);
