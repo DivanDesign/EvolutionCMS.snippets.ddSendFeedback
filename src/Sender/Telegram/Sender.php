@@ -28,19 +28,17 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * __construct
-	 * @version 1.0.1 (2019-12-14)
+	 * @version 1.0.2 (2021-01-18)
 	 */
 	public function __construct($params = []){
 		//Backward compatibility
-		$params = array_merge(
-			$params,
-			\ddTools::verifyRenamedParams(
-				$params,
-				[
-					'textMarkupSyntax' => 'messageMarkupSyntax'
-				]
-			)
-		);
+		$params = \ddTools::verifyRenamedParams([
+			'params' => $params,
+			'compliance' => [
+				'textMarkupSyntax' => 'messageMarkupSyntax'
+			],
+			'returnCorrectedOnly' => false
+		]);
 		
 		//Call base constructor
 		parent::__construct($params);
@@ -64,7 +62,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.2.3 (2019-12-14)
+	 * @version 1.2.4 (2020-03-16)
 	 * 
 	 * @desc Send messege to a Telegram chat.
 	 * 
@@ -112,10 +110,14 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			}else{
 				//Если ошибка, то залогируем
 				\ddTools::logEvent([
-					'message' => '<code><pre>' . print_r(
-						$requestResult,
-						true
-					) . '</pre></code>',
+					'message' =>
+						'<code><pre>' .
+						print_r(
+							$requestResult,
+							true
+						) .
+						'</pre></code>'
+					,
 					'source' => 'ddSendFeedback → Telegram',
 					'eventType' => 'error'
 				]);
