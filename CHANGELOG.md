@@ -1,6 +1,12 @@
 # (MODX)EvolutionCMS.snippets.ddSendFeedback changelog
 
 
+## Version 2.6.1 (2021-02-07)
+* \* Attention! (MODX)EvolutionCMS.libraries.ddTools >= 0.41 is required (not tested with older versions).
+* \+ `\ddSendFeedback\Sender\Sender::__construct`: Less fragile code, `\DDTools\ObjectTools::extend` is used instead of `array_merge`.
+* \* Snippet: `\DDTools\ObjectTools::convertType` is used istead of `\ddTools::encodedStringToArray`.
+
+
 ## Version 2.6 (2021-01-18)
 * \* Attention! (MODX)EvolutionCMS.libraries.ddTools >= 0.32 is required.
 * \+ Parameters → `senders`: Can be set as a native PHP array or object (e. g. for calls through `$modx->runSnippet`).

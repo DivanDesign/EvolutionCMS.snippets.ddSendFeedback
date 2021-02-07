@@ -1,7 +1,7 @@
 <?php
 /**
  * ddSendFeedback
- * @version 2.6 (2021-01-18)
+ * @version 2.6.1 (2021-02-07)
  * 
  * @see README.md
  * 
@@ -118,7 +118,10 @@ if (isset($senders)){
 	
 	$sendResults = [];
 	
-	$senders = \ddTools::encodedStringToArray($senders);
+	$senders = \DDTools\ObjectTools::convertType([
+		'object' => $senders,
+		'type' => 'objectStdClass'
+	]);
 	
 	//Iterate through all senders to create their instances
 	foreach(

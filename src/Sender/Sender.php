@@ -5,7 +5,7 @@ abstract class Sender extends \DDTools\BaseClass {
 	private 
 		$tpl = '',
 		$tpl_placeholders = [],
-		$tpl_placeholdersFromPost
+		$tpl_placeholdersFromPost = NULL
 	;
 	
 	protected
@@ -18,7 +18,7 @@ abstract class Sender extends \DDTools\BaseClass {
 	
 	/**
 	 * __construct
-	 * @version 1.3 (2019-12-14)
+	 * @version 1.4 (2021-02-07)
 	 */
 	public function __construct($params = []){
 		$this->setExistingProps($params);
@@ -46,7 +46,7 @@ abstract class Sender extends \DDTools\BaseClass {
 		//If all required properties are set
 		if ($this->canSend){
 			//If POST-placeholders is not initialized
-			if (!is_array($this->tpl_placeholdersFromPost)){
+			if (is_null($this->tpl_placeholdersFromPost)){
 				$this->initPostPlaceholders();
 			}
 			
@@ -56,10 +56,12 @@ abstract class Sender extends \DDTools\BaseClass {
 			//Prepare text to send
 			$this->text = trim(\ddTools::parseSource(\ddTools::parseText([
 				'text' => \ddTools::$modx->getTpl($this->tpl),
-				'data' => array_merge(
-					$this->tpl_placeholdersFromPost,
-					$this->tpl_placeholders
-				),
+				'data' => $params = \DDTools\ObjectTools::extend([
+					'objects' => [
+						$this->tpl_placeholdersFromPost,
+						$this->tpl_placeholders
+					]
+				]),
 				'removeEmptyPlaceholders' => true
 			])));
 			
