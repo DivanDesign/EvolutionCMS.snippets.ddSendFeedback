@@ -118,7 +118,10 @@ if (isset($senders)){
 	
 	$sendResults = [];
 	
-	$senders = \ddTools::encodedStringToArray($senders);
+	$senders = \DDTools\ObjectTools::convertType([
+		'object' => $senders,
+		'type' => 'objectStdClass'
+	]);
 	
 	//Iterate through all senders to create their instances
 	foreach(
