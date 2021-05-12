@@ -1,6 +1,22 @@
 # (MODX)EvolutionCMS.snippets.ddSendFeedback changelog
 
 
+## Version 2.7 (2021-05-12)
+* \* Attention! PHP >= 5.6 is required.
+* \* Attention! (MODX)EvolutionCMS.libraries.ddTools >= 0.50 is required.
+* \* Attention! (MODX)EvolutionCMS.snippets.ddMakeHttpRequest >= 2.3.1 is required.
+* \+ Parameters:
+	* \+ `senders`: Can also be set as [HJSON](https://hjson.github.io/) or as a native PHP object or array (e. g. for calls through `$modx->runSnippet`).
+	* \+ `senders->customhttprequest->sendRawPostData`: The new parameter (see README).
+* \+ You can just call `\DDTools\Snippet::runSnippet` to run the snippet without DB and eval (see README → Examples).
+* \+ `\ddSendFeedback\Snippet`: The new class. All snippet code was moved here.
+* \* `\DDTools\Snippet::runSnippet` is used instead of `$modx->runSnippet` to run (MODX)EvolutionCMS.snippets.ddMakeHttpRequest without DB and eval.
+* \+ README → Documentation → Installation → Using (MODX)EvolutionCMS.libraries.ddInstaller.
+* \+ Composer.json:
+	* \+ `support`.
+	* \+ `authors`: Added missed homepages.
+
+
 ## Version 2.6.1 (2021-02-07)
 * \* Attention! (MODX)EvolutionCMS.libraries.ddTools >= 0.41 is required (not tested with older versions).
 * \+ `\ddSendFeedback\Sender\Sender::__construct`: Less fragile code, `\DDTools\ObjectTools::extend` is used instead of `array_merge`.

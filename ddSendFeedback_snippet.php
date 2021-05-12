@@ -1,7 +1,7 @@
 <?php
 /**
  * ddSendFeedback
- * @version 2.6.1 (2021-02-07)
+ * @version 2.7 (2021-05-12)
  * 
  * @see README.md
  * 

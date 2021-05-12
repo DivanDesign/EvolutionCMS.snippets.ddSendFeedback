@@ -46,7 +46,7 @@ The snippet returns a JSON string with the following fields:
 ##### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddSendFeedback`.
-2. Description: `<b>2.6.1</b> A snippet for sending users' feedback messages to you. It is very useful along with ajax technology.`.
+2. Description: `<b>2.7</b> A snippet for sending users' feedback messages to you. It is very useful along with ajax technology.`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddSendFeedback_snippet.php` file from the archive.
