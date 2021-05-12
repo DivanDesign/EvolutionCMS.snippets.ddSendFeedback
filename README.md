@@ -443,6 +443,31 @@ The snippet returns a JSON string with the following fields:
 ```
 
 
+#### Run the snippet through `\DDTools\Snippet::runSnippet` without DB and eval
+
+```php
+//Include (MODX)EvolutionCMS.libraries.ddTools
+require_once(
+	$modx->getConfig('base_path') .
+	'assets/libs/ddTools/modx.ddtools.class.php'
+);
+
+//Run (MODX)EvolutionCMS.snippets.ddSendFeedback
+\DDTools\Snippet::runSnippet([
+	'name' => 'ddSendFeedback',
+	'params' => [
+		'senders' => [
+		 	'telegram' => [
+		 		'botToken' => '123:AAAAAA',
+				'chatId' => '-11111',
+				'tpl' => '@CODE:Test message from [(site_url)]!'
+		 	]
+	 	]
+	]
+]);
+```
+
+
 ## Links
 
 * [Home page](https://code.divandesign.biz/modx/ddsendfeedback)
