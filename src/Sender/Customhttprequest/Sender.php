@@ -16,7 +16,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.3 (2021-05-12)
+	 * @version 1.3.1 (2021-05-12)
 	 * 
 	 * @desc Send message to Slack.
 	 * 
@@ -62,10 +62,10 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 				$requestParams['proxy'] = $this->proxy;
 			}
 			
-			$requestResult = \ddTools::$modx->runSnippet(
-				'ddMakeHttpRequest',
-				$requestParams
-			);
+			$requestResult = \DDTools\Snippet::runSnippet([
+				'name' => 'ddMakeHttpRequest',
+				'params' => $requestParams
+			]);
 			
 			//TODO: Improve it
 			$result[0] = boolval($requestResult);
