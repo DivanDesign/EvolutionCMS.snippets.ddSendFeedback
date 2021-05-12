@@ -20,6 +20,9 @@
 		"sms.ru"
 	],
 	"homepage": "https://code.divandesign.biz/modx/ddsendfeedback",
+	"support": {
+		"chat": "https://t.me/dd_code"
+	},
 	"authors": [
 		{
 			"name": "DD Group",
