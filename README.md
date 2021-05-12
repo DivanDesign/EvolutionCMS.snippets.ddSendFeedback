@@ -28,10 +28,10 @@ The snippet returns a JSON string with the following fields:
 
 ## Requires
 
-* PHP >= 5.4
+* PHP >= 5.6
 * [(MODX)EvolutionCMS](https://github.com/evolution-cms/evolution) >= 1.1
-* [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.biz/modx/ddtools) >= 0.41 (not tested with older versions)
-* [(MODX)EvolutionCMS.snippets.ddMakeHttpRequest](https://code.divandesign.biz/modx/ddmakehttprequest) >= 1.4
+* [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.biz/modx/ddtools) >= 0.50
+* [(MODX)EvolutionCMS.snippets.ddMakeHttpRequest](https://code.divandesign.biz/modx/ddmakehttprequest) >= 2.3.1
 
 
 ## Documentation
@@ -40,19 +40,44 @@ The snippet returns a JSON string with the following fields:
 ### Installation
 
 
-#### 1. Elements → Snippets: Create a new snippet with the following data
+#### Manually
+
+
+##### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddSendFeedback`.
-2. Description: `<b>2.6.1</b> A snippet for sending users' feedback messages to you. It is very useful along with ajax technology.`.
+2. Description: `<b>2.7</b> A snippet for sending users' feedback messages to you. It is very useful along with ajax technology.`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddSendFeedback_snippet.php` file from the archive.
 
 
-#### 2. Elements → Manage Files
+##### 2. Elements → Manage Files
 
 1. Create a new folder `assets/snippets/ddSendFeedback/`.
 2. Extract the archive to the folder (except `ddSendFeedback_snippet.php`).
+
+
+#### Using [(MODX)EvolutionCMS.libraries.ddInstaller](https://github.com/DivanDesign/EvolutionCMS.libraries.ddInstaller)
+
+Just run the following PHP code in your sources or [Console](https://github.com/vanchelo/MODX-Evolution-Ajax-Console):
+
+```php
+//Include (MODX)EvolutionCMS.libraries.ddInstaller
+require_once(
+	$modx->getConfig('base_path') .
+	'assets/libs/ddInstaller/require.php'
+);
+
+//Install (MODX)EvolutionCMS.snippets.ddSendFeedback
+\DDInstaller::install([
+	'url' => 'https://github.com/DivanDesign/EvolutionCMS.snippets.ddSendFeedback',
+	'type' => 'snippet'
+]);
+```
+
+* If `ddSendFeedback` is not exist on your site, `ddInstaller` will just install it.
+* If `ddSendFeedback` is already exist on your site, `ddInstaller` will check it version and update it if needed.
 
 
 ### Parameters description
@@ -86,9 +111,10 @@ The snippet returns a JSON string with the following fields:
 * `senders`
 	* Desctription: Senders and their params. You can use several senders at the same time.
 	* Valid values:
-		* `stringJson` — as [JSON](https://en.wikipedia.org/wiki/JSON)
+		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
+		* `stringHjsonObject` — as [HJSON](https://hjson.github.io/)
 		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
-		* It can also be set as a native PHP array or object (e. g. for calls through `$modx->runSnippet`):
+		* It can also be set as a native PHP object or array (e. g. for calls through `$modx->runSnippet`):
 			* `arrayAssociative`
 			* `object`
 	* **Required**
@@ -350,6 +376,11 @@ The snippet returns a JSON string with the following fields:
 		* `'post'`
 	* Default value: `'post'`
 	
+* `senders->customhttprequest->sendRawPostData`
+	* Desctription: Send raw post data. E. g. if you need JSON in request payload.
+	* Valid values: `boolean`
+	* Default value: `false`
+	
 * `senders->customhttprequest->headers`
 	* Desctription: An array of HTTP header fields to set.  
 		E. g. `['Accept: application/vnd.api+json', 'Content-Type: application/vnd.api+json']`.
@@ -439,6 +470,31 @@ The snippet returns a JSON string with the following fields:
 	 	}
 	}`
 !]
+```
+
+
+#### Run the snippet through `\DDTools\Snippet::runSnippet` without DB and eval
+
+```php
+//Include (MODX)EvolutionCMS.libraries.ddTools
+require_once(
+	$modx->getConfig('base_path') .
+	'assets/libs/ddTools/modx.ddtools.class.php'
+);
+
+//Run (MODX)EvolutionCMS.snippets.ddSendFeedback
+\DDTools\Snippet::runSnippet([
+	'name' => 'ddSendFeedback',
+	'params' => [
+		'senders' => [
+		 	'telegram' => [
+		 		'botToken' => '123:AAAAAA',
+				'chatId' => '-11111',
+				'tpl' => '@CODE:Test message from [(site_url)]!'
+		 	]
+	 	]
+	]
+]);
 ```
 
 

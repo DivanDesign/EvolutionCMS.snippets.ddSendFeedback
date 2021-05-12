@@ -1,7 +1,23 @@
 # (MODX)EvolutionCMS.snippets.ddSendFeedback changelog
 
 
-## Version 2.6.1 (2021-02-07)
+## Версия 2.7 (2021-05-12)
+* \* Внимание! Требуется PHP >= 5.6.
+* \* Внимание! Требуется (MODX)EvolutionCMS.libraries.ddTools >= 0.50.
+* \* Внимание! Требуется (MODX)EvolutionCMS.snippets.ddMakeHttpRequest >= 2.3.1.
+* \+ Параметры:
+	* \+ `senders`: Также может быть задан, как [HJSON](https://hjson.github.io/) или как нативный PHP объект или массив (например, для вызовов через `$modx->runSnippet`).
+	* \+ `senders->customhttprequest->sendRawPostData`: Новый параметр (см. README).
+* \+ Запустить сниппет без DB и eval можно через `\DDTools\Snippet::runSnippet` (см. примеры в README).
+* \+ `\ddSendFeedback\Snippet`: Новый класс. Весь код сниппета перенесён туда.
+* \* `\DDTools\Snippet::runSnippet` используется вместо `$modx->runSnippet` для запуска (MODX)EvolutionCMS.snippets.ddMakeHttpRequest без DB и eval.
+* \+ README → Документация → Установка → Используя (MODX)EvolutionCMS.libraries.ddInstaller.
+* \+ Composer.json:
+	* \+ `support`.
+	* \+ `authors`: Добавлены недостающие ссылки.
+
+
+## Версия 2.6.1 (2021-02-07)
 * \* Внимание! Требуется (MODX)EvolutionCMS.libraries.ddTools >= 0.41 (не тестировался с более ранними версиями).
 * \+ `\ddSendFeedback\Sender\Sender::__construct`: Менее хрупкий код, `\DDTools\ObjectTools::extend` используется вместо `array_merge`.
 * \* Сниппет: `\DDTools\ObjectTools::convertType` используется вместо `\ddTools::encodedStringToArray`.

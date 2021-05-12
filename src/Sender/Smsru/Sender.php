@@ -19,7 +19,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.4 (2020-03-16)
+	 * @version 1.1.5 (2021-05-12)
 	 * 
 	 * @desc Send sms via sms.ru.
 	 * 
@@ -44,12 +44,12 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			}
 			
 			//отсылаем смс
-			$requestResult = \ddTools::$modx->runSnippet(
-				'ddMakeHttpRequest',
-				[
+			$requestResult = \DDTools\Snippet::runSnippet([
+				'name' => 'ddMakeHttpRequest',
+				'params' => [
 					'url' => $url,
 				]
-			);
+			]);
 			
 			//разбиваем пришедшее сообщение
 			$requestResult = json_decode(

@@ -62,7 +62,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.2.4 (2020-03-16)
+	 * @version 1.2.5 (2021-05-12)
 	 * 
 	 * @desc Send messege to a Telegram chat.
 	 * 
@@ -76,9 +76,9 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			$result = [0 => 0];
 			
 			//Отсылаем сообщение
-			$requestResult = \ddTools::$modx->runSnippet(
-				'ddMakeHttpRequest',
-				[
+			$requestResult = \DDTools\Snippet::runSnippet([
+				'name' => 'ddMakeHttpRequest',
+				'params' => [
 					'url' => \ddTools::parseText([
 						'text' => $this->url,
 						'data' => [
@@ -92,7 +92,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 					]),
 					'proxy' => $this->proxy
 				]
-			);
+			]);
 			
 			//Разбиваем пришедшее сообщение
 			$requestResult = json_decode(
