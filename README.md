@@ -31,7 +31,7 @@ The snippet returns a JSON string with the following fields:
 * PHP >= 5.6
 * [(MODX)EvolutionCMS](https://github.com/evolution-cms/evolution) >= 1.1
 * [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.biz/modx/ddtools) >= 0.50
-* [(MODX)EvolutionCMS.snippets.ddMakeHttpRequest](https://code.divandesign.biz/modx/ddmakehttprequest) >= 1.4
+* [(MODX)EvolutionCMS.snippets.ddMakeHttpRequest](https://code.divandesign.biz/modx/ddmakehttprequest) >= 2.3.1
 
 
 ## Documentation
@@ -375,6 +375,11 @@ require_once(
 		* `'get'`
 		* `'post'`
 	* Default value: `'post'`
+	
+* `senders->customhttprequest->sendRawPostData`
+	* Desctription: Send raw post data. E. g. if you need JSON in request payload.
+	* Valid values: `boolean`
+	* Default value: `false`
 	
 * `senders->customhttprequest->headers`
 	* Desctription: An array of HTTP header fields to set.  

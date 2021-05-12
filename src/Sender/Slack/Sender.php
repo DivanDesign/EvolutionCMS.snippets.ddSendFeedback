@@ -13,7 +13,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.0.3 (2019-12-14)
+	 * @version 1.0.4 (2021-05-12)
 	 * 
 	 * @desc Send message to Slack.
 	 * 
@@ -37,6 +37,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 						'username' => $this->botName,
 						'icon_emoji' => $this->botIcon
 					]),
+					'sendRawPostData' => true,
 					'headers' => 'application/json'
 				]
 			);
