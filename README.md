@@ -86,9 +86,10 @@ The snippet returns a JSON string with the following fields:
 * `senders`
 	* Desctription: Senders and their params. You can use several senders at the same time.
 	* Valid values:
-		* `stringJson` — as [JSON](https://en.wikipedia.org/wiki/JSON)
+		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
+		* `stringHjsonObject` — as [HJSON](https://hjson.github.io/)
 		* `stringQueryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
-		* It can also be set as a native PHP array or object (e. g. for calls through `$modx->runSnippet`):
+		* It can also be set as a native PHP object or array (e. g. for calls through `$modx->runSnippet`):
 			* `arrayAssociative`
 			* `object`
 	* **Required**
