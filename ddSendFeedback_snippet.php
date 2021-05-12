@@ -104,15 +104,14 @@ $params->senders = \DDTools\ObjectTools::convertType([
 
 
 //# Run
-$snippetResult = \ddTools::getResponse();
-$result_meta = [
-	//Bad Request (required parameters are not set)
-	'code' => 400,
-	'success' => false
-];
+$snippetResult = new \DDTools\Response();
 
 //Senders is required parameter
-if (!empty($params->senders)){
+if (empty($params->senders)){
+	$snippetResult->setMeta([
+		'success' => false
+	]);
+}else{
 	$outputMessages = [
 		'titles' => [
 			0 => $params->result_titleFail,
@@ -168,19 +167,14 @@ if (!empty($params->senders)){
 		}
 	}
 	
-	$result_meta['message'] = [
-		'content' => $outputMessages['messages'][$sendResults_status],
-		'title' => $outputMessages['titles'][$sendResults_status]
-	];
-	
-	$result_meta['success'] = boolval($sendResults_status);
-	
-	if ($result_meta['success']){
-		$result_meta['code'] = 200;
-	};
+	$snippetResult->setMeta([
+		'success' => boolval($sendResults_status),
+		'message' => [
+			'content' => $outputMessages['messages'][$sendResults_status],
+			'title' => $outputMessages['titles'][$sendResults_status]
+		]
+	]);
 }
-
-$snippetResult->setMeta($result_meta);
 
 return $snippetResult->toJSON();
 ?>
