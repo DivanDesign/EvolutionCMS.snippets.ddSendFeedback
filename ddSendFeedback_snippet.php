@@ -104,7 +104,7 @@ $params->senders = \DDTools\ObjectTools::convertType([
 
 
 //# Run
-$result = \ddTools::getResponse();
+$snippetResult = \ddTools::getResponse();
 $result_meta = [
 	//Bad Request (required parameters are not set)
 	'code' => 400,
@@ -180,7 +180,7 @@ if (!empty($params->senders)){
 	};
 }
 
-$result->setMeta($result_meta);
+$snippetResult->setMeta($result_meta);
 
-return $result->toJSON();
+return $snippetResult->toJSON();
 ?>
