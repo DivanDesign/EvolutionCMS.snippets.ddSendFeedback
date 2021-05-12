@@ -39,18 +39,22 @@
 		{
 			"name": "Alexey Davydov",
 			"email": "davalemic@DivanDesign.ru",
+			"homepage": "https://github.com/davalemic",
 			"role": "Developer"
 		},
 		{
 			"name": "Vladislav Lavrov",
+			"homepage": "https://github.com/Tornek",
 			"role": "Developer"
 		},
 		{
 			"name": "Andrey Demchenko",
+			"homepage": "https://github.com/deversjkee",
 			"role": "Developer"
 		},
 		{
 			"name": "Andrey Dunaev",
+			"homepage": "https://github.com/svolochev",
 			"role": "Developer"
 		}
 	],
