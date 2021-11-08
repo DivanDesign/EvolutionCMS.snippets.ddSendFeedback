@@ -1,6 +1,10 @@
 # (MODX)EvolutionCMS.snippets.ddSendFeedback changelog
 
 
+## Version 2.7.1 (2021-11-09)
+* \* Improved removing of empty placeholders while `senders->{$senderName}->tpl` parsing.
+
+
 ## Version 2.7 (2021-05-12)
 * \* Attention! PHP >= 5.6 is required.
 * \* Attention! (MODX)EvolutionCMS.libraries.ddTools >= 0.50 is required.

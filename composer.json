@@ -1,7 +1,7 @@
 {
 	"name": "dd/evolutioncms-snippets-ddsendfeedback",
 	"type": "modxevo-snippet",
-	"version": "2.7.0",
+	"version": "2.7.1",
 	"description": "A snippet for sending users' feedback messages to a required email, slack and telegram chats or SMS through sms.ru. It is very useful along with ajax technology.",
 	"keywords": [
 		"modx",
