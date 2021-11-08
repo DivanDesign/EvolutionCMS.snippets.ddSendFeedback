@@ -1,6 +1,10 @@
 # (MODX)EvolutionCMS.snippets.ddSendFeedback changelog
 
 
+## Версия 2.7.1 (2021-11-09)
+* \* Улучшено удаление пустых плейсхолдеров при парсинге `senders->{$senderName}->tpl`.
+
+
 ## Версия 2.7 (2021-05-12)
 * \* Внимание! Требуется PHP >= 5.6.
 * \* Внимание! Требуется (MODX)EvolutionCMS.libraries.ddTools >= 0.50.
