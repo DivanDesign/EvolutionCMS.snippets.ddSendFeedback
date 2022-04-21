@@ -62,7 +62,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.2.5 (2021-05-12)
+	 * @version 1.3 (2022-04-21)
 	 * 
 	 * @desc Send messege to a Telegram chat.
 	 * 
@@ -111,7 +111,13 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 				//Если ошибка, то залогируем
 				\ddTools::logEvent([
 					'message' =>
-						'<code><pre>' .
+						'<p>$this:</p><code><pre>' .
+						print_r(
+							$this,
+							true
+						) .
+						'</pre></code>' .
+						'<p>$requestResult</p><code><pre>' .
 						print_r(
 							$requestResult,
 							true
