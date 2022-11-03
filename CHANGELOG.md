@@ -58,6 +58,41 @@
 * \+ Composer.json.
 
 
+## Version 2.4 (2019-06-21)
+* \* Attention! (MODX)EvolutionCMS.snippets.ddMakeHttpRequest >= 1.4 is required.
+* \+ Senders → Telegram: Added the ability to work with a proxy server (`proxy` parameter).
+
+
+## Version 2.3 (2018-10-09)
+* \* Attention! (MODX)EvolutionCMS.libraries.ddTools >= 0.23 is required.
+* \+ Senders → Sms.ru: The `from` parameter has been added.
+
+
+## Version 2.2 (2018-03-22)
+* \+ Senders → Telegram: The `messageMarkupSyntax` and `disableWebPagePreview` parameters were added.
+
+
+## Version 2.1 (2018-03-21)
+* \* Attention! (MODX)EvolutionCMS.libraries.ddTools >= 0.21 is required.
+* \* Sender → Email: Fix problem when specifying multiple mailboxes.
+* \+ Added the ability to send a message to a Telegram channel.
+* \+ Added the ability to send SMS messages through the Sms.ru service.
+
+
+## Version 2.0 (2017-02-06)
+* \* Attention! Backward compatibility is broken.
+* \* Attention!(MODX)EvolutionCMS.snippets.ddMakeHttpRequest >= 1.3 is required.
+* \+ Added the ability to send a message to a Slask channel.
+* \+ Added the ability to send messages through several Senders at the same time (e. g. to a Slack channel and emails).
+
+
+## Version 1.11 (2016-10-30)
+* \* Attention! (MODX)EvolutionCMS >= 1.1 is required.
+* \* Attention! (MODX)EvolutionCMS.libraries.ddTools >= 0.16 is required.
+* \+ Added support of the `@CODE:` keyword prefix in the letter template.
+* \* Empty placeholders will be removed from the letter template before final parsing (where snippet runs, etc).
+
+
 ## Version 1.5 (2011-08-18)
 * \+ Parameters → `fromField`: The new parameter. `$_POST` array element with mailer name are taken (replacing `from`).
 
