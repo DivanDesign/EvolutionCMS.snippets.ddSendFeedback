@@ -18,7 +18,7 @@ abstract class Sender extends \DDTools\BaseClass {
 	
 	/**
 	 * __construct
-	 * @version 1.4.1 (2021-11-09)
+	 * @version 1.4.2 (2023-05-14)
 	 */
 	public function __construct($params = []){
 		$this->setExistingProps($params);
@@ -55,7 +55,7 @@ abstract class Sender extends \DDTools\BaseClass {
 			
 			//Prepare text to send
 			$this->text = \ddTools::parseSource(\ddTools::parseText([
-				'text' => \ddTools::$modx->getTpl($this->tpl),
+				'text' => \ddTools::getTpl($this->tpl),
 				'data' => $params = \DDTools\ObjectTools::extend([
 					'objects' => [
 						$this->tpl_placeholdersFromPost,

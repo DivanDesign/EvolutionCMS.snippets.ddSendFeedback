@@ -30,7 +30,7 @@ The snippet returns a JSON string with the following fields:
 
 * PHP >= 5.6
 * [(MODX)EvolutionCMS](https://github.com/evolution-cms/evolution) >= 1.1
-* [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.biz/modx/ddtools) >= 0.50
+* [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.biz/modx/ddtools) >= 0.60
 * [(MODX)EvolutionCMS.snippets.ddMakeHttpRequest](https://code.divandesign.biz/modx/ddmakehttprequest) >= 2.3.1
 
 
