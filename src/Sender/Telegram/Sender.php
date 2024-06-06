@@ -62,7 +62,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.3 (2022-04-21)
+	 * @version 1.3.1 (2024-06-06)
 	 * 
 	 * @desc Send messege to a Telegram chat.
 	 * 
@@ -88,7 +88,8 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 							'textMarkupSyntax' => $this->textMarkupSyntax,
 							'disableWebPagePreview' => intval($this->disableWebPagePreview)
 						],
-						'mergeAll' => false
+						//TODO: Why is it disabled? Add a comment or enable.
+						'isCompletelyParsingEnabled' => false
 					]),
 					'proxy' => $this->proxy
 				]
