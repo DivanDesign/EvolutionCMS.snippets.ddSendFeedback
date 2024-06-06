@@ -18,7 +18,7 @@ abstract class Sender extends \DDTools\BaseClass {
 	
 	/**
 	 * __construct
-	 * @version 1.4.2 (2023-05-14)
+	 * @version 1.4.3 (2024-06-06)
 	 */
 	public function __construct($params = []){
 		$this->setExistingProps($params);
@@ -54,7 +54,7 @@ abstract class Sender extends \DDTools\BaseClass {
 			$this->textMarkupSyntax = trim(strtolower($this->textMarkupSyntax));
 			
 			//Prepare text to send
-			$this->text = \ddTools::parseSource(\ddTools::parseText([
+			$this->text = \ddTools::parseText([
 				'text' => \ddTools::getTpl($this->tpl),
 				'data' => $params = \DDTools\ObjectTools::extend([
 					'objects' => [
@@ -62,8 +62,11 @@ abstract class Sender extends \DDTools\BaseClass {
 						$this->tpl_placeholders
 					]
 				])
-			]));
+			]);
 			
+			$this->text = \ddTools::parseSource($this->text);
+			
+			//It is needed only after \ddTools::parseSource because some snippets can create the new empty placeholders
 			$this->text = trim(
 				//Remove empty placeholders
 				preg_replace(
