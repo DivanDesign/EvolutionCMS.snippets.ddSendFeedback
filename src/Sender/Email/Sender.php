@@ -30,7 +30,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.0.2 (2019-12-14)
+	 * @version 1.0.3 (2024-06-07)
 	 * 
 	 * @desc Send emails.
 	 * 
@@ -41,24 +41,24 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		$result = [];
 		
 		if ($this->canSend){
-			$sendMailParams = [
+			$sendParams = [
 				'to' => $this->to,
 				'text' => $this->text,
 				'subject' => $this->subject,
 			];
 			
 			if(!empty($this->fileInputNames)){
-				$sendMailParams['fileInputNames'] = explode(
+				$sendParams['fileInputNames'] = explode(
 					',',
 					$this->fileInputNames
 				);
 			}
 			
 			if (!empty($this->from)){
-				$sendMailParams['from'] = $this->from;
+				$sendParams['from'] = $this->from;
 			}
 			
-			$result = \ddTools::sendMail($sendMailParams);
+			$result = \ddTools::sendMail($sendParams);
 		}
 		
 		return $result;

@@ -13,7 +13,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.0.6 (2024-06-07)
+	 * @version 1.0.7 (2024-06-07)
 	 * 
 	 * @desc Send message to Slack.
 	 * 
@@ -26,20 +26,22 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		if ($this->canSend){
 			$result[0] = 0;
 			
+			$sendParams = [
+				'url' => $this->url,
+				'method' => 'post',
+				'postData' => json_encode([
+					'text' => $this->text,
+					'channel' => $this->channel,
+					'username' => $this->botName,
+					'icon_emoji' => $this->botIcon
+				]),
+				'sendRawPostData' => true,
+				'headers' => 'application/json'
+			];
+			
 			$requestResult = \DDTools\Snippet::runSnippet([
 				'name' => 'ddMakeHttpRequest',
-				'params' => [
-					'url' => $this->url,
-					'method' => 'post',
-					'postData' => json_encode([
-						'text' => $this->text,
-						'channel' => $this->channel,
-						'username' => $this->botName,
-						'icon_emoji' => $this->botIcon
-					]),
-					'sendRawPostData' => true,
-					'headers' => 'application/json'
-				]
+				'params' => $sendParams,
 			]);
 			
 			if ($requestResult == 'ok'){

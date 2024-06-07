@@ -19,7 +19,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.6 (2024-06-07)
+	 * @version 1.1.7 (2024-06-07)
 	 * 
 	 * @desc Send sms via sms.ru.
 	 * 
@@ -43,12 +43,14 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 				$url .= '&from=' . $this->from;
 			}
 			
+			$sendParams = [
+				'url' => $url,
+			];
+			
 			//отсылаем смс
 			$requestResult = \DDTools\Snippet::runSnippet([
 				'name' => 'ddMakeHttpRequest',
-				'params' => [
-					'url' => $url,
-				]
+				'params' => $sendParams,
 			]);
 			
 			$requestResult = \DDTools\ObjectTools::convertType([

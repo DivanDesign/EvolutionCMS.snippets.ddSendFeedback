@@ -62,7 +62,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.3.2 (2024-06-07)
+	 * @version 1.3.3 (2024-06-07)
 	 * 
 	 * @desc Send messege to a Telegram chat.
 	 * 
@@ -75,24 +75,26 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		if ($this->canSend){
 			$result[0] = 0;
 			
+			$sendParams = [
+				'url' => \ddTools::parseText([
+					'text' => $this->url,
+					'data' => [
+						'botToken' => $this->botToken,
+						'chatId' => $this->chatId,
+						'text' => urlencode($this->text),
+						'textMarkupSyntax' => $this->textMarkupSyntax,
+						'disableWebPagePreview' => intval($this->disableWebPagePreview)
+					],
+					//TODO: Why is it disabled? Add a comment or enable.
+					'isCompletelyParsingEnabled' => false
+				]),
+				'proxy' => $this->proxy
+			];
+			
 			//Отсылаем сообщение
 			$requestResult = \DDTools\Snippet::runSnippet([
 				'name' => 'ddMakeHttpRequest',
-				'params' => [
-					'url' => \ddTools::parseText([
-						'text' => $this->url,
-						'data' => [
-							'botToken' => $this->botToken,
-							'chatId' => $this->chatId,
-							'text' => urlencode($this->text),
-							'textMarkupSyntax' => $this->textMarkupSyntax,
-							'disableWebPagePreview' => intval($this->disableWebPagePreview)
-						],
-						//TODO: Why is it disabled? Add a comment or enable.
-						'isCompletelyParsingEnabled' => false
-					]),
-					'proxy' => $this->proxy
-				]
+				'params' => $sendParams,
 			]);
 			
 			$requestResult = \DDTools\ObjectTools::convertType([

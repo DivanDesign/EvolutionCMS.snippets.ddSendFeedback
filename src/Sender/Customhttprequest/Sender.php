@@ -16,7 +16,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.3.2 (2024-06-07)
+	 * @version 1.3.3 (2024-06-07)
 	 * 
 	 * @desc Send message to Slack.
 	 * 
@@ -29,7 +29,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		if ($this->canSend){
 			$result[0] = 0;
 			
-			$requestParams =
+			$sendParams =
 				[
 					'url' => $this->url
 				]
@@ -37,34 +37,34 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			
 			//If method == 'get' need to append url. Else need to set postData
 			if ($this->method == 'get'){
-				$requestParams['url'] .=
+				$sendParams['url'] .=
 					'?' . 
 					$this->text
 				;
 			}else{
-				$requestParams['postData'] = $this->text;
-				$requestParams['sendRawPostData'] = $this->sendRawPostData;
+				$sendParams['postData'] = $this->text;
+				$sendParams['sendRawPostData'] = $this->sendRawPostData;
 			}
 			
 			if (!empty($this->headers)){
-				$requestParams['headers'] = $this->headers;
+				$sendParams['headers'] = $this->headers;
 			}
 			
 			if (!empty($this->userAgent)){
-				$requestParams['userAgent'] = $this->userAgent;
+				$sendParams['userAgent'] = $this->userAgent;
 			}
 			
 			if (!empty($this->timeout)){
-				$requestParams['timeout'] = $this->timeout;
+				$sendParams['timeout'] = $this->timeout;
 			}
 			
 			if (!empty($this->proxy)){
-				$requestParams['proxy'] = $this->proxy;
+				$sendParams['proxy'] = $this->proxy;
 			}
 			
 			$requestResult = \DDTools\Snippet::runSnippet([
 				'name' => 'ddMakeHttpRequest',
-				'params' => $requestParams
+				'params' => $sendParams,
 			]);
 			
 			//TODO: Improve it
