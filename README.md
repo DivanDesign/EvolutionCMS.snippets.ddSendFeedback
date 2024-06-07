@@ -86,22 +86,22 @@ require_once(
 #### General
 
 * `result_titleSuccess`
-	* Desctription: The title that will be returned if the letter sending is successful (the `title` field of the returned JSON).
+	* Description: The title that will be returned if the letter sending is successful (the `title` field of the returned JSON).
 	* Valid values: `string`
 	* Default value: `'Message sent successfully'`
 	
 * `result_titleFail`
-	* Desctription: The title that will be returned if the letter sending is failed somehow (the `title` field of the returned JSON).
+	* Description: The title that will be returned if the letter sending is failed somehow (the `title` field of the returned JSON).
 	* Valid values: `string`
 	* Default value: `'Unexpected error =('`
 	
 * `result_messageSuccess`
-	* Desctription: The message that will be returned if the letter sending is successful (the `message` field of the returned JSON).
+	* Description: The message that will be returned if the letter sending is successful (the `message` field of the returned JSON).
 	* Valid values: `string`
 	* Default value: `'We will contact you later.'`
 	
 * `result_messageFail`
-	* Desctription: The message that will be returned if the letter sending is failed somehow (the `message` field of the returned JSON).
+	* Description: The message that will be returned if the letter sending is failed somehow (the `message` field of the returned JSON).
 	* Valid values: `string`
 	* Default value: `'Something happened while sending the message.<br />Please try again later.'`
 
@@ -109,7 +109,7 @@ require_once(
 #### Senders
 
 * `senders`
-	* Desctription: Senders and their params. You can use several senders at the same time.
+	* Description: Senders and their params. You can use several senders at the same time.
 	* Valid values:
 		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
 		* `stringHjsonObject` — as [HJSON](https://hjson.github.io/)
@@ -120,13 +120,13 @@ require_once(
 	* **Required**
 	
 * `senders->{$senderName}`
-	* Desctription: A sender, when the key is the sender name and the value is the sender parameters.  
+	* Description: A sender, when the key is the sender name and the value is the sender parameters.  
 		Keys are case insensitive (the following names are equal: `'Telegram'`, `'telegram'`, `'TELEGRAM'`, `'tEleGRaM'`, etc).
 	* Valid values: `object`
 	* **Required**
 	
 * `senders->{$senderName}->tpl`
-	* Desctription: The template of a message/letter/data.
+	* Description: The template of a message/letter/data.
 		* All senders use this parameter as main data.
 		* For text senders (like `email`, `telegram`, etc) it is just a message you want to send in relevant format (e. g. HTML, Markdown, etc).
 		* For API senders (like `customhttprequest`) it is request data in HJSON/JSON format. 
@@ -141,7 +141,7 @@ require_once(
 	* **Required**
 	
 * `senders->{$senderName}->tpl_placeholders`
-	* Desctription:
+	* Description:
 		Additional data has to be passed into the `senders->{$senderName}->tpl`.  
 		Nested objects and arrays are supported too:
 		* `{"someOne": "1", "someTwo": "test" }` => `[+someOne+], [+someTwo+]`.
@@ -151,7 +151,7 @@ require_once(
 	* Default value: —
 	
 * `senders->{$senderName}->tpl_placeholders->{$placeholderName}`
-	* Desctription: The key is a placeholder name, the value is a placeholder value.
+	* Description: The key is a placeholder name, the value is a placeholder value.
 	* Valid values: `mixed`
 	* **Required**
 
@@ -159,35 +159,35 @@ require_once(
 ##### Senders → Email
 
 * `senders->email`
-	* Desctription: The sender parameters.  
+	* Description: The sender parameters.  
 		Send method (PHP `mail()` or SMTP) sets up in CMS config.
 	* Valid values: `object`
 	* Default value: —
 	
 * `senders->email->to`
-	* Desctription: Mailing addresses (to whom).
+	* Description: Mailing addresses (to whom).
 	* Valid values:
 		* `array`
 		* `stringCommaSeparated`
 	* **Required**
 	
 * `senders->email->to[i]`
-	* Desctription: An address.
+	* Description: An address.
 	* Valid values: `stringEmail`
 	* **Required**
 	
 * `senders->email->subject`
-	* Desctription: Message subject.
+	* Description: Message subject.
 	* Valid values: `string`
 	* Default value: `'Feedback'`
 	
 * `senders->email->from`
-	* Desctription: Mailer address (from who).
+	* Description: Mailer address (from who).
 	* Valid values: `stringEmail`
 	* Default value: `$modx->getConfig('emailsender')`
 	
 * `senders->email->fileInputNames`
-	* Desctription: Input tags names separated by commas that files are required to be taken from.  
+	* Description: Input tags names separated by commas that files are required to be taken from.  
 		Used if files are sending in the request (`$_FILES` array).
 	* Valid values:
 		* `array`
@@ -198,22 +198,22 @@ require_once(
 ##### Senders → Telegram
 
 * `senders->telegram`
-	* Desctription: The sender parameters.
+	* Description: The sender parameters.
 	* Valid values: `object`
 	* Default value: —
 	
 * `senders->telegram->botToken`
-	* Desctription: The bot token that will send a message, like `botId:HASH`.
+	* Description: The bot token that will send a message, like `botId:HASH`.
 	* Valid values: `string`
 	* **Required**
 	
 * `senders->telegram->chatId`
-	* Desctription: ID of the chat to which the message will be sent.
+	* Description: ID of the chat to which the message will be sent.
 	* Valid values: `string`
 	* **Required**
 	
 * `senders->telegram->textMarkupSyntax`
-	* Desctription: The syntax in which the message in `senders->telegram->tpl` is written.
+	* Description: The syntax in which the message in `senders->telegram->tpl` is written.
 	* Valid values:
 		* `'markdown'`
 		* `'html'`
@@ -221,12 +221,12 @@ require_once(
 	* Default value: `''`
 	
 * `senders->telegram->disableWebPagePreview`
-	* Desctription: Disables link previews for links in this message.
+	* Description: Disables link previews for links in this message.
 	* Valid values: `boolean`
 	* Default value: `false`
 	
 * `senders->telegram->proxy`
-	* Desctription: Proxy server in format `'protocol://user:password@ip:port'`.  
+	* Description: Proxy server in format `'protocol://user:password@ip:port'`.  
 		E. g. `'theuser:qwerty123@11.22.33.44:5555'` or `'socks5://someuser:somepassword@11.22.33.44:5555'`.
 	* Valid values: `string`
 	* Default value: —
@@ -235,27 +235,27 @@ require_once(
 ##### Senders → Slack
 
 * `senders->slack`
-	* Desctription: The sender parameters.
+	* Description: The sender parameters.
 	* Valid values: `object`
 	* Default value: —
 	
 * `senders->slack->url`
-	* Desctription: WebHook URL.
+	* Description: WebHook URL.
 	* Valid values: `stringUrl`
 	* **Required**
 	
 * `senders->slack->channel`
-	* Desctription: Channel in Slack to send.
+	* Description: Channel in Slack to send.
 	* Valid values: `string`
 	* Default value: Selected in Slack when you create WebHook.
 	
 * `senders->slack->botName`
-	* Desctription: Bot name.
+	* Description: Bot name.
 	* Valid values: `string`
 	* Default value: `'ddSendFeedback'`
 	
 * `senders->slack->botIcon`
-	* Desctription: Bot icon.
+	* Description: Bot icon.
 	* Valid values: `string`
 	* Default value: `':ghost:'`
 
@@ -263,22 +263,22 @@ require_once(
 ##### Senders → Sms.ru
 
 * `senders->smsRu`
-	* Desctription: The sender parameters.
+	* Description: The sender parameters.
 	* Valid values: `object`
 	* Default value: —
 	
 * `senders->smsRu->apiId`
-	* Desctription: Secret code from sms.ru.
+	* Description: Secret code from sms.ru.
 	* Valid values: `string`
 	* **Required**
 	
 * `senders->smsRu->to`
-	* Desctription: A phone.
+	* Description: A phone.
 	* Valid values: `string`
 	* **Required**
 	
 * `senders->smsRu->from`
-	* Desctription: Sms sender name/phone.
+	* Description: Sms sender name/phone.
 	* Valid values: `string`
 	* Default value: —
 
@@ -286,22 +286,22 @@ require_once(
 ##### Senders → CRM LiveSklad.com
 
 * `senders->crmLiveSklad`
-	* Desctription: The sender parameters.
+	* Description: The sender parameters.
 	* Valid values: `object`
 	* Default value: —
 	
 * `senders->crmLiveSklad->login`
-	* Desctription: API login.
+	* Description: API login.
 	* Valid values: `string`
 	* **Required**
 	
 * `senders->crmLiveSklad->password`
-	* Desctription: API password.
+	* Description: API password.
 	* Valid values: `string`
 	* **Required**
 	
 * `senders->crmLiveSklad->shopId`
-	* Desctription: Location (shop) ID.
+	* Description: Location (shop) ID.
 	* Valid values: `string`
 	* **Required**
 
@@ -309,45 +309,45 @@ require_once(
 ##### Senders → Custom HTTP request
 
 * `senders->customhttprequest`
-	* Desctription: The sender parameters.
+	* Description: The sender parameters.
 	* Valid values: `object`
 	* Default value: —
 	
 * `senders->customhttprequest->url`
-	* Desctription: The URL to request.
+	* Description: The URL to request.
 	* Valid values: `stringUrl`
 	* **Required**
 	
 * `senders->customhttprequest->method`
-	* Desctription: Request type.
+	* Description: Request type.
 	* Valid values:
 		* `'get'`
 		* `'post'`
 	* Default value: `'post'`
 	
 * `senders->customhttprequest->sendRawPostData`
-	* Desctription: Send raw post data. E. g. if you need JSON in request payload.
+	* Description: Send raw post data. E. g. if you need JSON in request payload.
 	* Valid values: `boolean`
 	* Default value: `false`
 	
 * `senders->customhttprequest->headers`
-	* Desctription: An array of HTTP header fields to set.  
+	* Description: An array of HTTP header fields to set.  
 		E. g. `['Accept: application/vnd.api+json', 'Content-Type: application/vnd.api+json']`.
 	* Valid values: `array`
 	* Default value: —
 	
 * `senders->customhttprequest->userAgent`
-	* Desctription: The contents of the 'User-Agent: ' header to be used in a HTTP request.
+	* Description: The contents of the 'User-Agent: ' header to be used in a HTTP request.
 	* Valid values: `string`
 	* Default value: —
 	
 * `senders->customhttprequest->timeout`
-	* Desctription: The maximum number of seconds for execute request.
+	* Description: The maximum number of seconds for execute request.
 	* Valid values: `integer`
 	* Default value: `60`
 	
 * `senders->telegram->proxy`
-	* Desctription: Proxy server in format `'protocol://user:password@ip:port'`.  
+	* Description: Proxy server in format `'protocol://user:password@ip:port'`.  
 		E. g. `'theuser:qwerty123@11.22.33.44:5555'` or `'socks5://someuser:somepassword@11.22.33.44:5555'`.
 	* Valid values: `string`
 	* Default value: —
