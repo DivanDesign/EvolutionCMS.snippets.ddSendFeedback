@@ -16,7 +16,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.3.1 (2021-05-12)
+	 * @version 1.3.2 (2024-06-07)
 	 * 
 	 * @desc Send message to Slack.
 	 * 
@@ -27,7 +27,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		$result = [];
 		
 		if ($this->canSend){
-			$result = [0 => 0];
+			$result[0] = 0;
 			
 			$requestParams =
 				[

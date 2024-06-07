@@ -19,7 +19,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.5 (2021-05-12)
+	 * @version 1.1.6 (2024-06-07)
 	 * 
 	 * @desc Send sms via sms.ru.
 	 * 
@@ -30,7 +30,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		$result = [];
 		
 		if ($this->canSend){
-			$result = [0 => 0];
+			$result[0] = 0;
 			
 			$url =
 				$this->url .
@@ -51,13 +51,18 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 				]
 			]);
 			
-			//разбиваем пришедшее сообщение
-			$requestResult = json_decode(
-				$requestResult,
-				true
-			);
+			$requestResult = \DDTools\ObjectTools::convertType([
+				'object' => $requestResult,
+				'type' => 'objectStdClass',
+			]);
 			
-			if ($requestResult['sms'][$this->to]['status'] == 'OK'){
+			if (
+				\DDTools\ObjectTools::getPropValue([
+					'object' => $requestResult,
+					'propName' => 'sms.' . $this->to . '.status',
+				])
+				== 'OK'
+			){
 				$result[0] = 1;
 			}else{
 				//Если ошибка, то залогируем
@@ -70,7 +75,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 						) .
 						'</pre></code>'
 					,
-					'source' => 'ddSendFeedback → Smsru',
+					'source' => 'ddSendFeedback → SMSRu',
 					'eventType' => 'error'
 				]);
 			}

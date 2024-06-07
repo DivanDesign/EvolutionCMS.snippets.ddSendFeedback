@@ -13,7 +13,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.0.5 (2021-05-12)
+	 * @version 1.0.6 (2024-06-07)
 	 * 
 	 * @desc Send message to Slack.
 	 * 
@@ -24,7 +24,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		$result = [];
 		
 		if ($this->canSend){
-			$result = [0 => 0];
+			$result[0] = 0;
 			
 			$requestResult = \DDTools\Snippet::runSnippet([
 				'name' => 'ddMakeHttpRequest',

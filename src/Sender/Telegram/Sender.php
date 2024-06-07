@@ -62,7 +62,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.3.1 (2024-06-06)
+	 * @version 1.3.2 (2024-06-07)
 	 * 
 	 * @desc Send messege to a Telegram chat.
 	 * 
@@ -73,7 +73,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		$result = [];
 		
 		if ($this->canSend){
-			$result = [0 => 0];
+			$result[0] = 0;
 			
 			//Отсылаем сообщение
 			$requestResult = \DDTools\Snippet::runSnippet([
@@ -95,17 +95,18 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 				]
 			]);
 			
-			//Разбиваем пришедшее сообщение
-			$requestResult = json_decode(
-				$requestResult,
-				true
-			);
+			$requestResult = \DDTools\ObjectTools::convertType([
+				'object' => $requestResult,
+				'type' => 'objectStdClass',
+			]);
 			
 			//Everything is ok
 			if (
-				is_array($requestResult) &&
-				isset($requestResult['ok']) &&
-				$requestResult['ok'] == true
+				\DDTools\ObjectTools::getPropValue([
+					'object' => $requestResult,
+					'propName' => 'ok',
+				])
+				== true
 			){
 				$result[0] = 1;
 			}else{
