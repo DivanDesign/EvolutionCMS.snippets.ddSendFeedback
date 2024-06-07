@@ -282,6 +282,29 @@ require_once(
 	* Default value: —
 
 
+##### Senders → CRM LiveSklad.com
+
+* `senders->crmLiveSklad`
+	* Desctription: The sender parameters.
+	* Valid values: `object`
+	* Default value: —
+	
+* `senders->crmLiveSklad->login`
+	* Desctription: API login.
+	* Valid values: `string`
+	* **Required**
+	
+* `senders->crmLiveSklad->password`
+	* Desctription: API password.
+	* Valid values: `string`
+	* **Required**
+	
+* `senders->crmLiveSklad->shopId`
+	* Desctription: Location (shop) ID.
+	* Valid values: `string`
+	* **Required**
+
+
 ##### Senders → Custom HTTP request
 
 * `senders->customhttprequest`
