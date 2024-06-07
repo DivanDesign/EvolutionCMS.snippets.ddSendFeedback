@@ -123,6 +123,36 @@ require_once(
 	* Desctription: A sender, when the key is the sender name and the value is the sender parameters.
 	* Valid values: `object`
 	* **Required**
+	
+* `senders->{$senderName}->tpl`
+	* Desctription: The template of a message/letter/data.
+		* All senders use this parameter as main data.
+		* For text senders (like `email`, `telegram`, etc) it is just a message you want to send in relevant format (e. g. HTML, Markdown, etc).
+		* For API senders (like `customhttprequest`) it is request data in HJSON/JSON format. 
+		* Use `[(site_url)][~[+docId+]~]` to generate the url of a document (`[(site_url)]` is required because of need for using the absolute links in the messages).
+		* Available placeholders:
+			* `[+docId+]` — the ID of a document that the request has been sent from
+			* Any item of `$_POST`
+			* Any item of `senders->{$senderName}->tpl_placeholders`
+	* Valid values:
+		* `stringChunkName`
+		* `string` — use inline templates starting with `@CODE:`
+	* **Required**
+	
+* `senders->{$senderName}->tpl_placeholders`
+	* Desctription:
+		Additional data has to be passed into the `senders->{$senderName}->tpl`.  
+		Nested objects and arrays are supported too:
+		* `{"someOne": "1", "someTwo": "test" }` => `[+someOne+], [+someTwo+]`.
+		* `{"some": {"a": "one", "b": "two"} }` => `[+some.a+]`, `[+some.b+]`.
+		* `{"some": ["one", "two"] }` => `[+some.0+]`, `[+some.1+]`.
+	* Valid values: `object`
+	* Default value: —
+	
+* `senders->{$senderName}->tpl_placeholders->{$placeholderName}`
+	* Desctription: The key is a placeholder name, the value is a placeholder value.
+	* Valid values: `mixed`
+	* **Required**
 
 
 ##### Senders → Email
@@ -143,33 +173,6 @@ require_once(
 * `senders->email->to[i]`
 	* Desctription: An address.
 	* Valid values: `stringEmail`
-	* **Required**
-	
-* `senders->email->tpl`
-	* Desctription: The template of a letter.  
-		Use `[(site_url)][~[+docId+]~]` to generate the url of a document (`[(site_url)]` is required because of need for using the absolute links in the emails).  
-		
-		Available placeholders:
-		* `[+docId+]` — the ID of a document that the request has been sent from
-		* all array items of `$_POST`
-	* Valid values:
-		* `stringChunkName`
-		* `string` — use inline templates starting with `@CODE:`
-	* **Required**
-	
-* `senders->email->tpl_placeholders`
-	* Desctription:
-		Additional data has to be passed into the `senders->email->tpl`.  
-		Nested objects and arrays are supported too:
-		* `{"someOne": "1", "someTwo": "test" }` => `[+someOne+], [+someTwo+]`.
-		* `{"some": {"a": "one", "b": "two"} }` => `[+some.a+]`, `[+some.b+]`.
-		* `{"some": ["one", "two"] }` => `[+some.0+]`, `[+some.1+]`.
-	* Valid values: `object`
-	* Default value: —
-	
-* `senders->email->tpl_placeholders->{$placeholderName}`
-	* Desctription: The key is a placeholder name, the value is a placeholder value.
-	* Valid values: `mixed`
 	* **Required**
 	
 * `senders->email->subject`
@@ -208,20 +211,8 @@ require_once(
 	* Valid values: `string`
 	* **Required**
 	
-* `senders->telegram->tpl`
-	* Desctription: The template of a message.  
-		Use `[(site_url)][~[+docId+]~]` to generate the url of a document (`[(site_url)]` is required because of need for using the absolute links in the messages).  
-		
-		Available placeholders:
-		* `[+docId+]` — the ID of a document that the request has been sent from
-		* all array items of `$_POST`
-	* Valid values:
-		* `stringChunkName`
-		* `string` — use inline templates starting with `@CODE:`
-	* **Required**
-	
 * `senders->telegram->textMarkupSyntax`
-	* Desctription: The syntax in which the message is written.
+	* Desctription: The syntax in which the message in `senders->telegram->tpl` is written.
 	* Valid values:
 		* `'markdown'`
 		* `'html'`
@@ -252,33 +243,6 @@ require_once(
 	* Valid values: `stringUrl`
 	* **Required**
 	
-* `senders->slack->tpl`
-	* Desctription: The template of a message.  
-		Use `[(site_url)][~[+docId+]~]` to generate the url of a document (`[(site_url)]` is required because of need for using the absolute links in the messages).  
-		
-		Available placeholders:
-		* `[+docId+]` — the ID of a document that the request has been sent from
-		* all array items of `$_POST`
-	* Valid values:
-		* `stringChunkName`
-		* `string` — use inline templates starting with `@CODE:`
-	* **Required**
-	
-* `senders->slack->tpl_placeholders`
-	* Desctription:
-		Additional data has to be passed into the `senders->slack->tpl`.  
-		Nested objects and arrays are supported too:
-		* `{"someOne": "1", "someTwo": "test" }` => `[+someOne+], [+someTwo+]`.
-		* `{"some": {"a": "one", "b": "two"} }` => `[+some.a+]`, `[+some.b+]`.
-		* `{"some": ["one", "two"] }` => `[+some.0+]`, `[+some.1+]`.
-	* Valid values: `object`
-	* Default value: —
-	
-* `senders->slack->tpl_placeholders->{$placeholderName}`
-	* Desctription: The key is a placeholder name, the value is a placeholder value.
-	* Valid values: `mixed`
-	* **Required**
-	
 * `senders->slack->channel`
 	* Desctription: Channel in Slack to send.
 	* Valid values: `string`
@@ -307,18 +271,6 @@ require_once(
 	* Valid values: `string`
 	* **Required**
 	
-* `senders->smsru->tpl`
-	* Desctription: The template of a message.  
-		Use `[(site_url)][~[+docId+]~]` to generate the url of a document (`[(site_url)]` is required because of need for using the absolute links in the messages).  
-		
-		Available placeholders:
-		* `[+docId+]` — the ID of a document that the request has been sent from
-		* all array items of `$_POST`
-	* Valid values:
-		* `stringChunkName`
-		* `string` — use inline templates starting with `@CODE:`
-	* **Required**
-	
 * `senders->smsru->to`
 	* Desctription: A phone.
 	* Valid values: `string`
@@ -340,33 +292,6 @@ require_once(
 * `senders->customhttprequest->url`
 	* Desctription: The URL to request.
 	* Valid values: `stringUrl`
-	* **Required**
-	
-* `senders->customhttprequest->tpl`
-	* Desctription: The template of a data.  
-		Use `[(site_url)][~[+docId+]~]` to generate the url of a document (`[(site_url)]` is required because of need for using the absolute links in the messages).  
-		
-		Available placeholders:
-		* `[+docId+]` — the ID of a document that the request has been sent from
-		* all array items of `$_POST`
-	* Valid values:
-		* `stringChunkName`
-		* `string` — use inline templates starting with `@CODE:`
-	* **Required**
-	
-* `senders->customhttprequest->tpl_placeholders`
-	* Desctription:
-		Additional data has to be passed into the `senders->customhttprequest->tpl`.  
-		Nested objects and arrays are supported too:
-		* `{"someOne": "1", "someTwo": "test" }` => `[+someOne+], [+someTwo+]`.
-		* `{"some": {"a": "one", "b": "two"} }` => `[+some.a+]`, `[+some.b+]`.
-		* `{"some": ["one", "two"] }` => `[+some.0+]`, `[+some.1+]`.
-	* Valid values: `object`
-	* Default value: —
-	
-* `senders->customhttprequest->tpl_placeholders->{$placeholderName}`
-	* Desctription: The key is a placeholder name, the value is a placeholder value.
-	* Valid values: `mixed`
 	* **Required**
 	
 * `senders->customhttprequest->method`
