@@ -120,7 +120,8 @@ require_once(
 	* **Required**
 	
 * `senders->{$senderName}`
-	* Desctription: A sender, when the key is the sender name and the value is the sender parameters.
+	* Desctription: A sender, when the key is the sender name and the value is the sender parameters.  
+		Keys are case insensitive (the following names are equal: `'Telegram'`, `'telegram'`, `'TELEGRAM'`, `'tEleGRaM'`, etc).
 	* Valid values: `object`
 	* **Required**
 	
@@ -261,22 +262,22 @@ require_once(
 
 ##### Senders → Sms.ru
 
-* `senders->smsru`
+* `senders->smsRu`
 	* Desctription: The sender parameters.
 	* Valid values: `object`
 	* Default value: —
 	
-* `senders->smsru->apiId`
+* `senders->smsRu->apiId`
 	* Desctription: Secret code from sms.ru.
 	* Valid values: `string`
 	* **Required**
 	
-* `senders->smsru->to`
+* `senders->smsRu->to`
 	* Desctription: A phone.
 	* Valid values: `string`
 	* **Required**
 	
-* `senders->smsru->from`
+* `senders->smsRu->from`
 	* Desctription: Sms sender name/phone.
 	* Valid values: `string`
 	* Default value: —
@@ -411,7 +412,7 @@ require_once(
 ```
 [!ddSendFeedback?
 	&senders=`{
-	 	"smsru": {
+	 	"smsRu": {
 	 		"apiId": "00000000-0000-0000-0000-000000000000",
 			"to": "89999999999",
 			"tpl": "general_letters_feedbackToSMS"
