@@ -62,7 +62,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.4 (2024-06-10)
+	 * @version 1.4.1 (2024-06-10)
 	 * 
 	 * @desc Send messege to a Telegram chat.
 	 * 
@@ -80,7 +80,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		if ($this->canSend){
 			$errorData->title = 'Unexpected API error';
 			
-			$sendParams = [
+			$sendParams = (object) [
 				'url' => \ddTools::parseText([
 					'text' => $this->url,
 					'data' => [

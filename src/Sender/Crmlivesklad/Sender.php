@@ -102,7 +102,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.1 (2024-06-10)
+	 * @version 1.1.2 (2024-06-10)
 	 * 
 	 * @desc Creates an order in LiveSklad.com.
 	 * 
@@ -125,7 +125,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			if (empty($this->authTokenData->token)){
 				$errorData->title = 'Authorization failed';
 			}else{
-				$sendParams = [
+				$sendParams = (object) [
 					'url' => $this->urls->orders,
 					'method' => 'post',
 					'headers' => [

@@ -19,7 +19,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.2 (2024-06-10)
+	 * @version 1.2.1 (2024-06-10)
 	 * 
 	 * @desc Send sms via sms.ru.
 	 * 
@@ -48,7 +48,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 				$url .= '&from=' . $this->from;
 			}
 			
-			$sendParams = [
+			$sendParams = (object) [
 				'url' => $url,
 			];
 			

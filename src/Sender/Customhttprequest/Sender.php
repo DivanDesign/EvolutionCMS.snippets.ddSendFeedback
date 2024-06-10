@@ -16,7 +16,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.4 (2024-06-10)
+	 * @version 1.4.1 (2024-06-10)
 	 * 
 	 * @desc Send message to custom URL.
 	 * 
@@ -34,37 +34,35 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		if ($this->canSend){
 			$errorData->title = 'Unexpected API error';
 			
-			$sendParams =
-				[
-					'url' => $this->url
-				]
-			;
+			$sendParams = (object) [
+				'url' => $this->url
+			];
 			
 			//If method == 'get' need to append url. Else need to set postData
 			if ($this->method == 'get'){
-				$sendParams['url'] .=
+				$sendParams->url .=
 					'?' . 
 					$this->text
 				;
 			}else{
-				$sendParams['postData'] = $this->text;
-				$sendParams['sendRawPostData'] = $this->sendRawPostData;
+				$sendParams->postData = $this->text;
+				$sendParams->sendRawPostData = $this->sendRawPostData;
 			}
 			
 			if (!empty($this->headers)){
-				$sendParams['headers'] = $this->headers;
+				$sendParams->headers = $this->headers;
 			}
 			
 			if (!empty($this->userAgent)){
-				$sendParams['userAgent'] = $this->userAgent;
+				$sendParams->userAgent = $this->userAgent;
 			}
 			
 			if (!empty($this->timeout)){
-				$sendParams['timeout'] = $this->timeout;
+				$sendParams->timeout = $this->timeout;
 			}
 			
 			if (!empty($this->proxy)){
-				$sendParams['proxy'] = $this->proxy;
+				$sendParams->proxy = $this->proxy;
 			}
 			
 			$requestResult = \DDTools\Snippet::runSnippet([
