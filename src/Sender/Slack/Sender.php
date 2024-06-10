@@ -13,7 +13,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.0.7 (2024-06-07)
+	 * @version 1.1 (2024-06-10)
 	 * 
 	 * @desc Send message to Slack.
 	 * 
@@ -21,10 +21,15 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	 * @return $result[0] {0|1} — Status.
 	 */
 	public function send(){
-		$result = [];
+		$errorData = (object) [
+			'isError' => true,
+			//Only 19 signs are allowed here in MODX event log :|
+			'title' => 'Check required parameters',
+			'message' => '',
+		];
 		
 		if ($this->canSend){
-			$result[0] = 0;
+			$errorData->title = 'Unexpected API error';
 			
 			$sendParams = [
 				'url' => $this->url,
@@ -44,12 +49,41 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 				'params' => $sendParams,
 			]);
 			
-			if ($requestResult == 'ok'){
-				$result[0] = 1;
+			$errorData->isError = $requestResult != 'ok';
+			
+			if ($errorData->isError){
+				$errorData->message =
+					'<p>Request result:</p><pre><code>'
+						. var_export(
+							$requestResult,
+							true
+						)
+					. '</code></pre>'
+				;
 			}
 		}
 		
-		return $result;
+		//Log errors
+		if ($errorData->isError){
+			$errorData->message .=
+				'<p>$this:</p><pre><code>'
+					. var_export(
+						$this,
+						true
+					)
+				. '</code></pre>'
+			;
+			
+			\ddTools::logEvent([
+				'message' => $errorData->message,
+				'source' => 'ddSendFeedback → Slack: ' . $errorData->title,
+				'eventType' => 'error',
+			]);
+		}
+		
+		return [
+			0 => !$errorData->isError
+		];
 	}
 }
 ?>
