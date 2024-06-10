@@ -102,7 +102,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.0.1 (2024-06-07)
+	 * @version 1.1 (2024-06-10)
 	 * 
 	 * @desc Creates an order in LiveSklad.com.
 	 * 
@@ -160,22 +160,31 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 						'notFoundResult' => 'Unexpected API error',
 					]);
 					
-					$errorData->message = $requestResult;
+					$errorData->message =
+						'<p>Request result:</p><pre><code>'
+							. var_export(
+								$requestResult,
+								true
+							)
+						. '</code></pre>'
+					;
 				}
 			}
 		}
 		
 		//Log errors
 		if ($errorData->isError){
+			$errorData->message .=
+				'<p>$this:</p><pre><code>'
+					. var_export(
+						$this,
+						true
+					)
+				. '</code></pre>'
+			;
+			
 			\ddTools::logEvent([
-				'message' =>
-					'<pre><code>'
-						. var_export(
-							$errorData->message,
-							true
-						)
-					. '</code></pre>'
-				,
+				'message' => $errorData->message,
 				'source' => 'ddSendFeedback → CRMLiveSklad: ' . $errorData->title,
 				'eventType' => 'error',
 			]);
