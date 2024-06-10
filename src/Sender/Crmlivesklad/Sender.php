@@ -102,7 +102,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1 (2024-06-10)
+	 * @version 1.1.1 (2024-06-10)
 	 * 
 	 * @desc Creates an order in LiveSklad.com.
 	 * 
@@ -118,6 +118,8 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		];
 		
 		if ($this->canSend){
+			$errorData->title = 'Unexpected API error';
+			
 			$this->fillAuthToken();
 			
 			if (empty($this->authTokenData->token)){
@@ -157,7 +159,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 					$errorData->title = \DDTools\ObjectTools::getPropValue([
 						'object' => $requestResult,
 						'propName' => 'error.message',
-						'notFoundResult' => 'Unexpected API error',
+						'notFoundResult' => $errorData->title,
 					]);
 					
 					$errorData->message =
