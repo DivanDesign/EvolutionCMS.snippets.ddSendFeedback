@@ -62,7 +62,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.3.3 (2024-06-07)
+	 * @version 1.4 (2024-06-10)
 	 * 
 	 * @desc Send messege to a Telegram chat.
 	 * 
@@ -70,10 +70,15 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	 * @return $result[0] {0|1} — Status.
 	 */
 	public function send(){
-		$result = [];
+		$errorData = (object) [
+			'isError' => true,
+			//Only 19 signs are allowed here in MODX event log :|
+			'title' => 'Check required parameters',
+			'message' => '',
+		];
 		
 		if ($this->canSend){
-			$result[0] = 0;
+			$errorData->title = 'Unexpected API error';
 			
 			$sendParams = [
 				'url' => \ddTools::parseText([
@@ -102,39 +107,54 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 				'type' => 'objectStdClass',
 			]);
 			
-			//Everything is ok
-			if (
+			$errorData->isError =
 				\DDTools\ObjectTools::getPropValue([
 					'object' => $requestResult,
 					'propName' => 'ok',
 				])
-				== true
-			){
-				$result[0] = 1;
-			}else{
-				//Если ошибка, то залогируем
-				\ddTools::logEvent([
-					'message' =>
-						'<p>$this:</p><code><pre>' .
-						print_r(
-							$this,
-							true
-						) .
-						'</pre></code>' .
-						'<p>$requestResult</p><code><pre>' .
-						print_r(
+				!= true
+			;
+			
+			if ($errorData->isError){
+				//Try to get error title from LiveSklad API
+				$errorData->title = \DDTools\ObjectTools::getPropValue([
+					'object' => $requestResult,
+					'propName' => 'description',
+					'notFoundResult' => $errorData->title,
+				]);
+				
+				$errorData->message =
+					'<p>Request result:</p><pre><code>'
+						. var_export(
 							$requestResult,
 							true
-						) .
-						'</pre></code>'
-					,
-					'source' => 'ddSendFeedback → Telegram',
-					'eventType' => 'error'
-				]);
+						)
+					. '</code></pre>'
+				;
 			}
 		}
 		
-		return $result;
+		//Log errors
+		if ($errorData->isError){
+			$errorData->message .=
+				'<p>$this:</p><pre><code>'
+					. var_export(
+						$this,
+						true
+					)
+				. '</code></pre>'
+			;
+			
+			\ddTools::logEvent([
+				'message' => $errorData->message,
+				'source' => 'ddSendFeedback → Telegram: ' . $errorData->title,
+				'eventType' => 'error',
+			]);
+		}
+		
+		return [
+			0 => !$errorData->isError
+		];
 	}
 }
 ?>
