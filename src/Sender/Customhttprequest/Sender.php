@@ -16,18 +16,23 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.3.3 (2024-06-07)
+	 * @version 1.4 (2024-06-10)
 	 * 
-	 * @desc Send message to Slack.
+	 * @desc Send message to custom URL.
 	 * 
 	 * @return $result {array} — Returns the array of send status.
 	 * @return $result[0] {0|1} — Status.
 	 */
 	public function send(){
-		$result = [];
+		$errorData = (object) [
+			'isError' => true,
+			//Only 19 signs are allowed here in MODX event log :|
+			'title' => 'Check required parameters',
+			'message' => '',
+		];
 		
 		if ($this->canSend){
-			$result[0] = 0;
+			$errorData->title = 'Unexpected API error';
 			
 			$sendParams =
 				[
@@ -68,10 +73,41 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			]);
 			
 			//TODO: Improve it
-			$result[0] = boolval($requestResult);
+			$errorData->isError = boolval($requestResult);
+			
+			if ($errorData->isError){
+				$errorData->message =
+					'<p>Request result:</p><pre><code>'
+						. var_export(
+							$requestResult,
+							true
+						)
+					. '</code></pre>'
+				;
+			}
 		}
 		
-		return $result;
+		//Log errors
+		if ($errorData->isError){
+			$errorData->message .=
+				'<p>$this:</p><pre><code>'
+					. var_export(
+						$this,
+						true
+					)
+				. '</code></pre>'
+			;
+			
+			\ddTools::logEvent([
+				'message' => $errorData->message,
+				'source' => 'ddSendFeedback → CRMLiveSklad: ' . $errorData->title,
+				'eventType' => 'error',
+			]);
+		}
+		
+		return [
+			0 => !$errorData->isError
+		];
 	}
 }
 ?>
