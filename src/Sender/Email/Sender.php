@@ -30,7 +30,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.1 (2024-06-10)
+	 * @version 1.1.2 (2024-06-10)
 	 * 
 	 * @desc Send emails.
 	 * 
@@ -50,24 +50,9 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		if ($this->canSend){
 			$errorData->title = 'Sending error';
 			
-			$sendParams = (object) [
-				'to' => $this->to,
-				'text' => $this->text,
-				'subject' => $this->subject,
-			];
-			
-			if(!empty($this->fileInputNames)){
-				$sendParams->fileInputNames = explode(
-					',',
-					$this->fileInputNames
-				);
-			}
-			
-			if (!empty($this->from)){
-				$sendParams->from = $this->from;
-			}
-			
-			$result = \ddTools::sendMail($sendParams);
+			$result = \ddTools::sendMail(
+				$this->send_prepareRequestParams()
+			);
 			
 			$errorData->isError = in_array(
 				0,
@@ -102,6 +87,33 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 				'source' => 'ddSendFeedback → Email: ' . $errorData->title,
 				'eventType' => 'error',
 			]);
+		}
+		
+		return $result;
+	}
+	
+	/**
+	 * send_prepareRequestParams
+	 * @version 1.0 (2024-06-10)
+	 *
+	 * @return $result {\stdClass}
+	 */
+	protected function send_prepareRequestParams(): \stdClass {
+		$result = (object) [
+			'to' => $this->to,
+			'text' => $this->text,
+			'subject' => $this->subject,
+		];
+		
+		if(!empty($this->fileInputNames)){
+			$result->fileInputNames = explode(
+				',',
+				$this->fileInputNames
+			);
+		}
+		
+		if (!empty($this->from)){
+			$result->from = $this->from;
 		}
 		
 		return $result;

@@ -13,7 +13,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.1 (2024-06-10)
+	 * @version 1.1.2 (2024-06-10)
 	 * 
 	 * @desc Send message to Slack.
 	 * 
@@ -31,22 +31,9 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		if ($this->canSend){
 			$errorData->title = 'Unexpected API error';
 			
-			$sendParams = (object) [
-				'url' => $this->url,
-				'method' => 'post',
-				'postData' => json_encode([
-					'text' => $this->text,
-					'channel' => $this->channel,
-					'username' => $this->botName,
-					'icon_emoji' => $this->botIcon
-				]),
-				'sendRawPostData' => true,
-				'headers' => 'application/json'
-			];
-			
 			$requestResult = \DDTools\Snippet::runSnippet([
 				'name' => 'ddMakeHttpRequest',
-				'params' => $sendParams,
+				'params' => $this->send_prepareRequestParams(),
 			]);
 			
 			$errorData->isError = $requestResult != 'ok';
@@ -83,6 +70,27 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		
 		return [
 			0 => !$errorData->isError
+		];
+	}
+	
+	/**
+	 * send_prepareRequestParams
+	 * @version 1.0 (2024-06-10)
+	 * 
+	 * @return $result {\stdClass}
+	 */
+	protected function send_prepareRequestParams(): \stdClass {
+		return (object) [
+			'url' => $this->url,
+			'method' => 'post',
+			'postData' => json_encode([
+				'text' => $this->text,
+				'channel' => $this->channel,
+				'username' => $this->botName,
+				'icon_emoji' => $this->botIcon
+			]),
+			'sendRawPostData' => true,
+			'headers' => 'application/json'
 		];
 	}
 }

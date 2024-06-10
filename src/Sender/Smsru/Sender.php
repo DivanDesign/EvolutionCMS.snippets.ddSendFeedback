@@ -19,7 +19,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.2.1 (2024-06-10)
+	 * @version 1.2.2 (2024-06-10)
 	 * 
 	 * @desc Send sms via sms.ru.
 	 * 
@@ -37,25 +37,10 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		if ($this->canSend){
 			$errorData->title = 'Unexpected API error';
 			
-			$url =
-				$this->url .
-				'&api_id=' . $this->apiId .
-				'&to=' . $this->to .
-				'&msg=' . urlencode($this->text)
-			;
-			
-			if(isset($this->from)){
-				$url .= '&from=' . $this->from;
-			}
-			
-			$sendParams = (object) [
-				'url' => $url,
-			];
-			
 			//отсылаем смс
 			$requestResult = \DDTools\Snippet::runSnippet([
 				'name' => 'ddMakeHttpRequest',
-				'params' => $sendParams,
+				'params' => $this->send_prepareRequestParams(),
 			]);
 			
 			$requestResult = \DDTools\ObjectTools::convertType([
@@ -103,6 +88,29 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		
 		return [
 			0 => !$errorData->isError
+		];
+	}
+	
+	/**
+	 * send_prepareRequestParams
+	 * @version 1.0 (2024-06-10)
+	 * 
+	 * @return $result {\stdClass}
+	 */
+	protected function send_prepareRequestParams(): \stdClass {
+		$url =
+			$this->url .
+			'&api_id=' . $this->apiId .
+			'&to=' . $this->to .
+			'&msg=' . urlencode($this->text)
+		;
+		
+		if(isset($this->from)){
+			$url .= '&from=' . $this->from;
+		}
+		
+		return (object) [
+			'url' => $url,
 		];
 	}
 }

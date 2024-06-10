@@ -62,7 +62,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.4.1 (2024-06-10)
+	 * @version 1.4.2 (2024-06-10)
 	 * 
 	 * @desc Send messege to a Telegram chat.
 	 * 
@@ -80,26 +80,10 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		if ($this->canSend){
 			$errorData->title = 'Unexpected API error';
 			
-			$sendParams = (object) [
-				'url' => \ddTools::parseText([
-					'text' => $this->url,
-					'data' => [
-						'botToken' => $this->botToken,
-						'chatId' => $this->chatId,
-						'text' => urlencode($this->text),
-						'textMarkupSyntax' => $this->textMarkupSyntax,
-						'disableWebPagePreview' => intval($this->disableWebPagePreview)
-					],
-					//TODO: Why is it disabled? Add a comment or enable.
-					'isCompletelyParsingEnabled' => false
-				]),
-				'proxy' => $this->proxy
-			];
-			
 			//Отсылаем сообщение
 			$requestResult = \DDTools\Snippet::runSnippet([
 				'name' => 'ddMakeHttpRequest',
-				'params' => $sendParams,
+				'params' => $this->send_prepareRequestParams(),
 			]);
 			
 			$requestResult = \DDTools\ObjectTools::convertType([
@@ -154,6 +138,30 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		
 		return [
 			0 => !$errorData->isError
+		];
+	}
+	
+	/**
+	 * send_prepareRequestParams
+	 * @version 1.0 (2024-06-10)
+	 * 
+	 * @return $result {\stdClass}
+	 */
+	protected function send_prepareRequestParams(): \stdClass {
+		return (object) [
+			'url' => \ddTools::parseText([
+				'text' => $this->url,
+				'data' => [
+					'botToken' => $this->botToken,
+					'chatId' => $this->chatId,
+					'text' => urlencode($this->text),
+					'textMarkupSyntax' => $this->textMarkupSyntax,
+					'disableWebPagePreview' => intval($this->disableWebPagePreview)
+				],
+				//TODO: Why is it disabled? Add a comment or enable.
+				'isCompletelyParsingEnabled' => false
+			]),
+			'proxy' => $this->proxy
 		];
 	}
 }

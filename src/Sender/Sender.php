@@ -123,5 +123,13 @@ abstract class Sender extends \DDTools\BaseClass {
 	 * @return $result[i] {0|1} — Success or fail.
 	 */
 	abstract public function send();
+	
+	/**
+	 * send_prepareRequestParams
+	 * @version 1.0 (2024-06-10)
+	 * 
+	 * @return $result {\stdClass}
+	 */
+	abstract protected function send_prepareRequestParams(): \stdClass;
 }
 ?>

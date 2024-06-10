@@ -102,7 +102,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.2 (2024-06-10)
+	 * @version 1.1.3 (2024-06-10)
 	 * 
 	 * @desc Creates an order in LiveSklad.com.
 	 * 
@@ -125,18 +125,9 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			if (empty($this->authTokenData->token)){
 				$errorData->title = 'Authorization failed';
 			}else{
-				$sendParams = (object) [
-					'url' => $this->urls->orders,
-					'method' => 'post',
-					'headers' => [
-						'Authorization: ' . $this->authTokenData->token
-					],
-					'postData' => $this->text,
-				];
-				
 				$requestResult = \DDTools\Snippet::runSnippet([
 					'name' => 'ddMakeHttpRequest',
-					'params' => $sendParams,
+					'params' => $this->send_prepareRequestParams(),
 				]);
 				
 				$requestResult = \DDTools\ObjectTools::convertType([
@@ -194,6 +185,23 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		
 		return [
 			0 => !$errorData->isError
+		];
+	}
+	
+	/**
+	 * send_prepareRequestParams
+	 * @version 1.0 (2024-06-10)
+	 * 
+	 * @return $result {\stdClass}
+	 */
+	protected function send_prepareRequestParams(): \stdClass {
+		return (object) [
+			'url' => $this->urls->orders,
+			'method' => 'post',
+			'headers' => [
+				'Authorization: ' . $this->authTokenData->token
+			],
+			'postData' => $this->text,
 		];
 	}
 }
