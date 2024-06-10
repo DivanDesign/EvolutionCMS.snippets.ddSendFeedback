@@ -30,7 +30,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.0.3 (2024-06-07)
+	 * @version 1.1 (2024-06-10)
 	 * 
 	 * @desc Send emails.
 	 * 
@@ -38,9 +38,18 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	 * @return $result[i] {0|1} — Status.
 	 */
 	public function send(){
+		$errorData = (object) [
+			'isError' => true,
+			//Only 19 signs are allowed here in MODX event log :|
+			'title' => 'Check required parameters',
+			'message' => '',
+		];
+		
 		$result = [];
 		
 		if ($this->canSend){
+			$errorData->title = 'Sending error';
+			
 			$sendParams = [
 				'to' => $this->to,
 				'text' => $this->text,
@@ -59,6 +68,40 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			}
 			
 			$result = \ddTools::sendMail($sendParams);
+			
+			$errorData->isError = in_array(
+				0,
+				$result
+			);
+			
+			if ($errorData->isError){
+				$errorData->message =
+					'<p>Sending result:</p><pre><code>'
+						. var_export(
+							$result,
+							true
+						)
+					. '</code></pre>'
+				;
+			}
+		}
+		
+		//Log errors
+		if ($errorData->isError){
+			$errorData->message .=
+				'<p>$this:</p><pre><code>'
+					. var_export(
+						$this,
+						true
+					)
+				. '</code></pre>'
+			;
+			
+			\ddTools::logEvent([
+				'message' => $errorData->message,
+				'source' => 'ddSendFeedback → Email: ' . $errorData->title,
+				'eventType' => 'error',
+			]);
 		}
 		
 		return $result;
