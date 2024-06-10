@@ -13,15 +13,33 @@ abstract class Sender extends \DDTools\BaseClass {
 		$textMarkupSyntax = 'html',
 		
 		$requiredProps = ['tpl'],
-		$canSend = true
+		$canSend = true,
+		
+		/**
+		 * @property $requestResultParams {stdClass}
+		 * @property $requestResultParams->isObject {boolean} — Is the result of the request an object or not? It is needed to check if the request is successful. If `false`, the response will be checked as a boolean. It is computed automatically from the siblings values.
+		 */
+		$requestResultParams = [
+			'checkValue' => true,
+			'isCheckTypeSuccess' => true,
+			'checkPropName' => null,
+			
+			'isObject' => false,
+		]
 	;
 	
 	/**
 	 * __construct
-	 * @version 1.4.4 (2024-06-06)
+	 * @version 1.5 (2024-06-10)
 	 */
 	public function __construct($params = []){
 		$this->setExistingProps($params);
+		
+		$this->requestResultParams = (object) $this->requestResultParams;
+		
+		if (!\ddTools::isEmpty($this->requestResultParams->checkPropName)){
+			$this->requestResultParams->isObject = true;
+		}
 		
 		//$this->tpl is always required in all senders
 		array_unshift(

@@ -16,7 +16,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.4.2 (2024-06-10)
+	 * @version 1.5 (2024-06-10)
 	 * 
 	 * @desc Send message to custom URL.
 	 * 
@@ -39,8 +39,25 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 				'params' => $this->send_prepareRequestParams(),
 			]);
 			
-			//TODO: Improve it
-			$errorData->isError = boolval($requestResult);
+			$requestResult_checkValue = $requestResult;
+			
+			if ($this->requestResultParams->isObject){
+				$requestResult = \DDTools\ObjectTools::convertType([
+					'object' => $requestResult,
+					'type' => 'objectStdClass',
+				]);
+				
+				$requestResult_checkValue = \DDTools\ObjectTools::getPropValue([
+					'object' => $requestResult,
+					'propName' => $this->requestResultParams->checkPropName,
+				]);
+			}
+			
+			$errorData->isError =
+				$this->requestResultParams->isCheckTypeSuccess
+				? $requestResult_checkValue != $this->requestResultParams->checkValue
+				: $requestResult_checkValue == $this->requestResultParams->checkValue
+			;
 			
 			if ($errorData->isError){
 				$errorData->message =

@@ -346,11 +346,33 @@ require_once(
 	* Valid values: `integer`
 	* Default value: `60`
 	
-* `senders->telegram->proxy`
-	* Description: Proxy server in format `'protocol://user:password@ip:port'`.  
-		E. g. `'theuser:qwerty123@11.22.33.44:5555'` or `'socks5://someuser:somepassword@11.22.33.44:5555'`.
-	* Valid values: `string`
-	* Default value: —
+* `senders->customhttprequest->requestResultParams`
+	* Description: Parameters for response parsing.
+	* Valid values: `object`
+	* Default value: — (see below)
+	
+* `senders->customhttprequest->requestResultParams->checkValue`
+	* Description: Value considered as success/failure.
+	* Valid values: `mixed`
+	* Default value: `true`
+	
+* `senders->customhttprequest->requestResultParams->isCheckTypeSuccess`
+	* Description: Checking the success or failure?
+	* Valid values:
+		* `true` — use if the response contains data about successful status (e. g. response: `{"success": true}`)
+		* `false` — use if the response contains data about failure status (e. g. response: `{"error": true}`)
+	* Default value: `true`
+	
+* `senders->customhttprequest->requestResultParams->checkPropName`
+	* Description: Name of the response property to check for success/failure status.
+		* Use it only if the response is an object. In this case the Sender will convert the response data into an object and get the required property value to check success/failure.
+		* You can also use `'.'` to get nested properties. Several examples:
+			* `error`, `ok`, `success`, `status` — get first-level property
+			* `sms.status` — get second-level property
+	* Valid values:
+		* `null` — means that response is not an object
+		* `string` — property name for checking if response is object
+	* Default value: `null`
 
 
 ### Examples
