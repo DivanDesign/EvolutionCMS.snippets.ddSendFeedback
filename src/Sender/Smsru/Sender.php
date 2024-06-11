@@ -90,12 +90,12 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	}
 	
 	/**
-	 * send_prepareRequestParams
-	 * @version 1.0 (2024-06-10)
+	 * send_request_prepareParams
+	 * @version 1.0.1 (2024-06-11)
 	 * 
 	 * @return $result {\stdClass}
 	 */
-	protected function send_prepareRequestParams(): \stdClass {
+	protected function send_request_prepareParams(): \stdClass {
 		$url =
 			$this->url .
 			'&api_id=' . $this->apiId .

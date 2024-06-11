@@ -144,24 +144,24 @@ abstract class Sender extends \DDTools\BaseClass {
 	
 	/**
 	 * send_request
-	 * @version 1.0 (2024-06-11)
+	 * @version 1.0.1 (2024-06-11)
 	 * 
 	 * @return $result {mixed}
 	 */
 	protected function send_request(){
 		return \DDTools\Snippet::runSnippet([
 			'name' => 'ddMakeHttpRequest',
-			'params' => $this->send_prepareRequestParams(),
+			'params' => $this->send_request_prepareParams(),
 		]);
 	}
 	
 	/**
-	 * send_prepareRequestParams
-	 * @version 1.0 (2024-06-10)
+	 * send_request_prepareParams
+	 * @version 1.0.1 (2024-06-11)
 	 * 
 	 * @return $result {\stdClass}
 	 */
-	abstract protected function send_prepareRequestParams(): \stdClass;
+	abstract protected function send_request_prepareParams(): \stdClass;
 	
 	/**
 	 * send_parseRequestResult
