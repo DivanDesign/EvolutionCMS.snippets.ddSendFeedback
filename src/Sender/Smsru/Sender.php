@@ -28,7 +28,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.2.3 (2024-06-11)
+	 * @version 1.2.4 (2024-06-11)
 	 * 
 	 * @desc Send sms via sms.ru.
 	 * 
@@ -49,10 +49,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			$this->requestResultParams->checkPropName = 'sms.' . $this->to . '.status';
 			
 			$requestResult = $this->send_parseRequestResult(
-				\DDTools\Snippet::runSnippet([
-					'name' => 'ddMakeHttpRequest',
-					'params' => $this->send_prepareRequestParams(),
-				])
+				$this->send_request()
 			);
 			
 			$errorData->isError = $requestResult->isError;

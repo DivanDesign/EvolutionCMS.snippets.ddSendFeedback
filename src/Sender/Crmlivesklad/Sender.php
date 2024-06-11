@@ -111,7 +111,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.4 (2024-06-11)
+	 * @version 1.1.5 (2024-06-11)
 	 * 
 	 * @desc Creates an order in LiveSklad.com.
 	 * 
@@ -135,10 +135,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 				$errorData->title = 'Authorization failed';
 			}else{
 				$requestResult = $this->send_parseRequestResult(
-					\DDTools\Snippet::runSnippet([
-						'name' => 'ddMakeHttpRequest',
-						'params' => $this->send_prepareRequestParams(),
-					])
+					$this->send_request()
 				);
 				
 				$errorData->isError = $requestResult->isError;

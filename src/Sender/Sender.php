@@ -143,6 +143,19 @@ abstract class Sender extends \DDTools\BaseClass {
 	abstract public function send();
 	
 	/**
+	 * send_request
+	 * @version 1.0 (2024-06-11)
+	 * 
+	 * @return $result {mixed}
+	 */
+	protected function send_request(){
+		return \DDTools\Snippet::runSnippet([
+			'name' => 'ddMakeHttpRequest',
+			'params' => $this->send_prepareRequestParams(),
+		]);
+	}
+	
+	/**
 	 * send_prepareRequestParams
 	 * @version 1.0 (2024-06-10)
 	 * 

@@ -30,7 +30,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.4 (2024-06-11)
+	 * @version 1.1.5 (2024-06-11)
 	 * 
 	 * @desc Send emails.
 	 * 
@@ -51,9 +51,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			$errorData->title = 'Sending error';
 			
 			$requestResult = $this->send_parseRequestResult(
-				\ddTools::sendMail(
-					$this->send_prepareRequestParams()
-				)
+				$this->send_request()
 			);
 			
 			$errorData->isError = $requestResult->isError;
@@ -89,6 +87,18 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		}
 		
 		return $requestResult->data;
+	}
+	
+	/**
+	 * send_request
+	 * @version 1.0 (2024-06-11)
+	 * 
+	 * @return $result {array}
+	 */
+	protected function send_request(){
+		return \ddTools::sendMail(
+			$this->send_prepareRequestParams()
+		);
 	}
 	
 	/**

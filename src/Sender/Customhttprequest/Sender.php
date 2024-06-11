@@ -16,7 +16,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.5.1 (2024-06-11)
+	 * @version 1.5.2 (2024-06-11)
 	 * 
 	 * @desc Send message to custom URL.
 	 * 
@@ -35,10 +35,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			$errorData->title = 'Unexpected API error';
 			
 			$requestResult = $this->send_parseRequestResult(
-				\DDTools\Snippet::runSnippet([
-					'name' => 'ddMakeHttpRequest',
-					'params' => $this->send_prepareRequestParams(),
-				])
+				$this->send_request()
 			);
 			
 			$errorData->isError = $requestResult->isError;
