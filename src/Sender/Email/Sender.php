@@ -30,7 +30,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.3 (2024-06-11)
+	 * @version 1.1.4 (2024-06-11)
 	 * 
 	 * @desc Send emails.
 	 * 
@@ -50,20 +50,19 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		if ($this->canSend){
 			$errorData->title = 'Sending error';
 			
-			$requestResult = \ddTools::sendMail(
-				$this->send_prepareRequestParams()
+			$requestResult = $this->send_parseRequestResult(
+				\ddTools::sendMail(
+					$this->send_prepareRequestParams()
+				)
 			);
 			
-			$errorData->isError = in_array(
-				0,
-				$requestResult
-			);
+			$errorData->isError = $requestResult->isError;
 			
 			if ($errorData->isError){
 				$errorData->message =
 					'<p>Request result:</p><pre><code>'
 						. var_export(
-							$requestResult,
+							$requestResult->data,
 							true
 						)
 					. '</code></pre>'
@@ -89,7 +88,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			]);
 		}
 		
-		return $requestResult;
+		return $requestResult->data;
 	}
 	
 	/**
@@ -115,6 +114,28 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		if (!empty($this->from)){
 			$result->from = $this->from;
 		}
+		
+		return $result;
+	}
+	
+	/**
+	 * send_parseRequestResult
+	 * @version 1.0 (2024-06-11)
+	 * 
+	 * @return $result {\stdClass}
+	 * @return $result->data {mixed}
+	 * @return $result->isError {boolean}
+	 */
+	protected function send_parseRequestResult($rawData): \stdClass {
+		$result = (object) [
+			'data' => $rawData,
+			'isError' => true,
+		];
+		
+		$result->isError = in_array(
+			0,
+			$result->data
+		);
 		
 		return $result;
 	}

@@ -10,6 +10,15 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		$requiredProps = [
 			'apiId',
 			'to'
+		],
+		
+		$requestResultParams = [
+			'checkValue' => 'OK',
+			'isCheckTypeSuccess' => true,
+			//Just something, a real value will be set in every call of `$this->send`
+			'checkPropName' => 'sms.[+phoneNumber+].status',
+			
+			'isObject' => true,
 		]
 	;
 	
@@ -19,7 +28,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.2.2 (2024-06-10)
+	 * @version 1.2.3 (2024-06-11)
 	 * 
 	 * @desc Send sms via sms.ru.
 	 * 
@@ -37,30 +46,22 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		if ($this->canSend){
 			$errorData->title = 'Unexpected API error';
 			
-			//отсылаем смс
-			$requestResult = \DDTools\Snippet::runSnippet([
-				'name' => 'ddMakeHttpRequest',
-				'params' => $this->send_prepareRequestParams(),
-			]);
+			$this->requestResultParams->checkPropName = 'sms.' . $this->to . '.status';
 			
-			$requestResult = \DDTools\ObjectTools::convertType([
-				'object' => $requestResult,
-				'type' => 'objectStdClass',
-			]);
-			
-			$errorData->isError =
-				\DDTools\ObjectTools::getPropValue([
-					'object' => $requestResult,
-					'propName' => 'sms.' . $this->to . '.status',
+			$requestResult = $this->send_parseRequestResult(
+				\DDTools\Snippet::runSnippet([
+					'name' => 'ddMakeHttpRequest',
+					'params' => $this->send_prepareRequestParams(),
 				])
-				!= 'OK'
-			;
+			);
+			
+			$errorData->isError = $requestResult->isError;
 			
 			if ($errorData->isError){
 				$errorData->message =
 					'<p>Request result:</p><pre><code>'
 						. var_export(
-							$requestResult,
+							$requestResult->data,
 							true
 						)
 					. '</code></pre>'

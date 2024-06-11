@@ -16,7 +16,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.5 (2024-06-10)
+	 * @version 1.5.1 (2024-06-11)
 	 * 
 	 * @desc Send message to custom URL.
 	 * 
@@ -34,36 +34,20 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		if ($this->canSend){
 			$errorData->title = 'Unexpected API error';
 			
-			$requestResult = \DDTools\Snippet::runSnippet([
-				'name' => 'ddMakeHttpRequest',
-				'params' => $this->send_prepareRequestParams(),
-			]);
+			$requestResult = $this->send_parseRequestResult(
+				\DDTools\Snippet::runSnippet([
+					'name' => 'ddMakeHttpRequest',
+					'params' => $this->send_prepareRequestParams(),
+				])
+			);
 			
-			$requestResult_checkValue = $requestResult;
-			
-			if ($this->requestResultParams->isObject){
-				$requestResult = \DDTools\ObjectTools::convertType([
-					'object' => $requestResult,
-					'type' => 'objectStdClass',
-				]);
-				
-				$requestResult_checkValue = \DDTools\ObjectTools::getPropValue([
-					'object' => $requestResult,
-					'propName' => $this->requestResultParams->checkPropName,
-				]);
-			}
-			
-			$errorData->isError =
-				$this->requestResultParams->isCheckTypeSuccess
-				? $requestResult_checkValue != $this->requestResultParams->checkValue
-				: $requestResult_checkValue == $this->requestResultParams->checkValue
-			;
+			$errorData->isError = $requestResult->isError;
 			
 			if ($errorData->isError){
 				$errorData->message =
 					'<p>Request result:</p><pre><code>'
 						. var_export(
-							$requestResult,
+							$requestResult->data,
 							true
 						)
 					. '</code></pre>'

@@ -149,5 +149,42 @@ abstract class Sender extends \DDTools\BaseClass {
 	 * @return $result {\stdClass}
 	 */
 	abstract protected function send_prepareRequestParams(): \stdClass;
+	
+	/**
+	 * send_parseRequestResult
+	 * @version 1.0 (2024-06-11)
+	 * 
+	 * @return $result {\stdClass}
+	 * @return $result->data {mixed}
+	 * @return $result->isError {boolean}
+	 */
+	protected function send_parseRequestResult($rawData): \stdClass {
+		$result = (object) [
+			'data' => $rawData,
+			'isError' => true,
+		];
+		
+		$requestResult_checkValue = $result->data;
+		
+		if ($this->requestResultParams->isObject){
+			$result->data = \DDTools\ObjectTools::convertType([
+				'object' => $result->data,
+				'type' => 'objectStdClass',
+			]);
+			
+			$requestResult_checkValue = \DDTools\ObjectTools::getPropValue([
+				'object' => $result->data,
+				'propName' => $this->requestResultParams->checkPropName,
+			]);
+		}
+		
+		$result->isError =
+			$this->requestResultParams->isCheckTypeSuccess
+			? $requestResult_checkValue != $this->requestResultParams->checkValue
+			: $requestResult_checkValue == $this->requestResultParams->checkValue
+		;
+		
+		return $result;
+	}
 }
 ?>

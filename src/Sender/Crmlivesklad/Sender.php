@@ -11,6 +11,15 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			'login',
 			'password',
 			'shopId',
+		],
+		
+		$requestResultParams = [
+			//LiveSklad API returns an object like `{"error": {"statusCode": 401, name: "Error",  message: "Access denied"}}` but any object will equal `true`
+			'checkValue' => true,
+			'isCheckTypeSuccess' => false,
+			'checkPropName' => 'error',
+			
+			'isObject' => true,
 		]
 	;
 	private
@@ -102,7 +111,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.3 (2024-06-10)
+	 * @version 1.1.4 (2024-06-11)
 	 * 
 	 * @desc Creates an order in LiveSklad.com.
 	 * 
@@ -125,30 +134,19 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			if (empty($this->authTokenData->token)){
 				$errorData->title = 'Authorization failed';
 			}else{
-				$requestResult = \DDTools\Snippet::runSnippet([
-					'name' => 'ddMakeHttpRequest',
-					'params' => $this->send_prepareRequestParams(),
-				]);
-				
-				$requestResult = \DDTools\ObjectTools::convertType([
-					'object' => $requestResult,
-					'type' => 'objectStdClass',
-				]);
-				
-				$errorData->isError =
-					//Response error
-					\ddTools::isEmpty($requestResult)
-					//Some error from LiveSklad (e. g. 'Access denied', 'Incorrect field typeOrderId', etc)
-					|| \DDTools\ObjectTools::isPropExists([
-						'object' => $requestResult,
-						'propName' => 'error',
+				$requestResult = $this->send_parseRequestResult(
+					\DDTools\Snippet::runSnippet([
+						'name' => 'ddMakeHttpRequest',
+						'params' => $this->send_prepareRequestParams(),
 					])
-				;
+				);
+				
+				$errorData->isError = $requestResult->isError;
 				
 				if ($errorData->isError){
 					//Try to get error title from LiveSklad API
 					$errorData->title = \DDTools\ObjectTools::getPropValue([
-						'object' => $requestResult,
+						'object' => $requestResult->data,
 						'propName' => 'error.message',
 						'notFoundResult' => $errorData->title,
 					]);
@@ -156,7 +154,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 					$errorData->message =
 						'<p>Request result:</p><pre><code>'
 							. var_export(
-								$requestResult,
+								$requestResult->data,
 								true
 							)
 						. '</code></pre>'

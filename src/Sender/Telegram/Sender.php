@@ -19,6 +19,18 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		$requiredProps = [
 			'botToken',
 			'chatId'
+		],
+		
+		/**
+		 * @property $requestResultParams {stdClass}
+		 * @property $requestResultParams->isObject {boolean} — Is the result of the request an object or not? It is needed to check if the request is successful. If `false`, the response will be checked as a boolean. It is computed automatically from the siblings values.
+		 */
+		$requestResultParams = [
+			'checkValue' => true,
+			'isCheckTypeSuccess' => true,
+			'checkPropName' => 'ok',
+			
+			'isObject' => true,
 		]
 	;
 	
@@ -62,7 +74,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.4.2 (2024-06-10)
+	 * @version 1.4.3 (2024-06-11)
 	 * 
 	 * @desc Send messege to a Telegram chat.
 	 * 
@@ -80,29 +92,19 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		if ($this->canSend){
 			$errorData->title = 'Unexpected API error';
 			
-			//Отсылаем сообщение
-			$requestResult = \DDTools\Snippet::runSnippet([
-				'name' => 'ddMakeHttpRequest',
-				'params' => $this->send_prepareRequestParams(),
-			]);
-			
-			$requestResult = \DDTools\ObjectTools::convertType([
-				'object' => $requestResult,
-				'type' => 'objectStdClass',
-			]);
-			
-			$errorData->isError =
-				\DDTools\ObjectTools::getPropValue([
-					'object' => $requestResult,
-					'propName' => 'ok',
+			$requestResult = $this->send_parseRequestResult(
+				\DDTools\Snippet::runSnippet([
+					'name' => 'ddMakeHttpRequest',
+					'params' => $this->send_prepareRequestParams(),
 				])
-				!= true
-			;
+			);
+			
+			$errorData->isError = $requestResult->isError;
 			
 			if ($errorData->isError){
 				//Try to get error title from LiveSklad API
 				$errorData->title = \DDTools\ObjectTools::getPropValue([
-					'object' => $requestResult,
+					'object' => $requestResult->data,
 					'propName' => 'description',
 					'notFoundResult' => $errorData->title,
 				]);
@@ -110,7 +112,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 				$errorData->message =
 					'<p>Request result:</p><pre><code>'
 						. var_export(
-							$requestResult,
+							$requestResult->data,
 							true
 						)
 					. '</code></pre>'

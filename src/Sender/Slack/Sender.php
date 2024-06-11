@@ -8,12 +8,20 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		$botName = 'ddSendFeedback',
 		$botIcon = ':ghost:',
 		
-		$requiredProps = ['url']
+		$requiredProps = ['url'],
+		
+		$requestResultParams = [
+			'checkValue' => 'ok',
+			'isCheckTypeSuccess' => true,
+			'checkPropName' => null,
+			
+			'isObject' => false,
+		]
 	;
 	
 	/**
 	 * send
-	 * @version 1.1.2 (2024-06-10)
+	 * @version 1.1.3 (2024-06-11)
 	 * 
 	 * @desc Send message to Slack.
 	 * 
@@ -31,18 +39,20 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		if ($this->canSend){
 			$errorData->title = 'Unexpected API error';
 			
-			$requestResult = \DDTools\Snippet::runSnippet([
-				'name' => 'ddMakeHttpRequest',
-				'params' => $this->send_prepareRequestParams(),
-			]);
+			$requestResult = $this->send_parseRequestResult(
+				\DDTools\Snippet::runSnippet([
+					'name' => 'ddMakeHttpRequest',
+					'params' => $this->send_prepareRequestParams(),
+				])
+			);
 			
-			$errorData->isError = $requestResult != 'ok';
+			$errorData->isError = $requestResult->isError;
 			
 			if ($errorData->isError){
 				$errorData->message =
 					'<p>Request result:</p><pre><code>'
 						. var_export(
-							$requestResult,
+							$requestResult->data,
 							true
 						)
 					. '</code></pre>'
