@@ -18,6 +18,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			'checkValue' => true,
 			'isCheckTypeSuccess' => false,
 			'checkPropName' => 'error',
+			'errorMessagePropName' => 'error.message',
 			
 			'isObject' => true,
 		]
@@ -111,7 +112,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.5 (2024-06-11)
+	 * @version 1.1.6 (2024-06-12)
 	 * 
 	 * @desc Creates an order in LiveSklad.com.
 	 * 
@@ -141,12 +142,14 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 				$errorData->isError = $requestResult->isError;
 				
 				if ($errorData->isError){
-					//Try to get error title from LiveSklad API
-					$errorData->title = \DDTools\ObjectTools::getPropValue([
-						'object' => $requestResult->data,
-						'propName' => 'error.message',
-						'notFoundResult' => $errorData->title,
-					]);
+					if (!\ddTools::isEmpty($this->requestResultParams->errorMessagePropName)){
+						//Try to get error title from request result
+						$errorData->title = \DDTools\ObjectTools::getPropValue([
+							'object' => $requestResult->data,
+							'propName' => $this->requestResultParams->errorMessagePropName,
+							'notFoundResult' => $errorData->title,
+						]);
+					}
 					
 					$errorData->message =
 						'<p>Request result:</p><pre><code>'
