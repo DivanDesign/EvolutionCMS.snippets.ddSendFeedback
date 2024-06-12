@@ -1,8 +1,10 @@
 <?php
 namespace ddSendFeedback\Sender;
 
-abstract class Sender extends \DDTools\BaseClass {
-	private 
+abstract class Sender extends \DDTools\Base\Base {
+	use \DDTools\Base\AncestorTrait;
+	
+	private
 		$tpl = '',
 		$tpl_placeholders = [],
 		$tpl_placeholdersFromPost = NULL
