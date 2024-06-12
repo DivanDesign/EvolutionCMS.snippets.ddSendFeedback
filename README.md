@@ -373,6 +373,18 @@ require_once(
 		* `null` — means that response is not an object
 		* `string` — property name for checking if response is object
 	* Default value: `null`
+	
+* `senders->customhttprequest->requestResultParams->errorMessagePropName`
+	* Description: Name of the response property that contains text of an error message.
+		* Use it only if the response is an object.
+		* If you want to use this property, you should define `senders->customhttprequest->requestResultParams->checkPropName`.
+		* You can also use `'.'` to get nested properties. Several examples:
+			* `description`, `title`, `message` — get first-level property
+			* `error.message` — get second-level property
+	* Valid values:
+		* `null` — means that response is not an object
+		* `string` — property name with error message
+	* Default value: `null`
 
 
 ### Examples

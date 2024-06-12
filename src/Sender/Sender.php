@@ -23,6 +23,7 @@ abstract class Sender extends \DDTools\BaseClass {
 			'checkValue' => true,
 			'isCheckTypeSuccess' => true,
 			'checkPropName' => null,
+			'errorMessagePropName' => null,
 			
 			'isObject' => false,
 		]
