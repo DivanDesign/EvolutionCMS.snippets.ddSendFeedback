@@ -15,8 +15,9 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		$requestResultParams = [
 			'checkValue' => 'OK',
 			'isCheckTypeSuccess' => true,
-			//Just something, a real value will be set in every call of `$this->send`
+			//Just something, a real values will be set in every call of `$this->send`
 			'checkPropName' => 'sms.[+phoneNumber+].status',
+			'errorMessagePropName' => 'sms.[+phoneNumber+].status_text',
 			
 			'isObject' => true,
 		]
@@ -28,7 +29,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.2.4 (2024-06-11)
+	 * @version 1.3 (2024-06-12)
 	 * 
 	 * @desc Send sms via sms.ru.
 	 * 
@@ -47,6 +48,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			$errorData->title = 'Unexpected API error';
 			
 			$this->requestResultParams->checkPropName = 'sms.' . $this->to . '.status';
+			$this->requestResultParams->errorMessagePropName = 'sms.' . $this->to . '.status_text';
 			
 			$requestResult = $this->send_parseRequestResult(
 				$this->send_request()
