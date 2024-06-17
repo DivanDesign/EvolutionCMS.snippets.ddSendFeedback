@@ -30,7 +30,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.5 (2024-06-11)
+	 * @version 1.1.6 (2024-06-17)
 	 * 
 	 * @desc Send emails.
 	 * 
@@ -81,7 +81,12 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			
 			\ddTools::logEvent([
 				'message' => $errorData->message,
-				'source' => 'ddSendFeedback → Email: ' . $errorData->title,
+				'source' =>
+					'ddSendFeedback → '
+					. static::getClassName()->namespaceShort
+					. ': '
+					. $errorData->title
+				,
 				'eventType' => 'error',
 			]);
 		}

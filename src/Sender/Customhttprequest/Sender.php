@@ -16,7 +16,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.6 (2024-06-12)
+	 * @version 1.6.1 (2024-06-17)
 	 * 
 	 * @desc Send message to custom URL.
 	 * 
@@ -74,7 +74,12 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			
 			\ddTools::logEvent([
 				'message' => $errorData->message,
-				'source' => 'ddSendFeedback → CRMLiveSklad: ' . $errorData->title,
+				'source' =>
+					'ddSendFeedback → '
+					. static::getClassName()->namespaceShort
+					. ': '
+					. $errorData->title
+				,
 				'eventType' => 'error',
 			]);
 		}

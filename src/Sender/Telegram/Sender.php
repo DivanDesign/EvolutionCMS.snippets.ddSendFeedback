@@ -75,7 +75,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.4.5 (2024-06-12)
+	 * @version 1.4.6 (2024-06-17)
 	 * 
 	 * @desc Send messege to a Telegram chat.
 	 * 
@@ -133,7 +133,12 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			
 			\ddTools::logEvent([
 				'message' => $errorData->message,
-				'source' => 'ddSendFeedback → Telegram: ' . $errorData->title,
+				'source' =>
+					'ddSendFeedback → '
+					. static::getClassName()->namespaceShort
+					. ': '
+					. $errorData->title
+				,
 				'eventType' => 'error',
 			]);
 		}

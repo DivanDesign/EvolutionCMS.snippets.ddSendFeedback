@@ -29,7 +29,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.3 (2024-06-12)
+	 * @version 1.3.1 (2024-06-17)
 	 * 
 	 * @desc Send sms via sms.ru.
 	 * 
@@ -81,7 +81,12 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			
 			\ddTools::logEvent([
 				'message' => $errorData->message,
-				'source' => 'ddSendFeedback → SMSRu: ' . $errorData->title,
+				'source' =>
+					'ddSendFeedback → '
+					. static::getClassName()->namespaceShort
+					. ': '
+					. $errorData->title
+				,
 				'eventType' => 'error',
 			]);
 		}

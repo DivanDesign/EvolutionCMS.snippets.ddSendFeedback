@@ -112,7 +112,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.6 (2024-06-12)
+	 * @version 1.1.7 (2024-06-17)
 	 * 
 	 * @desc Creates an order in LiveSklad.com.
 	 * 
@@ -176,7 +176,12 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			
 			\ddTools::logEvent([
 				'message' => $errorData->message,
-				'source' => 'ddSendFeedback → CRMLiveSklad: ' . $errorData->title,
+				'source' =>
+					'ddSendFeedback → '
+					. static::getClassName()->namespaceShort
+					. ': '
+					. $errorData->title
+				,
 				'eventType' => 'error',
 			]);
 		}
