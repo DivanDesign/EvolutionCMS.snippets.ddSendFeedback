@@ -21,7 +21,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.5 (2024-06-17)
+	 * @version 1.1.6 (2024-06-17)
 	 * 
 	 * @desc Send message to Slack.
 	 * 
@@ -36,6 +36,8 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			'message' => '',
 		];
 		
+		$requestResult = null;
+		
 		if ($this->canSend){
 			$errorData->title = 'Unexpected API error';
 			
@@ -44,8 +46,11 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			);
 			
 			$errorData->isError = $requestResult->isError;
-			
-			if ($errorData->isError){
+		}
+		
+		//Log errors
+		if ($errorData->isError){
+			if (!is_null($requestResult)){
 				$errorData->message =
 					'<p>Request result:</p><pre><code>'
 						. var_export(
@@ -55,10 +60,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 					. '</code></pre>'
 				;
 			}
-		}
-		
-		//Log errors
-		if ($errorData->isError){
+			
 			$errorData->message .=
 				'<p>$this:</p><pre><code>'
 					. var_export(

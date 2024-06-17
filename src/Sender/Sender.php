@@ -138,7 +138,7 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * send
-	 * @version 1.6.1 (2024-06-17)
+	 * @version 1.6.2 (2024-06-17)
 	 * 
 	 * @desc Sends a message.
 	 * 
@@ -153,6 +153,8 @@ abstract class Sender extends \DDTools\Base\Base {
 			'message' => '',
 		];
 		
+		$requestResult = null;
+		
 		if ($this->canSend){
 			$errorData->title = 'Unexpected API error';
 			
@@ -161,8 +163,11 @@ abstract class Sender extends \DDTools\Base\Base {
 			);
 			
 			$errorData->isError = $requestResult->isError;
-			
-			if ($errorData->isError){
+		}
+		
+		//Log errors
+		if ($errorData->isError){
+			if (!is_null($requestResult)){
 				if (!\ddTools::isEmpty($this->requestResultParams->errorMessagePropName)){
 					//Try to get error title from request result
 					$errorData->title = \DDTools\ObjectTools::getPropValue([
@@ -181,10 +186,7 @@ abstract class Sender extends \DDTools\Base\Base {
 					. '</code></pre>'
 				;
 			}
-		}
-		
-		//Log errors
-		if ($errorData->isError){
+			
 			$errorData->message .=
 				'<p>$this:</p><pre><code>'
 					. var_export(

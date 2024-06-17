@@ -30,7 +30,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.6 (2024-06-17)
+	 * @version 1.1.7 (2024-06-17)
 	 * 
 	 * @desc Send emails.
 	 * 
@@ -45,7 +45,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			'message' => '',
 		];
 		
-		$requestResult = [];
+		$requestResult = null;
 		
 		if ($this->canSend){
 			$errorData->title = 'Sending error';
@@ -55,8 +55,11 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			);
 			
 			$errorData->isError = $requestResult->isError;
-			
-			if ($errorData->isError){
+		}
+		
+		//Log errors
+		if ($errorData->isError){
+			if (!is_null($requestResult)){
 				$errorData->message =
 					'<p>Request result:</p><pre><code>'
 						. var_export(
@@ -66,10 +69,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 					. '</code></pre>'
 				;
 			}
-		}
-		
-		//Log errors
-		if ($errorData->isError){
+			
 			$errorData->message .=
 				'<p>$this:</p><pre><code>'
 					. var_export(
@@ -91,7 +91,11 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			]);
 		}
 		
-		return $requestResult->data;
+		return \DDTools\ObjectTools::getPropValue([
+			'object' => $requestResult,
+			'propName' => 'data',
+			'notFoundResult' => [],
+		]);
 	}
 	
 	/**

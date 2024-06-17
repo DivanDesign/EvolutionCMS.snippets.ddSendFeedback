@@ -112,7 +112,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.7 (2024-06-17)
+	 * @version 1.1.8 (2024-06-17)
 	 * 
 	 * @desc Creates an order in LiveSklad.com.
 	 * 
@@ -127,6 +127,8 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			'message' => '',
 		];
 		
+		$requestResult = null;
+		
 		if ($this->canSend){
 			$errorData->title = 'Unexpected API error';
 			
@@ -140,31 +142,31 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 				);
 				
 				$errorData->isError = $requestResult->isError;
-				
-				if ($errorData->isError){
-					if (!\ddTools::isEmpty($this->requestResultParams->errorMessagePropName)){
-						//Try to get error title from request result
-						$errorData->title = \DDTools\ObjectTools::getPropValue([
-							'object' => $requestResult->data,
-							'propName' => $this->requestResultParams->errorMessagePropName,
-							'notFoundResult' => $errorData->title,
-						]);
-					}
-					
-					$errorData->message =
-						'<p>Request result:</p><pre><code>'
-							. var_export(
-								$requestResult->data,
-								true
-							)
-						. '</code></pre>'
-					;
-				}
 			}
 		}
 		
 		//Log errors
 		if ($errorData->isError){
+			if (!is_null($requestResult)){
+				if (!\ddTools::isEmpty($this->requestResultParams->errorMessagePropName)){
+					//Try to get error title from request result
+					$errorData->title = \DDTools\ObjectTools::getPropValue([
+						'object' => $requestResult->data,
+						'propName' => $this->requestResultParams->errorMessagePropName,
+						'notFoundResult' => $errorData->title,
+					]);
+				}
+				
+				$errorData->message =
+					'<p>Request result:</p><pre><code>'
+						. var_export(
+							$requestResult->data,
+							true
+						)
+					. '</code></pre>'
+				;
+			}
+			
 			$errorData->message .=
 				'<p>$this:</p><pre><code>'
 					. var_export(
