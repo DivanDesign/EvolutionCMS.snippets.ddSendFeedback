@@ -138,7 +138,7 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * send
-	 * @version 1.6.2 (2024-06-17)
+	 * @version 1.7 (2024-06-17)
 	 * 
 	 * @desc Sends a message.
 	 * 
@@ -158,11 +158,15 @@ abstract class Sender extends \DDTools\Base\Base {
 		if ($this->canSend){
 			$errorData->title = 'Unexpected API error';
 			
-			$requestResult = $this->send_parseRequestResult(
-				$this->send_request()
-			);
-			
-			$errorData->isError = $requestResult->isError;
+			if (!$this->send_auth()){
+				$errorData->title = 'Authorization failed';
+			}else{
+				$requestResult = $this->send_parseRequestResult(
+					$this->send_request()
+				);
+				
+				$errorData->isError = $requestResult->isError;
+			}
 		}
 		
 		//Log errors
@@ -211,6 +215,16 @@ abstract class Sender extends \DDTools\Base\Base {
 		return [
 			0 => !$errorData->isError
 		];
+	}
+	
+	/**
+	 * send_auth
+	 * @version 1.0 (2024-06-17)
+	 * 
+	 * @return {boolean}
+	 */
+	protected function send_auth(): bool {
+		return true;
 	}
 	
 	/**
