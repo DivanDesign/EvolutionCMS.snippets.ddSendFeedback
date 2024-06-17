@@ -138,12 +138,78 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * send
-	 * @version 1.0 (2017-01-25)
+	 * @version 1.6.1 (2024-06-17)
 	 * 
-	 * @return $result {array} — Send statuses.
-	 * @return $result[i] {0|1} — Success or fail.
+	 * @desc Sends a message.
+	 * 
+	 * @return $result {array} — Returns the array of send status.
+	 * @return $result[0] {0|1} — Status.
 	 */
-	abstract public function send();
+	public function send(){
+		$errorData = (object) [
+			'isError' => true,
+			//Only 19 signs are allowed here in MODX event log :|
+			'title' => 'Check required parameters',
+			'message' => '',
+		];
+		
+		if ($this->canSend){
+			$errorData->title = 'Unexpected API error';
+			
+			$requestResult = $this->send_parseRequestResult(
+				$this->send_request()
+			);
+			
+			$errorData->isError = $requestResult->isError;
+			
+			if ($errorData->isError){
+				if (!\ddTools::isEmpty($this->requestResultParams->errorMessagePropName)){
+					//Try to get error title from request result
+					$errorData->title = \DDTools\ObjectTools::getPropValue([
+						'object' => $requestResult->data,
+						'propName' => $this->requestResultParams->errorMessagePropName,
+						'notFoundResult' => $errorData->title,
+					]);
+				}
+				
+				$errorData->message =
+					'<p>Request result:</p><pre><code>'
+						. var_export(
+							$requestResult->data,
+							true
+						)
+					. '</code></pre>'
+				;
+			}
+		}
+		
+		//Log errors
+		if ($errorData->isError){
+			$errorData->message .=
+				'<p>$this:</p><pre><code>'
+					. var_export(
+						$this,
+						true
+					)
+				. '</code></pre>'
+			;
+			
+			\ddTools::logEvent([
+				'message' => $errorData->message,
+				'source' =>
+					'ddSendFeedback → '
+					. static::getClassName()->namespaceShort
+					. ': '
+					. $errorData->title
+				,
+				'eventType' => 'error',
+			]);
+		}
+		
+		return [
+			0 => !$errorData->isError
+		];
+	}
 	
 	/**
 	 * send_request
