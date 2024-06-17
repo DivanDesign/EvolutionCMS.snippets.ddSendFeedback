@@ -112,7 +112,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.8 (2024-06-17)
+	 * @version 1.1.9 (2024-06-17)
 	 * 
 	 * @desc Creates an order in LiveSklad.com.
 	 * 
@@ -132,9 +132,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		if ($this->canSend){
 			$errorData->title = 'Unexpected API error';
 			
-			$this->fillAuthToken();
-			
-			if (empty($this->authTokenData->token)){
+			if (!$this->send_auth()){
 				$errorData->title = 'Authorization failed';
 			}else{
 				$requestResult = $this->send_parseRequestResult(
@@ -191,6 +189,18 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		return [
 			0 => !$errorData->isError
 		];
+	}
+	
+	/**
+	 * send_auth
+	 * @version 1.0 (2024-06-17)
+	 * 
+	 * @return {boolean}
+	 */
+	protected function send_auth(): bool {
+		$this->fillAuthToken();
+		
+		return !empty($this->authTokenData->token);
 	}
 	
 	/**
