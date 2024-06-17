@@ -14,78 +14,11 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			'checkValue' => 'ok',
 			'isCheckTypeSuccess' => true,
 			'checkPropName' => null,
+			'errorMessagePropName' => null,
 			
 			'isObject' => false,
 		]
 	;
-	
-	/**
-	 * send
-	 * @version 1.1.6 (2024-06-17)
-	 * 
-	 * @desc Send message to Slack.
-	 * 
-	 * @return $result {array} — Returns the array of send status.
-	 * @return $result[0] {0|1} — Status.
-	 */
-	public function send(){
-		$errorData = (object) [
-			'isError' => true,
-			//Only 19 signs are allowed here in MODX event log :|
-			'title' => 'Check required parameters',
-			'message' => '',
-		];
-		
-		$requestResult = null;
-		
-		if ($this->canSend){
-			$errorData->title = 'Unexpected API error';
-			
-			$requestResult = $this->send_parseRequestResult(
-				$this->send_request()
-			);
-			
-			$errorData->isError = $requestResult->isError;
-		}
-		
-		//Log errors
-		if ($errorData->isError){
-			if (!is_null($requestResult)){
-				$errorData->message =
-					'<p>Request result:</p><pre><code>'
-						. var_export(
-							$requestResult->data,
-							true
-						)
-					. '</code></pre>'
-				;
-			}
-			
-			$errorData->message .=
-				'<p>$this:</p><pre><code>'
-					. var_export(
-						$this,
-						true
-					)
-				. '</code></pre>'
-			;
-			
-			\ddTools::logEvent([
-				'message' => $errorData->message,
-				'source' =>
-					'ddSendFeedback → '
-					. static::getClassName()->namespaceShort
-					. ': '
-					. $errorData->title
-				,
-				'eventType' => 'error',
-			]);
-		}
-		
-		return [
-			0 => !$errorData->isError
-		];
-	}
 	
 	/**
 	 * send_request_prepareParams
