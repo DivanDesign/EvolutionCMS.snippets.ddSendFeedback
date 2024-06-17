@@ -29,7 +29,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.3.2 (2024-06-17)
+	 * @version 1.3.3 (2024-06-17)
 	 * 
 	 * @desc Send sms via sms.ru.
 	 * 
@@ -62,6 +62,15 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		//Log errors
 		if ($errorData->isError){
 			if (!is_null($requestResult)){
+				if (!\ddTools::isEmpty($this->requestResultParams->errorMessagePropName)){
+					//Try to get error title from request result
+					$errorData->title = \DDTools\ObjectTools::getPropValue([
+						'object' => $requestResult->data,
+						'propName' => $this->requestResultParams->errorMessagePropName,
+						'notFoundResult' => $errorData->title,
+					]);
+				}
+				
 				$errorData->message =
 					'<p>Request result:</p><pre><code>'
 						. var_export(
