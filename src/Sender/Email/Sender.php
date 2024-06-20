@@ -30,7 +30,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.11 (2024-06-20)
+	 * @version 1.1.12 (2024-06-20)
 	 * 
 	 * @desc Send emails.
 	 * 
@@ -91,7 +91,8 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		
 		return \DDTools\ObjectTools::getPropValue([
 			'object' => $requestResult,
-			'propName' => 'data',
+			'propName' => 'sendSuccessStatuses',
+			//No need to return sending error if required parameters were not set
 			'notFoundResult' => [],
 		]);
 	}
@@ -138,13 +139,14 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send_parseRequestResults
-	 * @version 2.1 (2024-06-20)
+	 * @version 3.0 (2024-06-20)
 	 * 
 	 * @param $rawResults {array} — An array of raw request results.
 	 * @param $rawResults[$i] {0|1} — A raw request result.
 	 * 
 	 * @return $result {\stdClass}
-	 * @return $result->data {mixed}
+	 * @return $result->sendSuccessStatuses {array}
+	 * @return $result->sendSuccessStatuses[$i] {boolean}
 	 * @return $result->errorData {\stdClass}
 	 * @return $result->errorData->isError {boolean}
 	 * @return [$result->errorData->title] {string}
@@ -152,7 +154,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	 */
 	protected function send_parseRequestResults($rawResults): \stdClass {
 		$result = (object) [
-			'data' => $rawResults,
+			'sendSuccessStatuses' => [],
 			'errorData' => (object) [
 				'isError' => true,
 			],
@@ -160,14 +162,14 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		
 		$result->errorData->isError = in_array(
 			0,
-			$result->data
+			$rawResults
 		);
 		
 		if ($result->errorData->isError){
 			if (!\ddTools::isEmpty($this->requestResultParams->errorMessagePropName)){
 				//Try to get error title from request result
 				$result->errorData->title = \DDTools\ObjectTools::getPropValue([
-					'object' => $result->data,
+					'object' => $rawResults[0],
 					'propName' => $this->requestResultParams->errorMessagePropName,
 				]);
 				
@@ -179,7 +181,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			$result->errorData->message =
 				'<p>Request result:</p><pre><code>'
 					. var_export(
-						$result->data,
+						$rawResults,
 						true
 					)
 				. '</code></pre>'

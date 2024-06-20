@@ -138,12 +138,12 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * send
-	 * @version 1.7.3 (2024-06-20)
+	 * @version 1.7.4 (2024-06-20)
 	 * 
 	 * @desc Sends a message.
 	 * 
 	 * @return $result {array} — Returns the array of send status.
-	 * @return $result[0] {0|1} — Status.
+	 * @return [$result[$i]] {boolean} — Status.
 	 */
 	public function send(){
 		$errorData = (object) [
@@ -197,9 +197,12 @@ abstract class Sender extends \DDTools\Base\Base {
 			]);
 		}
 		
-		return [
-			0 => !$errorData->isError
-		];
+		return \DDTools\ObjectTools::getPropValue([
+			'object' => $requestResult,
+			'propName' => 'sendSuccessStatuses',
+			//No need to return sending error if required parameters were not set
+			'notFoundResult' => [],
+		]);
 	}
 	
 	/**
@@ -238,13 +241,14 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * send_parseRequestResults
-	 * @version 3.1 (2024-06-20)
+	 * @version 4.0 (2024-06-20)
 	 * 
 	 * @param $rawResults {array} — An array of raw request results (some senders can do several requests).
 	 * @param $rawResults[$i] {mixed} — A raw request result.
 	 * 
 	 * @return $result {\stdClass}
-	 * @return $result->data {mixed}
+	 * @return $result->sendSuccessStatuses {array}
+	 * @return $result->sendSuccessStatuses[$i] {boolean}
 	 * @return $result->errorData {\stdClass}
 	 * @return $result->errorData->isError {boolean}
 	 * @return [$result->errorData->title] {string}
@@ -252,22 +256,22 @@ abstract class Sender extends \DDTools\Base\Base {
 	 */
 	protected function send_parseRequestResults($rawResults): \stdClass {
 		$result = (object) [
-			'data' => $rawResults[0],
+			'sendSuccessStatuses' => [],
 			'errorData' => (object) [
 				'isError' => true,
 			],
 		];
 		
-		$requestResult_checkValue = $result->data;
+		$requestResult_checkValue = $rawResults[0];
 		
 		if ($this->requestResultParams->isObject){
-			$result->data = \DDTools\ObjectTools::convertType([
-				'object' => $result->data,
+			$rawResults[0] = \DDTools\ObjectTools::convertType([
+				'object' => $rawResults[0],
 				'type' => 'objectStdClass',
 			]);
 			
 			$requestResult_checkValue = \DDTools\ObjectTools::getPropValue([
-				'object' => $result->data,
+				'object' => $rawResults[0],
 				'propName' => $this->requestResultParams->checkPropName,
 			]);
 		}
@@ -278,11 +282,13 @@ abstract class Sender extends \DDTools\Base\Base {
 			: $requestResult_checkValue == $this->requestResultParams->checkValue
 		;
 		
+		$result->sendSuccessStatuses[0] = !$result->errorData->isError;
+		
 		if ($result->errorData->isError){
 			if (!\ddTools::isEmpty($this->requestResultParams->errorMessagePropName)){
 				//Try to get error title from request result
 				$result->errorData->title = \DDTools\ObjectTools::getPropValue([
-					'object' => $result->data,
+					'object' => $rawResults[0],
 					'propName' => $this->requestResultParams->errorMessagePropName,
 				]);
 				
@@ -294,7 +300,7 @@ abstract class Sender extends \DDTools\Base\Base {
 			$result->errorData->message =
 				'<p>Request result:</p><pre><code>'
 					. var_export(
-						$result->data,
+						$rawResults,
 						true
 					)
 				. '</code></pre>'
