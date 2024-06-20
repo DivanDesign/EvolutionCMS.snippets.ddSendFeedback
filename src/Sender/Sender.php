@@ -13,6 +13,7 @@ abstract class Sender extends \DDTools\Base\Base {
 	protected
 		$text = '',
 		$textMarkupSyntax = 'html',
+		$isFailDisplayedToUser = true,
 		
 		$requiredProps = ['tpl'],
 		$canSend = true,
@@ -241,7 +242,7 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * send_parseRequestResults
-	 * @version 4.1 (2024-06-20)
+	 * @version 4.2 (2024-06-20)
 	 * 
 	 * @param $rawResults {array} — An array of raw request results (some senders can do several requests).
 	 * @param $rawResults[$i] {mixed} — A raw request result.
@@ -287,7 +288,7 @@ abstract class Sender extends \DDTools\Base\Base {
 			}
 			
 			//Is the request successful?
-			$result->sendSuccessStatuses[$rawResults_requestIndex] =
+			$isRequestSuccess =
 				$this->requestResultParams->isCheckTypeSuccess
 				//Check if it's a success
 				? $requestResult_checkValue == $this->requestResultParams->checkValue
@@ -295,8 +296,16 @@ abstract class Sender extends \DDTools\Base\Base {
 				: $requestResult_checkValue != $this->requestResultParams->checkValue
 			;
 			
+			if (
+				$isRequestSuccess
+				//Return unsuccessful status only it's need to be displayed to user
+				|| $this->isFailDisplayedToUser
+			){
+				$result->sendSuccessStatuses[$rawResults_requestIndex] = $isRequestSuccess;
+			}
+			
 			//If error
-			if (!$result->sendSuccessStatuses[$rawResults_requestIndex]){
+			if (!$isRequestSuccess){
 				$result->errorData->isError = true;
 				
 				if (!\ddTools::isEmpty($this->requestResultParams->errorMessagePropName)){

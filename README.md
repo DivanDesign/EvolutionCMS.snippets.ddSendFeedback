@@ -154,6 +154,11 @@ require_once(
 	* Description: The key is a placeholder name, the value is a placeholder value.
 	* Valid values: `mixed`
 	* **Required**
+	
+* `senders->{$senderName}->isFailDisplayedToUser`
+	* Description: Display a failure message to user when sending is failed, or just log it.
+	* Valid values: `boolean`
+	* Default value: `true`
 
 
 ##### Senders → Email
