@@ -30,7 +30,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.9 (2024-06-20)
+	 * @version 1.1.10 (2024-06-20)
 	 * 
 	 * @desc Send emails.
 	 * 
@@ -57,7 +57,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 					$this->send_request()
 				);
 				
-				$errorData->isError = $requestResult->isError;
+				$errorData->isError = $requestResult->errorData->isError;
 			}
 		}
 		
@@ -153,22 +153,25 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send_parseRequestResults
-	 * @version 1.0.2 (2024-06-20)
+	 * @version 2.0 (2024-06-20)
 	 * 
 	 * @param $rawResults {array} — An array of raw request results.
 	 * @param $rawResults[$i] {0|1} — A raw request result.
 	 * 
 	 * @return $result {\stdClass}
 	 * @return $result->data {mixed}
-	 * @return $result->isError {boolean}
+	 * @return $result->errorData {\stdClass}
+	 * @return $result->errorData->isError {boolean}
 	 */
 	protected function send_parseRequestResults($rawResults): \stdClass {
 		$result = (object) [
 			'data' => $rawResults,
-			'isError' => true,
+			'errorData' => (object) [
+				'isError' => true,
+			],
 		];
 		
-		$result->isError = in_array(
+		$result->errorData->isError = in_array(
 			0,
 			$result->data
 		);

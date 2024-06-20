@@ -138,7 +138,7 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * send
-	 * @version 1.7.1 (2024-06-20)
+	 * @version 1.7.2 (2024-06-20)
 	 * 
 	 * @desc Sends a message.
 	 * 
@@ -165,7 +165,7 @@ abstract class Sender extends \DDTools\Base\Base {
 					$this->send_request()
 				);
 				
-				$errorData->isError = $requestResult->isError;
+				$errorData->isError = $requestResult->errorData->isError;
 			}
 		}
 		
@@ -253,19 +253,22 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * send_parseRequestResults
-	 * @version 2.0 (2024-06-20)
+	 * @version 3.0 (2024-06-20)
 	 * 
 	 * @param $rawResults {array} — An array of raw request results (some senders can do several requests).
 	 * @param $rawResults[$i] {mixed} — A raw request result.
 	 * 
 	 * @return $result {\stdClass}
 	 * @return $result->data {mixed}
-	 * @return $result->isError {boolean}
+	 * @return $result->errorData {\stdClass}
+	 * @return $result->errorData->isError {boolean}
 	 */
 	protected function send_parseRequestResults($rawResults): \stdClass {
 		$result = (object) [
 			'data' => $rawResults[0],
-			'isError' => true,
+			'errorData' => (object) [
+				'isError' => true,
+			],
 		];
 		
 		$requestResult_checkValue = $result->data;
@@ -282,7 +285,7 @@ abstract class Sender extends \DDTools\Base\Base {
 			]);
 		}
 		
-		$result->isError =
+		$result->errorData->isError =
 			$this->requestResultParams->isCheckTypeSuccess
 			? $requestResult_checkValue != $this->requestResultParams->checkValue
 			: $requestResult_checkValue == $this->requestResultParams->checkValue
