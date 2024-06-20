@@ -138,7 +138,7 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * send
-	 * @version 1.7.2 (2024-06-20)
+	 * @version 1.7.3 (2024-06-20)
 	 * 
 	 * @desc Sends a message.
 	 * 
@@ -165,32 +165,17 @@ abstract class Sender extends \DDTools\Base\Base {
 					$this->send_request()
 				);
 				
-				$errorData->isError = $requestResult->errorData->isError;
+				$errorData = \DDTools\ObjectTools::extend([
+					'objects' => [
+						$errorData,
+						$requestResult->errorData,
+					]
+				]);
 			}
 		}
 		
 		//Log errors
 		if ($errorData->isError){
-			if (!is_null($requestResult)){
-				if (!\ddTools::isEmpty($this->requestResultParams->errorMessagePropName)){
-					//Try to get error title from request result
-					$errorData->title = \DDTools\ObjectTools::getPropValue([
-						'object' => $requestResult->data,
-						'propName' => $this->requestResultParams->errorMessagePropName,
-						'notFoundResult' => $errorData->title,
-					]);
-				}
-				
-				$errorData->message =
-					'<p>Request result:</p><pre><code>'
-						. var_export(
-							$requestResult->data,
-							true
-						)
-					. '</code></pre>'
-				;
-			}
-			
 			$errorData->message .=
 				'<p>$this:</p><pre><code>'
 					. var_export(
@@ -253,7 +238,7 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * send_parseRequestResults
-	 * @version 3.0 (2024-06-20)
+	 * @version 3.1 (2024-06-20)
 	 * 
 	 * @param $rawResults {array} — An array of raw request results (some senders can do several requests).
 	 * @param $rawResults[$i] {mixed} — A raw request result.
@@ -262,6 +247,8 @@ abstract class Sender extends \DDTools\Base\Base {
 	 * @return $result->data {mixed}
 	 * @return $result->errorData {\stdClass}
 	 * @return $result->errorData->isError {boolean}
+	 * @return [$result->errorData->title] {string}
+	 * @return [$result->errorData->message] {string}
 	 */
 	protected function send_parseRequestResults($rawResults): \stdClass {
 		$result = (object) [
@@ -290,6 +277,29 @@ abstract class Sender extends \DDTools\Base\Base {
 			? $requestResult_checkValue != $this->requestResultParams->checkValue
 			: $requestResult_checkValue == $this->requestResultParams->checkValue
 		;
+		
+		if ($result->errorData->isError){
+			if (!\ddTools::isEmpty($this->requestResultParams->errorMessagePropName)){
+				//Try to get error title from request result
+				$result->errorData->title = \DDTools\ObjectTools::getPropValue([
+					'object' => $result->data,
+					'propName' => $this->requestResultParams->errorMessagePropName,
+				]);
+				
+				if (is_null($result->errorData->title)){
+					unset($result->errorData->title);
+				}
+			}
+			
+			$result->errorData->message =
+				'<p>Request result:</p><pre><code>'
+					. var_export(
+						$result->data,
+						true
+					)
+				. '</code></pre>'
+			;
+		}
 		
 		return $result;
 	}

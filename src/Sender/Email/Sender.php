@@ -30,7 +30,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.10 (2024-06-20)
+	 * @version 1.1.11 (2024-06-20)
 	 * 
 	 * @desc Send emails.
 	 * 
@@ -57,32 +57,17 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 					$this->send_request()
 				);
 				
-				$errorData->isError = $requestResult->errorData->isError;
+				$errorData = \DDTools\ObjectTools::extend([
+					'objects' => [
+						$errorData,
+						$requestResult->errorData,
+					]
+				]);
 			}
 		}
 		
 		//Log errors
 		if ($errorData->isError){
-			if (!is_null($requestResult)){
-				if (!\ddTools::isEmpty($this->requestResultParams->errorMessagePropName)){
-					//Try to get error title from request result
-					$errorData->title = \DDTools\ObjectTools::getPropValue([
-						'object' => $requestResult->data,
-						'propName' => $this->requestResultParams->errorMessagePropName,
-						'notFoundResult' => $errorData->title,
-					]);
-				}
-				
-				$errorData->message =
-					'<p>Request result:</p><pre><code>'
-						. var_export(
-							$requestResult->data,
-							true
-						)
-					. '</code></pre>'
-				;
-			}
-			
 			$errorData->message .=
 				'<p>$this:</p><pre><code>'
 					. var_export(
@@ -153,7 +138,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send_parseRequestResults
-	 * @version 2.0 (2024-06-20)
+	 * @version 2.1 (2024-06-20)
 	 * 
 	 * @param $rawResults {array} — An array of raw request results.
 	 * @param $rawResults[$i] {0|1} — A raw request result.
@@ -162,6 +147,8 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	 * @return $result->data {mixed}
 	 * @return $result->errorData {\stdClass}
 	 * @return $result->errorData->isError {boolean}
+	 * @return [$result->errorData->title] {string}
+	 * @return [$result->errorData->message] {string}
 	 */
 	protected function send_parseRequestResults($rawResults): \stdClass {
 		$result = (object) [
@@ -175,6 +162,29 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			0,
 			$result->data
 		);
+		
+		if ($result->errorData->isError){
+			if (!\ddTools::isEmpty($this->requestResultParams->errorMessagePropName)){
+				//Try to get error title from request result
+				$result->errorData->title = \DDTools\ObjectTools::getPropValue([
+					'object' => $result->data,
+					'propName' => $this->requestResultParams->errorMessagePropName,
+				]);
+				
+				if (is_null($result->errorData->title)){
+					unset($result->errorData->title);
+				}
+			}
+			
+			$result->errorData->message =
+				'<p>Request result:</p><pre><code>'
+					. var_export(
+						$result->data,
+						true
+					)
+				. '</code></pre>'
+			;
+		}
 		
 		return $result;
 	}
