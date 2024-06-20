@@ -30,7 +30,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send
-	 * @version 1.1.7 (2024-06-17)
+	 * @version 1.1.8 (2024-06-20)
 	 * 
 	 * @desc Send emails.
 	 * 
@@ -48,18 +48,31 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		$requestResult = null;
 		
 		if ($this->canSend){
-			$errorData->title = 'Sending error';
+			$errorData->title = 'Unexpected API error';
 			
-			$requestResult = $this->send_parseRequestResult(
-				$this->send_request()
-			);
-			
-			$errorData->isError = $requestResult->isError;
+			if (!$this->send_auth()){
+				$errorData->title = 'Authorization failed';
+			}else{
+				$requestResult = $this->send_parseRequestResult(
+					$this->send_request()
+				);
+				
+				$errorData->isError = $requestResult->isError;
+			}
 		}
 		
 		//Log errors
 		if ($errorData->isError){
 			if (!is_null($requestResult)){
+				if (!\ddTools::isEmpty($this->requestResultParams->errorMessagePropName)){
+					//Try to get error title from request result
+					$errorData->title = \DDTools\ObjectTools::getPropValue([
+						'object' => $requestResult->data,
+						'propName' => $this->requestResultParams->errorMessagePropName,
+						'notFoundResult' => $errorData->title,
+					]);
+				}
+				
 				$errorData->message =
 					'<p>Request result:</p><pre><code>'
 						. var_export(
