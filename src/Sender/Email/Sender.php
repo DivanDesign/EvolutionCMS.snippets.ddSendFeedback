@@ -67,59 +67,5 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		
 		return $result;
 	}
-	
-	/**
-	 * send_parseRequestResults
-	 * @version 3.0 (2024-06-20)
-	 * 
-	 * @param $rawResults {array} — An array of raw request results.
-	 * @param $rawResults[$i] {0|1} — A raw request result.
-	 * 
-	 * @return $result {\stdClass}
-	 * @return $result->sendSuccessStatuses {array}
-	 * @return $result->sendSuccessStatuses[$i] {boolean}
-	 * @return $result->errorData {\stdClass}
-	 * @return $result->errorData->isError {boolean}
-	 * @return [$result->errorData->title] {string}
-	 * @return [$result->errorData->message] {string}
-	 */
-	protected function send_parseRequestResults($rawResults): \stdClass {
-		$result = (object) [
-			'sendSuccessStatuses' => [],
-			'errorData' => (object) [
-				'isError' => true,
-			],
-		];
-		
-		$result->errorData->isError = in_array(
-			0,
-			$rawResults
-		);
-		
-		if ($result->errorData->isError){
-			if (!\ddTools::isEmpty($this->requestResultParams->errorMessagePropName)){
-				//Try to get error title from request result
-				$result->errorData->title = \DDTools\ObjectTools::getPropValue([
-					'object' => $rawResults[0],
-					'propName' => $this->requestResultParams->errorMessagePropName,
-				]);
-				
-				if (is_null($result->errorData->title)){
-					unset($result->errorData->title);
-				}
-			}
-			
-			$result->errorData->message =
-				'<p>Request result:</p><pre><code>'
-					. var_export(
-						$rawResults,
-						true
-					)
-				. '</code></pre>'
-			;
-		}
-		
-		return $result;
-	}
 }
 ?>

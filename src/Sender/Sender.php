@@ -241,7 +241,7 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * send_parseRequestResults
-	 * @version 4.0 (2024-06-20)
+	 * @version 4.1 (2024-06-20)
 	 * 
 	 * @param $rawResults {array} — An array of raw request results (some senders can do several requests).
 	 * @param $rawResults[$i] {mixed} — A raw request result.
@@ -258,49 +258,75 @@ abstract class Sender extends \DDTools\Base\Base {
 		$result = (object) [
 			'sendSuccessStatuses' => [],
 			'errorData' => (object) [
-				'isError' => true,
+				'isError' => false,
+				'title' => [],
+				'message' => [],
 			],
 		];
 		
-		$requestResult_checkValue = $rawResults[0];
-		
-		if ($this->requestResultParams->isObject){
-			$rawResults[0] = \DDTools\ObjectTools::convertType([
-				'object' => $rawResults[0],
-				'type' => 'objectStdClass',
-			]);
+		//For each request result (some senders can do several requests)
+		foreach (
+			$rawResults
+			as $rawResults_requestIndex
+			=> $rawResults_requestResult
+		){
+			//Check successful status by raw result by default
+			$requestResult_checkValue = $rawResults_requestResult;
 			
-			$requestResult_checkValue = \DDTools\ObjectTools::getPropValue([
-				'object' => $rawResults[0],
-				'propName' => $this->requestResultParams->checkPropName,
-			]);
-		}
-		
-		$result->errorData->isError =
-			$this->requestResultParams->isCheckTypeSuccess
-			? $requestResult_checkValue != $this->requestResultParams->checkValue
-			: $requestResult_checkValue == $this->requestResultParams->checkValue
-		;
-		
-		$result->sendSuccessStatuses[0] = !$result->errorData->isError;
-		
-		if ($result->errorData->isError){
-			if (!\ddTools::isEmpty($this->requestResultParams->errorMessagePropName)){
-				//Try to get error title from request result
-				$result->errorData->title = \DDTools\ObjectTools::getPropValue([
-					'object' => $rawResults[0],
-					'propName' => $this->requestResultParams->errorMessagePropName,
+			if ($this->requestResultParams->isObject){
+				$rawResults_requestResult = \DDTools\ObjectTools::convertType([
+					'object' => $rawResults_requestResult,
+					'type' => 'objectStdClass',
 				]);
 				
-				if (is_null($result->errorData->title)){
-					unset($result->errorData->title);
-				}
+				//Get required property value for checking successful status
+				$requestResult_checkValue = \DDTools\ObjectTools::getPropValue([
+					'object' => $rawResults_requestResult,
+					'propName' => $this->requestResultParams->checkPropName,
+				]);
 			}
 			
+			//Is the request successful?
+			$result->sendSuccessStatuses[$rawResults_requestIndex] =
+				$this->requestResultParams->isCheckTypeSuccess
+				//Check if it's a success
+				? $requestResult_checkValue == $this->requestResultParams->checkValue
+				//Check if it's not a fail
+				: $requestResult_checkValue != $this->requestResultParams->checkValue
+			;
+			
+			//If error
+			if (!$result->sendSuccessStatuses[$rawResults_requestIndex]){
+				$result->errorData->isError = true;
+				
+				if (!\ddTools::isEmpty($this->requestResultParams->errorMessagePropName)){
+					//Try to get error title from request result
+					$result->errorData->title[$rawResults_requestIndex] = \DDTools\ObjectTools::getPropValue([
+						'object' => $rawResults_requestResult,
+						'propName' => $this->requestResultParams->errorMessagePropName,
+					]);
+				}
+				
+				$result->errorData->message[$rawResults_requestIndex] = $rawResults_requestResult;
+			}
+		}
+		
+		if (\ddTools::isEmpty($result->errorData->title)){
+			unset($result->errorData->title);
+		}else{
+			$result->errorData->title = implode(
+				', ',
+				$result->errorData->title
+			);
+		}
+		
+		if (\ddTools::isEmpty($result->errorData->message)){
+			unset($result->errorData->message);
+		}else{
 			$result->errorData->message =
 				'<p>Request result:</p><pre><code>'
 					. var_export(
-						$rawResults,
+						$result->errorData->message,
 						true
 					)
 				. '</code></pre>'
