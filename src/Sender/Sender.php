@@ -34,7 +34,7 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * __construct
-	 * @version 1.5 (2024-06-10)
+	 * @version 1.5.1 (2024-06-20)
 	 */
 	public function __construct($params = []){
 		$this->setExistingProps($params);
@@ -75,18 +75,20 @@ abstract class Sender extends \DDTools\Base\Base {
 			//Prepare “textMarkupSyntax”
 			$this->textMarkupSyntax = trim(strtolower($this->textMarkupSyntax));
 			
+			$text_data = \DDTools\ObjectTools::extend([
+				'objects' => [
+					$this->tpl_placeholdersFromPost,
+					$this->tpl_placeholders,
+				]
+			]);
+			
 			//Prepare text to send
-			$this->text = trim(
-				\ddTools::parseText([
-					'text' => \ddTools::getTpl($this->tpl),
-					'data' => $params = \DDTools\ObjectTools::extend([
-						'objects' => [
-							$this->tpl_placeholdersFromPost,
-							$this->tpl_placeholders
-						]
-					])
-				])
-			);
+			$this->text = \ddTools::parseText([
+				'text' => \ddTools::getTpl($this->tpl),
+				'data' => $text_data
+			]);
+			
+			$this->text = trim($this->text);
 			
 			//Text must not be empty for sending
 			if (empty($this->text)){
