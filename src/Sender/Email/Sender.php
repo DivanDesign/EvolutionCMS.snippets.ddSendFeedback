@@ -113,9 +113,10 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send_request
-	 * @version 1.0.1 (2024-06-11)
+	 * @version 1.0.2 (2024-06-20)
 	 * 
 	 * @return $result {array}
+	 * @return $result[$i] {0|1}
 	 */
 	protected function send_request(){
 		return \ddTools::sendMail(
@@ -152,15 +153,18 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send_parseRequestResults
-	 * @version 1.0.1 (2024-06-20)
+	 * @version 1.0.2 (2024-06-20)
+	 * 
+	 * @param $rawResults {array} — An array of raw request results.
+	 * @param $rawResults[$i] {0|1} — A raw request result.
 	 * 
 	 * @return $result {\stdClass}
 	 * @return $result->data {mixed}
 	 * @return $result->isError {boolean}
 	 */
-	protected function send_parseRequestResults($rawData): \stdClass {
+	protected function send_parseRequestResults($rawResults): \stdClass {
 		$result = (object) [
-			'data' => $rawData,
+			'data' => $rawResults,
 			'isError' => true,
 		];
 		

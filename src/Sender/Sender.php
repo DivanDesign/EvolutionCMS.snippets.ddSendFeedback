@@ -229,15 +229,18 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * send_request
-	 * @version 1.0.1 (2024-06-11)
+	 * @version 2.0 (2024-06-11)
 	 * 
-	 * @return $result {mixed}
+	 * @return $result {array} — Returns an array of request results (some senders can do several requests).
+	 * @return $result[$i] {mixed} — A raw request result.
 	 */
 	protected function send_request(){
-		return \DDTools\Snippet::runSnippet([
-			'name' => 'ddMakeHttpRequest',
-			'params' => $this->send_request_prepareParams(),
-		]);
+		return [
+			0 => \DDTools\Snippet::runSnippet([
+				'name' => 'ddMakeHttpRequest',
+				'params' => $this->send_request_prepareParams(),
+			])
+		];
 	}
 	
 	/**
@@ -250,15 +253,18 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * send_parseRequestResults
-	 * @version 1.0.1 (2024-06-20)
+	 * @version 2.0 (2024-06-20)
+	 * 
+	 * @param $rawResults {array} — An array of raw request results (some senders can do several requests).
+	 * @param $rawResults[$i] {mixed} — A raw request result.
 	 * 
 	 * @return $result {\stdClass}
 	 * @return $result->data {mixed}
 	 * @return $result->isError {boolean}
 	 */
-	protected function send_parseRequestResults($rawData): \stdClass {
+	protected function send_parseRequestResults($rawResults): \stdClass {
 		$result = (object) [
-			'data' => $rawData,
+			'data' => $rawResults[0],
 			'isError' => true,
 		];
 		
