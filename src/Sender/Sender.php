@@ -138,7 +138,7 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * send
-	 * @version 1.7 (2024-06-17)
+	 * @version 1.7.1 (2024-06-20)
 	 * 
 	 * @desc Sends a message.
 	 * 
@@ -161,7 +161,7 @@ abstract class Sender extends \DDTools\Base\Base {
 			if (!$this->send_auth()){
 				$errorData->title = 'Authorization failed';
 			}else{
-				$requestResult = $this->send_parseRequestResult(
+				$requestResult = $this->send_parseRequestResults(
 					$this->send_request()
 				);
 				
@@ -249,14 +249,14 @@ abstract class Sender extends \DDTools\Base\Base {
 	abstract protected function send_request_prepareParams(): \stdClass;
 	
 	/**
-	 * send_parseRequestResult
-	 * @version 1.0 (2024-06-11)
+	 * send_parseRequestResults
+	 * @version 1.0.1 (2024-06-20)
 	 * 
 	 * @return $result {\stdClass}
 	 * @return $result->data {mixed}
 	 * @return $result->isError {boolean}
 	 */
-	protected function send_parseRequestResult($rawData): \stdClass {
+	protected function send_parseRequestResults($rawData): \stdClass {
 		$result = (object) [
 			'data' => $rawData,
 			'isError' => true,
