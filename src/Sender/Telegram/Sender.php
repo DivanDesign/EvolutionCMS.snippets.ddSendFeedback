@@ -18,7 +18,20 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		
 		$requiredProps = [
 			'botToken',
-			'chatId'
+			'chatId',
+		],
+		
+		/**
+		 * @property $requestResultParams {stdClass}
+		 * @property $requestResultParams->isObject {boolean} — Is the result of the request an object or not? It is needed to check if the request is successful. If `false`, the response will be checked as a boolean. It is computed automatically from the siblings values.
+		 */
+		$requestResultParams = [
+			'checkValue' => true,
+			'isCheckTypeSuccess' => true,
+			'checkPropName' => 'ok',
+			'errorMessagePropName' => 'description',
+			
+			'isObject' => true,
 		]
 	;
 	
@@ -28,16 +41,16 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * __construct
-	 * @version 1.0.2 (2021-01-18)
+	 * @version 1.0.3 (2024-07-13)
 	 */
 	public function __construct($params = []){
 		//Backward compatibility
 		$params = \ddTools::verifyRenamedParams([
 			'params' => $params,
 			'compliance' => [
-				'textMarkupSyntax' => 'messageMarkupSyntax'
+				'textMarkupSyntax' => 'messageMarkupSyntax',
 			],
-			'returnCorrectedOnly' => false
+			'returnCorrectedOnly' => false,
 		]);
 		
 		//Call base constructor
@@ -50,7 +63,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			[
 				'markdown',
 				'html',
-				''
+				'',
 			]
 		)){
 			$this->textMarkupSyntax = '';
@@ -61,70 +74,27 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	}
 	
 	/**
-	 * send
-	 * @version 1.2.5 (2021-05-12)
+	 * send_request_prepareParams
+	 * @version 1.0.2 (2024-07-13)
 	 * 
-	 * @desc Send messege to a Telegram chat.
-	 * 
-	 * @return $result {array} — Returns the array of send status.
-	 * @return $result[0] {0|1} — Status.
+	 * @return $result {\stdClass}
 	 */
-	public function send(){
-		$result = [];
-		
-		if ($this->canSend){
-			$result = [0 => 0];
-			
-			//Отсылаем сообщение
-			$requestResult = \DDTools\Snippet::runSnippet([
-				'name' => 'ddMakeHttpRequest',
-				'params' => [
-					'url' => \ddTools::parseText([
-						'text' => $this->url,
-						'data' => [
-							'botToken' => $this->botToken,
-							'chatId' => $this->chatId,
-							'text' => urlencode($this->text),
-							'textMarkupSyntax' => $this->textMarkupSyntax,
-							'disableWebPagePreview' => intval($this->disableWebPagePreview)
-						],
-						'mergeAll' => false
-					]),
-					'proxy' => $this->proxy
-				]
-			]);
-			
-			//Разбиваем пришедшее сообщение
-			$requestResult = json_decode(
-				$requestResult,
-				true
-			);
-			
-			//Everything is ok
-			if (
-				is_array($requestResult) &&
-				isset($requestResult['ok']) &&
-				$requestResult['ok'] == true
-			){
-				$result[0] = 1;
-			}else{
-				//Если ошибка, то залогируем
-				\ddTools::logEvent([
-					'message' =>
-						'<code><pre>' .
-						print_r(
-							$requestResult,
-							true
-						) .
-						'</pre></code>'
-					,
-					'source' => 'ddSendFeedback → Telegram',
-					'eventType' => 'error'
-				]);
-			}
-		}
-		
-		return $result;
+	protected function send_request_prepareParams(): \stdClass {
+		return (object) [
+			'url' => \ddTools::parseText([
+				'text' => $this->url,
+				'data' => [
+					'botToken' => $this->botToken,
+					'chatId' => $this->chatId,
+					'text' => urlencode($this->text),
+					'textMarkupSyntax' => $this->textMarkupSyntax,
+					'disableWebPagePreview' => intval($this->disableWebPagePreview),
+				],
+				//TODO: Why is it disabled? Add a comment or enable.
+				'isCompletelyParsingEnabled' => false,
+			]),
+			'proxy' => $this->proxy,
+		];
 	}
 }
 ?>

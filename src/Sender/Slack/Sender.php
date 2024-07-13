@@ -8,46 +8,37 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		$botName = 'ddSendFeedback',
 		$botIcon = ':ghost:',
 		
-		$requiredProps = ['url']
+		$requiredProps = ['url'],
+		
+		$requestResultParams = [
+			'checkValue' => 'ok',
+			'isCheckTypeSuccess' => true,
+			'checkPropName' => null,
+			'errorMessagePropName' => null,
+			
+			'isObject' => false,
+		]
 	;
 	
 	/**
-	 * send
-	 * @version 1.0.5 (2021-05-12)
+	 * send_request_prepareParams
+	 * @version 1.0.2 (2024-07-13)
 	 * 
-	 * @desc Send message to Slack.
-	 * 
-	 * @return $result {array} — Returns the array of send status.
-	 * @return $result[0] {0|1} — Status.
+	 * @return $result {\stdClass}
 	 */
-	public function send(){
-		$result = [];
-		
-		if ($this->canSend){
-			$result = [0 => 0];
-			
-			$requestResult = \DDTools\Snippet::runSnippet([
-				'name' => 'ddMakeHttpRequest',
-				'params' => [
-					'url' => $this->url,
-					'method' => 'post',
-					'postData' => json_encode([
-						'text' => $this->text,
-						'channel' => $this->channel,
-						'username' => $this->botName,
-						'icon_emoji' => $this->botIcon
-					]),
-					'sendRawPostData' => true,
-					'headers' => 'application/json'
-				]
-			]);
-			
-			if ($requestResult == 'ok'){
-				$result[0] = 1;
-			}
-		}
-		
-		return $result;
+	protected function send_request_prepareParams(): \stdClass {
+		return (object) [
+			'url' => $this->url,
+			'method' => 'post',
+			'postData' => json_encode([
+				'text' => $this->text,
+				'channel' => $this->channel,
+				'username' => $this->botName,
+				'icon_emoji' => $this->botIcon,
+			]),
+			'sendRawPostData' => true,
+			'headers' => 'application/json',
+		];
 	}
 }
 ?>

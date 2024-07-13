@@ -15,60 +15,41 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	;
 	
 	/**
-	 * send
-	 * @version 1.3.1 (2021-05-12)
+	 * send_request_prepareParams
+	 * @version 1.0.3 (2024-07-13)
 	 * 
-	 * @desc Send message to Slack.
-	 * 
-	 * @return $result {array} — Returns the array of send status.
-	 * @return $result[0] {0|1} — Status.
+	 * @return $result {\stdClass}
 	 */
-	public function send(){
-		$result = [];
+	protected function send_request_prepareParams(): \stdClass {
+		$result = (object) [
+			'url' => $this->url,
+		];
 		
-		if ($this->canSend){
-			$result = [0 => 0];
-			
-			$requestParams =
-				[
-					'url' => $this->url
-				]
+		//If method == 'get' need to append url. Else need to set postData
+		if ($this->method == 'get'){
+			$result->url .=
+				'?' . 
+				$this->text
 			;
-			
-			//If method == 'get' need to append url. Else need to set postData
-			if ($this->method == 'get'){
-				$requestParams['url'] .=
-					'?' . 
-					$this->text
-				;
-			}else{
-				$requestParams['postData'] = $this->text;
-				$requestParams['sendRawPostData'] = $this->sendRawPostData;
-			}
-			
-			if (!empty($this->headers)){
-				$requestParams['headers'] = $this->headers;
-			}
-			
-			if (!empty($this->userAgent)){
-				$requestParams['userAgent'] = $this->userAgent;
-			}
-			
-			if (!empty($this->timeout)){
-				$requestParams['timeout'] = $this->timeout;
-			}
-			
-			if (!empty($this->proxy)){
-				$requestParams['proxy'] = $this->proxy;
-			}
-			
-			$requestResult = \DDTools\Snippet::runSnippet([
-				'name' => 'ddMakeHttpRequest',
-				'params' => $requestParams
-			]);
-			
-			//TODO: Improve it
-			$result[0] = boolval($requestResult);
+		}else{
+			$result->postData = $this->text;
+			$result->sendRawPostData = $this->sendRawPostData;
+		}
+		
+		if (!\ddTools::isEmpty($this->headers)){
+			$result->headers = $this->headers;
+		}
+		
+		if (!empty($this->userAgent)){
+			$result->userAgent = $this->userAgent;
+		}
+		
+		if (!empty($this->timeout)){
+			$result->timeout = $this->timeout;
+		}
+		
+		if (!empty($this->proxy)){
+			$result->proxy = $this->proxy;
 		}
 		
 		return $result;

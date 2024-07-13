@@ -3,7 +3,7 @@ namespace ddSendFeedback;
 
 class Snippet extends \DDTools\Snippet {
 	protected
-		$version = '2.7.1',
+		$version = '2.8.0',
 		
 		$params = [
 			//Defaults
@@ -11,17 +11,17 @@ class Snippet extends \DDTools\Snippet {
 			'result_titleFail' => null,
 			'result_messageSuccess' => null,
 			'result_messageFail' => null,
-			'senders' => null
+			'senders' => null,
 		],
 		
 		$paramsTypes = [
-			'senders' => 'objectArray'
+			'senders' => 'objectArray',
 		]
 	;
 	
 	/**
 	 * prepareParams
-	 * @version 1.0 (2021-05-12)
+	 * @version 1.0.1 (2024-07-13)
 	 * 
 	 * @param $params {stdClass|arrayAssociative|stringJsonObject|stringQueryFormatted}
 	 * 
@@ -36,8 +36,8 @@ class Snippet extends \DDTools\Snippet {
 		
 		//Если язык русский
 		if(
-			$lang == 'russian-UTF8' ||
-			$lang == 'russian'
+			$lang == 'russian-UTF8'
+			|| $lang == 'russian'
 		){
 			if (is_null($this->params->result_titleSuccess)){
 				$this->params->result_titleSuccess = 'Заявка успешно отправлена';
@@ -70,7 +70,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0 (2021-05-12)
+	 * @version 1.0.3 (2024-07-13)
 	 * 
 	 * @return {string}
 	 */
@@ -78,39 +78,33 @@ class Snippet extends \DDTools\Snippet {
 		$result = new \DDTools\Response();
 		
 		//Senders is required parameter
-		if (empty($this->params->senders)){
+		if (\ddTools::isEmpty($this->params->senders)){
 			$result->setMeta([
-				'success' => false
+				'success' => false,
 			]);
 		}else{
 			$outputMessages = [
 				'titles' => [
 					0 => $this->params->result_titleFail,
-					1 => $this->params->result_titleSuccess
+					1 => $this->params->result_titleSuccess,
 				],
 				'messages' => [
 					0 => $this->params->result_messageFail,
-					1 => $this->params->result_messageSuccess
-				]
+					1 => $this->params->result_messageSuccess,
+				],
 			];
 			
 			$sendResults = [];
 			
 			//Iterate through all senders to create their instances
 			foreach(
-				$this->params->senders as
-				$senderName =>
-				$senderParams
+				$this->params->senders
+				as $senderName
+				=> $senderParams
 			){
 				$sender = \ddSendFeedback\Sender\Sender::createChildInstance([
 					'name' => $senderName,
-					'parentDir' =>
-						$this->paths->src .
-						DIRECTORY_SEPARATOR .
-						'Sender'
-					,
-					//Passing parameters to senders's constructor
-					'params' => $senderParams
+					'params' => $senderParams,
 				]);
 				
 				//Send message (items with integer keys are not overwritten)
@@ -125,8 +119,8 @@ class Snippet extends \DDTools\Snippet {
 			
 			//Перебираем все статусы отправки
 			foreach (
-				$sendResults as
-				$sendResults_item
+				$sendResults
+				as $sendResults_item
 			){
 				//Запоминаем
 				$sendResults_status = intval($sendResults_item);
@@ -141,8 +135,8 @@ class Snippet extends \DDTools\Snippet {
 				'success' => boolval($sendResults_status),
 				'message' => [
 					'content' => $outputMessages['messages'][$sendResults_status],
-					'title' => $outputMessages['titles'][$sendResults_status]
-				]
+					'title' => $outputMessages['titles'][$sendResults_status],
+				],
 			]);
 		}
 		

@@ -29,36 +29,40 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	}
 	
 	/**
-	 * send
-	 * @version 1.0.2 (2019-12-14)
+	 * send_request
+	 * @version 1.0.2 (2024-06-20)
 	 * 
-	 * @desc Send emails.
-	 * 
-	 * @return $result {array} — Returns the array of email statuses.
-	 * @return $result[i] {0|1} — Status.
+	 * @return $result {array}
+	 * @return $result[$i] {0|1}
 	 */
-	public function send(){
-		$result = [];
+	protected function send_request(){
+		return \ddTools::sendMail(
+			$this->send_request_prepareParams()
+		);
+	}
+	
+	/**
+	 * send_request_prepareParams
+	 * @version 1.0.1 (2024-06-11)
+	 *
+	 * @return $result {\stdClass}
+	 */
+	protected function send_request_prepareParams(): \stdClass {
+		$result = (object) [
+			'to' => $this->to,
+			'text' => $this->text,
+			'subject' => $this->subject,
+		];
 		
-		if ($this->canSend){
-			$sendMailParams = [
-				'to' => $this->to,
-				'text' => $this->text,
-				'subject' => $this->subject,
-			];
-			
-			if(!empty($this->fileInputNames)){
-				$sendMailParams['fileInputNames'] = explode(
-					',',
-					$this->fileInputNames
-				);
-			}
-			
-			if (!empty($this->from)){
-				$sendMailParams['from'] = $this->from;
-			}
-			
-			$result = \ddTools::sendMail($sendMailParams);
+		if(!empty($this->fileInputNames)){
+			$result->fileInputNames = explode(
+				',',
+				$this->fileInputNames
+			);
+		}
+		
+		if (!empty($this->from)){
+			$result->from = $this->from;
 		}
 		
 		return $result;

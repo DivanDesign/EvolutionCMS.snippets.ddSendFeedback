@@ -9,7 +9,17 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		
 		$requiredProps = [
 			'apiId',
-			'to'
+			'to',
+		],
+		
+		$requestResultParams = [
+			'checkValue' => 'OK',
+			'isCheckTypeSuccess' => true,
+			//Just something, a real values will be set in every call of `$this->send_request_prepareParams`
+			'checkPropName' => 'sms.[+phoneNumber+].status',
+			'errorMessagePropName' => 'sms.[+phoneNumber+].status_text',
+			
+			'isObject' => true,
 		]
 	;
 	
@@ -18,65 +28,29 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	;
 	
 	/**
-	 * send
-	 * @version 1.1.5 (2021-05-12)
+	 * send_request_prepareParams
+	 * @version 1.1 (2024-06-17)
 	 * 
-	 * @desc Send sms via sms.ru.
-	 * 
-	 * @return $result {array} — Returns the array of send status.
-	 * @return $result[0] {0|1} — Status.
+	 * @return $result {\stdClass}
 	 */
-	public function send(){
-		$result = [];
+	protected function send_request_prepareParams(): \stdClass {
+		$this->requestResultParams->checkPropName = 'sms.' . $this->to . '.status';
+		$this->requestResultParams->errorMessagePropName = 'sms.' . $this->to . '.status_text';
 		
-		if ($this->canSend){
-			$result = [0 => 0];
-			
-			$url =
-				$this->url .
-				'&api_id=' . $this->apiId .
-				'&to=' . $this->to .
-				'&msg=' . urlencode($this->text)
-			;
-			
-			if(isset($this->from)){
-				$url .= '&from=' . $this->from;
-			}
-			
-			//отсылаем смс
-			$requestResult = \DDTools\Snippet::runSnippet([
-				'name' => 'ddMakeHttpRequest',
-				'params' => [
-					'url' => $url,
-				]
-			]);
-			
-			//разбиваем пришедшее сообщение
-			$requestResult = json_decode(
-				$requestResult,
-				true
-			);
-			
-			if ($requestResult['sms'][$this->to]['status'] == 'OK'){
-				$result[0] = 1;
-			}else{
-				//Если ошибка, то залогируем
-				\ddTools::logEvent([
-					'message' =>
-						'<code><pre>' .
-						print_r(
-							$requestResult,
-							true
-						) .
-						'</pre></code>'
-					,
-					'source' => 'ddSendFeedback → Smsru',
-					'eventType' => 'error'
-				]);
-			}
+		$url =
+			$this->url .
+			'&api_id=' . $this->apiId .
+			'&to=' . $this->to .
+			'&msg=' . urlencode($this->text)
+		;
+		
+		if(isset($this->from)){
+			$url .= '&from=' . $this->from;
 		}
 		
-		return $result;
+		return (object) [
+			'url' => $url,
+		];
 	}
 }
 ?>
