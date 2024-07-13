@@ -117,8 +117,8 @@ require_once(
 	* **Required**
 	
 * `senders->{$senderName}`
-	* Description: A sender, when the key is the sender name and the value is the sender parameters.  
-		Keys are case insensitive (the following names are equal: `'Telegram'`, `'telegram'`, `'TELEGRAM'`, `'tEleGRaM'`, etc).
+	* Description: A sender, when the key is the sender name and the value is the sender parameters.
+		* Keys are case insensitive (the following names are equal: `'Telegram'`, `'telegram'`, `'TELEGRAM'`, `'tEleGRaM'`, etc).
 	* Valid values: `object`
 	* **Required**
 	
@@ -139,12 +139,11 @@ require_once(
 	* **Required**
 	
 * `senders->{$senderName}->tpl_placeholders`
-	* Description:
-		Additional data has to be passed into the `senders->{$senderName}->tpl`.  
-		Nested objects and arrays are supported too:
-		* `{"someOne": "1", "someTwo": "test" }` => `[+someOne+], [+someTwo+]`.
-		* `{"some": {"a": "one", "b": "two"} }` => `[+some.a+]`, `[+some.b+]`.
-		* `{"some": ["one", "two"] }` => `[+some.0+]`, `[+some.1+]`.
+	* Description: Additional data has to be passed into the `senders->{$senderName}->tpl`.
+		* Nested objects and arrays are supported too:
+			* `{"someOne": "1", "someTwo": "test" }` => `[+someOne+], [+someTwo+]`.
+			* `{"some": {"a": "one", "b": "two"} }` => `[+some.a+]`, `[+some.b+]`.
+			* `{"some": ["one", "two"] }` => `[+some.0+]`, `[+some.1+]`.
 	* Valid values: `object`
 	* Default value: —
 	
@@ -162,8 +161,8 @@ require_once(
 #### Senders → Email
 
 * `senders->email`
-	* Description: The sender parameters.  
-		Send method (PHP `mail()` or SMTP) sets up in CMS config.
+	* Description: The sender parameters.
+		* Send method (PHP `mail()` or SMTP) sets up in CMS config.
 	* Valid values: `object`
 	* Default value: —
 	
@@ -190,8 +189,8 @@ require_once(
 	* Default value: `$modx->getConfig('emailsender')`
 	
 * `senders->email->fileInputNames`
-	* Description: Input tags names separated by commas that files are required to be taken from.  
-		Used if files are sending in the request (`$_FILES` array).
+	* Description: Input tags names separated by commas that files are required to be taken from.
+		* Used if files are sending in the request (`$_FILES` array).
 	* Valid values:
 		* `array`
 		* `stringCommaSeparated`
@@ -229,8 +228,8 @@ require_once(
 	* Default value: `false`
 	
 * `senders->telegram->proxy`
-	* Description: Proxy server in format `'protocol://user:password@ip:port'`.  
-		E. g. `'theuser:qwerty123@11.22.33.44:5555'` or `'socks5://someuser:somepassword@11.22.33.44:5555'`.
+	* Description: Proxy server in format `'protocol://user:password@ip:port'`.
+		* E. g. `'theuser:qwerty123@11.22.33.44:5555'` or `'socks5://someuser:somepassword@11.22.33.44:5555'`.
 	* Valid values: `string`
 	* Default value: —
 
@@ -334,8 +333,8 @@ require_once(
 	* Default value: `false`
 	
 * `senders->customhttprequest->headers`
-	* Description: An array of HTTP header fields to set.  
-		E. g. `['Accept: application/vnd.api+json', 'Content-Type: application/vnd.api+json']`.
+	* Description: An array of HTTP header fields to set.
+		* E. g. `['Accept: application/vnd.api+json', 'Content-Type: application/vnd.api+json']`.
 	* Valid values: `array`
 	* Default value: —
 	
