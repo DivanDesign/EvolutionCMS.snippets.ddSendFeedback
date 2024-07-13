@@ -34,7 +34,7 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * __construct
-	 * @version 1.6.2 (2024-07-13)
+	 * @version 1.7 (2024-07-13)
 	 */
 	public function __construct($params = []){
 		$this->setExistingProps($params);
@@ -96,6 +96,7 @@ abstract class Sender extends \DDTools\Base\Base {
 					$this->tpl->{$tpl_itemKey} = \ddTools::parseText([
 						'text' => $tpl_itemValue,
 						'data' => $text_data,
+						'removeEmptyPlaceholders' => true,
 					]);
 				}
 				
@@ -108,6 +109,7 @@ abstract class Sender extends \DDTools\Base\Base {
 				$this->text = \ddTools::parseText([
 					'text' => \ddTools::getTpl($this->tpl),
 					'data' => $text_data,
+					'removeEmptyPlaceholders' => true,
 				]);
 				
 				$this->text = trim($this->text);
