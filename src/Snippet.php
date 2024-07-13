@@ -70,7 +70,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0.2 (2024-07-13)
+	 * @version 1.0.3 (2024-07-13)
 	 * 
 	 * @return {string}
 	 */
@@ -78,7 +78,7 @@ class Snippet extends \DDTools\Snippet {
 		$result = new \DDTools\Response();
 		
 		//Senders is required parameter
-		if (empty($this->params->senders)){
+		if (\ddTools::isEmpty($this->params->senders)){
 			$result->setMeta([
 				'success' => false,
 			]);

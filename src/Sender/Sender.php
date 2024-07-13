@@ -34,7 +34,7 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * __construct
-	 * @version 1.6.1 (2024-07-13)
+	 * @version 1.6.2 (2024-07-13)
 	 */
 	public function __construct($params = []){
 		$this->setExistingProps($params);
@@ -57,7 +57,7 @@ abstract class Sender extends \DDTools\Base\Base {
 			as $requiredPropName
 		){
 			//If one of required properties is not set
-			if (empty($this->{$requiredPropName})){
+			if (\ddTools::isEmpty($this->{$requiredPropName})){
 				//We can't send
 				$this->canSend = false;
 				
@@ -114,7 +114,7 @@ abstract class Sender extends \DDTools\Base\Base {
 			}
 			
 			//Text must not be empty for sending
-			if (empty($this->text)){
+			if (\ddTools::isEmpty($this->text)){
 				$this->canSend = false;
 			}
 		}

@@ -16,7 +16,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send_request_prepareParams
-	 * @version 1.0.2 (2024-07-13)
+	 * @version 1.0.3 (2024-07-13)
 	 * 
 	 * @return $result {\stdClass}
 	 */
@@ -36,7 +36,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			$result->sendRawPostData = $this->sendRawPostData;
 		}
 		
-		if (!empty($this->headers)){
+		if (!\ddTools::isEmpty($this->headers)){
 			$result->headers = $this->headers;
 		}
 		
