@@ -1,6 +1,30 @@
 # (MODX)EvolutionCMS.snippets.ddSendFeedback changelog
 
 
+## Version 2.8 (2024-07-13)
+
+* \* Sender:
+	* \+ Parameters:
+		* \+ `senders->{$senderName}->isFailDisplayedToUser`: The new optional parameter. Allows to prevent displaying a failure message to user when sending is failed.
+		* \+ `senders->{$senderName}->tpl`:
+			* \+ Any empty placeholders will be deleted before sending.
+			* \+ Valid values → `object`: The new valid value. If the parameter set as an object, each item will be parsed as an independent template and then the result will be converted to JSON, it can be useful if you need to send a JSON object.
+	* \+ CRMLiveSklad: The new sender. Allows to send orders to CRM LiveSklad.com.
+	* \+ CustomHTTPRequest → Parameters → `senders->customhttprequest->requestResultParams`: The new group of parameters. Allows you to configure response parsing (see README).
+	* \+ Email, Slack, CustomHTTPRequest: Sending error message in CMS log has been added.
+	* \* Telegram, SMSRu, CRMLiveSklad: Sending error message in CMS log has been improved.
+	* \+ SMSRu: An API error message has been added to a CMS log message.
+* \* `\ddTools::getTpl` is used instead of `$modx->getTpl` (means a bit less bugs).
+* \* `\ddTools::isEmpty` is used instead of `empty` to check array/object variables for less fragility.
+* \* README → Parameters description → Senders:
+	* \* Some text improvements.
+	* \* Examples: HJSON is used for all examples.
+	* \+ Links → GitHub.
+* \+ CHANGELOG: Description of several old versions has been added.
+* \+ Composer.json → `autoload`.
+* \* Attention! (MODX)EvolutionCMS.libraries.ddTools >= 0.62 is required.
+
+
 ## Version 2.7.1 (2021-11-09)
 
 * \* Improved removing of empty placeholders while `senders->{$senderName}->tpl` parsing.

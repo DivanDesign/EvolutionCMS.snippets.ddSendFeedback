@@ -3,7 +3,7 @@ namespace ddSendFeedback;
 
 class Snippet extends \DDTools\Snippet {
 	protected
-		$version = '2.7.1',
+		$version = '2.8.0',
 		
 		$params = [
 			//Defaults
