@@ -34,16 +34,13 @@ The snippet returns a JSON string with the following fields:
 * [(MODX)EvolutionCMS.snippets.ddMakeHttpRequest](https://code.divandesign.ru/modx/ddmakehttprequest) >= 2.3.1
 
 
-## Documentation
+## Installation
 
 
-### Installation
+### Manually
 
 
-#### Manually
-
-
-##### 1. Elements → Snippets: Create a new snippet with the following data
+#### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddSendFeedback`.
 2. Description: `<b>2.7.1</b> A snippet for sending users' feedback messages to you. It is very useful along with ajax technology.`.
@@ -52,13 +49,13 @@ The snippet returns a JSON string with the following fields:
 5. Snippet code (php): Insert content of the `ddSendFeedback_snippet.php` file from the archive.
 
 
-##### 2. Elements → Manage Files
+#### 2. Elements → Manage Files
 
 1. Create a new folder `assets/snippets/ddSendFeedback/`.
 2. Extract the archive to the folder (except `ddSendFeedback_snippet.php`).
 
 
-#### Using [(MODX)EvolutionCMS.libraries.ddInstaller](https://github.com/DivanDesign/EvolutionCMS.libraries.ddInstaller)
+### Using [(MODX)EvolutionCMS.libraries.ddInstaller](https://github.com/DivanDesign/EvolutionCMS.libraries.ddInstaller)
 
 Just run the following PHP code in your sources or [Console](https://github.com/vanchelo/MODX-Evolution-Ajax-Console):
 
@@ -80,10 +77,10 @@ require_once(
 * If `ddSendFeedback` is already exist on your site, `ddInstaller` will check it version and update it if needed.
 
 
-### Parameters description
+## Parameters description
 
 
-#### General
+### General
 
 * `result_titleSuccess`
 	* Description: The title that will be returned if the letter sending is successful (the `title` field of the returned JSON).
@@ -106,7 +103,7 @@ require_once(
 	* Default value: `'Something happened while sending the message.<br />Please try again later.'`
 
 
-#### Senders
+### Senders
 
 * `senders`
 	* Description: Senders and their params. You can use several senders at the same time.
@@ -162,7 +159,7 @@ require_once(
 	* Default value: `true`
 
 
-##### Senders → Email
+#### Senders → Email
 
 * `senders->email`
 	* Description: The sender parameters.  
@@ -201,7 +198,7 @@ require_once(
 	* Default value: —
 
 
-##### Senders → Telegram
+#### Senders → Telegram
 
 * `senders->telegram`
 	* Description: The sender parameters.
@@ -238,7 +235,7 @@ require_once(
 	* Default value: —
 
 
-##### Senders → Slack
+#### Senders → Slack
 
 * `senders->slack`
 	* Description: The sender parameters.
@@ -266,7 +263,7 @@ require_once(
 	* Default value: `':ghost:'`
 
 
-##### Senders → Sms.ru
+#### Senders → Sms.ru
 
 * `senders->smsRu`
 	* Description: The sender parameters.
@@ -289,7 +286,7 @@ require_once(
 	* Default value: —
 
 
-##### Senders → CRM LiveSklad.com
+#### Senders → CRM LiveSklad.com
 
 * `senders->crmLiveSklad`
 	* Description: The sender parameters.
@@ -312,7 +309,7 @@ require_once(
 	* **Required**
 
 
-##### Senders → Custom HTTP request
+#### Senders → Custom HTTP request
 
 * `senders->customhttprequest`
 	* Description: The sender parameters.
@@ -393,10 +390,10 @@ require_once(
 	* Default value: `null`
 
 
-### Examples
+## Examples
 
 
-#### Send to email
+### Send to email
 
 ```
 [!ddSendFeedback?
@@ -417,7 +414,7 @@ require_once(
 ```
 
 
-#### Send to Telegram
+### Send to Telegram
 
 ```
 [!ddSendFeedback?
@@ -433,7 +430,7 @@ require_once(
 ```
 
 
-#### Send to Slack
+### Send to Slack
 
 ```
 [!ddSendFeedback?
@@ -447,7 +444,7 @@ require_once(
 ```
 
 
-#### Send to Sms.ru
+### Send to Sms.ru
 
 ```
 [!ddSendFeedback?
@@ -462,7 +459,7 @@ require_once(
 ```
 
 
-#### Run the snippet through `\DDTools\Snippet::runSnippet` without DB and eval
+### Run the snippet through `\DDTools\Snippet::runSnippet` without DB and eval
 
 ```php
 //Include (MODX)EvolutionCMS.libraries.ddTools
