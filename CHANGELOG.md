@@ -97,5 +97,5 @@
 * \+ Parameters → `fromField`: The new parameter. `$_POST` array element with mailer name are taken (replacing `from`).
 
 
-<link rel="stylesheet" type="text/css" href="https://DivanDesign.ru/assets/files/ddMarkdown.css" />
+<link rel="stylesheet" type="text/css" href="https://raw.githack.com/DivanDesign/CSS.ddMarkdown/master/style.min.css" />
 <style>ul{list-style:none;}</style>
