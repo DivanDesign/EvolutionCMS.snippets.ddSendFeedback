@@ -19,22 +19,16 @@
 		"send sms",
 		"sms.ru"
 	],
-	"homepage": "https://code.divandesign.biz/modx/ddsendfeedback",
+	"homepage": "https://code.divandesign.ru/modx/ddsendfeedback",
 	"support": {
 		"chat": "https://t.me/dd_code"
 	},
 	"authors": [
 		{
-			"name": "DD Group",
-			"email": "code@DivanDesign.biz",
-			"homepage": "https://code.divandesign.biz",
-			"role": "Owner"
-		},
-		{
 			"name": "Ilyas Ronef",
 			"email": "ilyas@DivanDesign.ru",
 			"homepage": "https://ronef.ru",
-			"role": "Developer"
+			"role": "Owner"
 		},
 		{
 			"name": "Alexey Davydov",
