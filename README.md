@@ -138,6 +138,7 @@ require_once(
 	* Valid values:
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
+		* `object` — if set as an object, each item will be parsed as an independent template and then the result will be converted to JSON, it can be useful if you need to send a JSON object 
 	* **Required**
 	
 * `senders->{$senderName}->tpl_placeholders`

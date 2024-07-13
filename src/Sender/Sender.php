@@ -34,7 +34,7 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * __construct
-	 * @version 1.5.1 (2024-06-20)
+	 * @version 1.6 (2024-07-13)
 	 */
 	public function __construct($params = []){
 		$this->setExistingProps($params);
@@ -82,13 +82,36 @@ abstract class Sender extends \DDTools\Base\Base {
 				]
 			]);
 			
-			//Prepare text to send
-			$this->text = \ddTools::parseText([
-				'text' => \ddTools::getTpl($this->tpl),
-				'data' => $text_data
-			]);
-			
-			$this->text = trim($this->text);
+			if (
+				is_object($this->tpl) ||
+				is_array($this->tpl)
+			){
+				$this->tpl = (object) $this->tpl;
+				
+				foreach (
+					$this->tpl
+					as $tpl_itemKey
+					=> $tpl_itemValue
+				){
+					$this->tpl->{$tpl_itemKey} = \ddTools::parseText([
+						'text' => $tpl_itemValue,
+						'data' => $text_data
+					]);
+				}
+				
+				$this->text = \DDTools\ObjectTools::convertType([
+					'object' => $this->tpl,
+					'type' => 'stringJsonAuto',
+				]);
+			}else{
+				//Prepare text to send
+				$this->text = \ddTools::parseText([
+					'text' => \ddTools::getTpl($this->tpl),
+					'data' => $text_data
+				]);
+				
+				$this->text = trim($this->text);
+			}
 			
 			//Text must not be empty for sending
 			if (empty($this->text)){
