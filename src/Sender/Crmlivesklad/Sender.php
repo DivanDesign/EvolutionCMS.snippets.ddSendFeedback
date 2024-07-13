@@ -64,7 +64,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * fillAuthToken
-	 * @version 1.0 (2024-06-04)
+	 * @version 1.0.1 (2024-07-13)
 	 * 
 	 * @return {void}
 	 */
@@ -85,7 +85,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 						'login' => $this->login,
 						'password' => $this->password,
 					],
-				]
+				],
 			]);
 			
 			$requestResult = \DDTools\ObjectTools::convertType([
@@ -124,7 +124,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send_request_prepareParams
-	 * @version 1.0.1 (2024-06-11)
+	 * @version 1.0.2 (2024-07-13)
 	 * 
 	 * @return $result {\stdClass}
 	 */
@@ -133,7 +133,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			'url' => $this->urls->orders,
 			'method' => 'post',
 			'headers' => [
-				'Authorization: ' . $this->authTokenData->token
+				'Authorization: ' . $this->authTokenData->token,
 			],
 			'postData' => $this->text,
 		];

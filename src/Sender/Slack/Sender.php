@@ -22,7 +22,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send_request_prepareParams
-	 * @version 1.0.1 (2024-06-11)
+	 * @version 1.0.2 (2024-07-13)
 	 * 
 	 * @return $result {\stdClass}
 	 */
@@ -34,10 +34,10 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 				'text' => $this->text,
 				'channel' => $this->channel,
 				'username' => $this->botName,
-				'icon_emoji' => $this->botIcon
+				'icon_emoji' => $this->botIcon,
 			]),
 			'sendRawPostData' => true,
-			'headers' => 'application/json'
+			'headers' => 'application/json',
 		];
 	}
 }

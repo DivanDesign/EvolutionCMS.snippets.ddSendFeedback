@@ -34,7 +34,7 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * __construct
-	 * @version 1.6 (2024-07-13)
+	 * @version 1.6.1 (2024-07-13)
 	 */
 	public function __construct($params = []){
 		$this->setExistingProps($params);
@@ -53,8 +53,8 @@ abstract class Sender extends \DDTools\Base\Base {
 		
 		//Check required props
 		foreach (
-			$this->requiredProps as
-			$requiredPropName
+			$this->requiredProps
+			as $requiredPropName
 		){
 			//If one of required properties is not set
 			if (empty($this->{$requiredPropName})){
@@ -79,12 +79,12 @@ abstract class Sender extends \DDTools\Base\Base {
 				'objects' => [
 					$this->tpl_placeholdersFromPost,
 					$this->tpl_placeholders,
-				]
+				],
 			]);
 			
 			if (
-				is_object($this->tpl) ||
-				is_array($this->tpl)
+				is_object($this->tpl)
+				|| is_array($this->tpl)
 			){
 				$this->tpl = (object) $this->tpl;
 				
@@ -95,7 +95,7 @@ abstract class Sender extends \DDTools\Base\Base {
 				){
 					$this->tpl->{$tpl_itemKey} = \ddTools::parseText([
 						'text' => $tpl_itemValue,
-						'data' => $text_data
+						'data' => $text_data,
 					]);
 				}
 				
@@ -107,7 +107,7 @@ abstract class Sender extends \DDTools\Base\Base {
 				//Prepare text to send
 				$this->text = \ddTools::parseText([
 					'text' => \ddTools::getTpl($this->tpl),
-					'data' => $text_data
+					'data' => $text_data,
 				]);
 				
 				$this->text = trim($this->text);
@@ -122,7 +122,7 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * initPostPlaceholders
-	 * @version 1.2 (2019-12-14)
+	 * @version 1.2.1 (2024-07-13)
 	 * 
 	 * @desc Init placeholders to $this->tpl_placeholdersFromPost from $_POST.
 	 * 
@@ -134,9 +134,9 @@ abstract class Sender extends \DDTools\Base\Base {
 		
 		//Перебираем пост, записываем в массив значения полей
 		foreach (
-			$_POST as
-			$key =>
-			$val
+			$_POST
+			as $key
+			=> $val
 		){
 			if(is_array($val)){
 				$this->tpl_placeholdersFromPost[$key] = implode(
@@ -147,8 +147,8 @@ abstract class Sender extends \DDTools\Base\Base {
 			
 			if (
 				//Если это строка или число (может быть массив, например, в случае с файлами)
-				is_string($_POST[$key]) ||
-				is_numeric($_POST[$key])
+				is_string($_POST[$key])
+				|| is_numeric($_POST[$key])
 			){
 				$this->tpl_placeholdersFromPost[$key] =
 					$this->textMarkupSyntax == 'html' ?
@@ -164,7 +164,7 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * send
-	 * @version 1.7.4 (2024-06-20)
+	 * @version 1.7.5 (2024-07-13)
 	 * 
 	 * @desc Sends a message.
 	 * 
@@ -195,7 +195,7 @@ abstract class Sender extends \DDTools\Base\Base {
 					'objects' => [
 						$errorData,
 						$requestResult->errorData,
-					]
+					],
 				]);
 			}
 		}
@@ -243,7 +243,7 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * send_request
-	 * @version 2.0 (2024-06-11)
+	 * @version 2.0.1 (2024-07-13)
 	 * 
 	 * @return $result {array} — Returns an array of request results (some senders can do several requests).
 	 * @return $result[$i] {mixed} — A raw request result.
@@ -253,7 +253,7 @@ abstract class Sender extends \DDTools\Base\Base {
 			0 => \DDTools\Snippet::runSnippet([
 				'name' => 'ddMakeHttpRequest',
 				'params' => $this->send_request_prepareParams(),
-			])
+			]),
 		];
 	}
 	

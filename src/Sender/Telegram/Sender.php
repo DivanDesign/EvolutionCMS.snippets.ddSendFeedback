@@ -18,7 +18,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		
 		$requiredProps = [
 			'botToken',
-			'chatId'
+			'chatId',
 		],
 		
 		/**
@@ -41,16 +41,16 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * __construct
-	 * @version 1.0.2 (2021-01-18)
+	 * @version 1.0.3 (2024-07-13)
 	 */
 	public function __construct($params = []){
 		//Backward compatibility
 		$params = \ddTools::verifyRenamedParams([
 			'params' => $params,
 			'compliance' => [
-				'textMarkupSyntax' => 'messageMarkupSyntax'
+				'textMarkupSyntax' => 'messageMarkupSyntax',
 			],
-			'returnCorrectedOnly' => false
+			'returnCorrectedOnly' => false,
 		]);
 		
 		//Call base constructor
@@ -63,7 +63,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			[
 				'markdown',
 				'html',
-				''
+				'',
 			]
 		)){
 			$this->textMarkupSyntax = '';
@@ -75,7 +75,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send_request_prepareParams
-	 * @version 1.0.1 (2024-06-11)
+	 * @version 1.0.2 (2024-07-13)
 	 * 
 	 * @return $result {\stdClass}
 	 */
@@ -88,12 +88,12 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 					'chatId' => $this->chatId,
 					'text' => urlencode($this->text),
 					'textMarkupSyntax' => $this->textMarkupSyntax,
-					'disableWebPagePreview' => intval($this->disableWebPagePreview)
+					'disableWebPagePreview' => intval($this->disableWebPagePreview),
 				],
 				//TODO: Why is it disabled? Add a comment or enable.
-				'isCompletelyParsingEnabled' => false
+				'isCompletelyParsingEnabled' => false,
 			]),
-			'proxy' => $this->proxy
+			'proxy' => $this->proxy,
 		];
 	}
 }

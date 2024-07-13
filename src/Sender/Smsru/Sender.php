@@ -9,7 +9,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		
 		$requiredProps = [
 			'apiId',
-			'to'
+			'to',
 		],
 		
 		$requestResultParams = [

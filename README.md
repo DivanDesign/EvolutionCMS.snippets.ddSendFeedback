@@ -477,10 +477,10 @@ require_once(
 		 	'telegram' => [
 		 		'botToken' => '123:AAAAAA',
 				'chatId' => '-11111',
-				'tpl' => '@CODE:Test message from [(site_url)]!'
-		 	]
-	 	]
-	]
+				'tpl' => '@CODE:Test message from [(site_url)]!',
+		 	],
+	 	],
+	],
 ]);
 ```
 

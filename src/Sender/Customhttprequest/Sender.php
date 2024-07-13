@@ -16,13 +16,13 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send_request_prepareParams
-	 * @version 1.0.1 (2024-06-11)
+	 * @version 1.0.2 (2024-07-13)
 	 * 
 	 * @return $result {\stdClass}
 	 */
 	protected function send_request_prepareParams(): \stdClass {
 		$result = (object) [
-			'url' => $this->url
+			'url' => $this->url,
 		];
 		
 		//If method == 'get' need to append url. Else need to set postData
