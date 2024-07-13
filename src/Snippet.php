@@ -70,7 +70,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0.1 (2024-07-13)
+	 * @version 1.0.2 (2024-07-13)
 	 * 
 	 * @return {string}
 	 */
@@ -104,12 +104,6 @@ class Snippet extends \DDTools\Snippet {
 			){
 				$sender = \ddSendFeedback\Sender\Sender::createChildInstance([
 					'name' => $senderName,
-					'parentDir' =>
-						$this->paths->src .
-						DIRECTORY_SEPARATOR .
-						'Sender'
-					,
-					//Passing parameters to senders's constructor
 					'params' => $senderParams,
 				]);
 				
