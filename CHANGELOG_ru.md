@@ -2,10 +2,12 @@
 
 
 ## Версия 2.7.1 (2021-11-09)
+
 * \* Улучшено удаление пустых плейсхолдеров при парсинге `senders->{$senderName}->tpl`.
 
 
 ## Версия 2.7 (2021-05-12)
+
 * \* Внимание! Требуется PHP >= 5.6.
 * \* Внимание! Требуется (MODX)EvolutionCMS.libraries.ddTools >= 0.50.
 * \* Внимание! Требуется (MODX)EvolutionCMS.snippets.ddMakeHttpRequest >= 2.3.1.
@@ -22,12 +24,14 @@
 
 
 ## Версия 2.6.1 (2021-02-07)
+
 * \* Внимание! Требуется (MODX)EvolutionCMS.libraries.ddTools >= 0.41 (не тестировался с более ранними версиями).
 * \+ `\ddSendFeedback\Sender\Sender::__construct`: Менее хрупкий код, `\DDTools\ObjectTools::extend` используется вместо `array_merge`.
 * \* Сниппет: `\DDTools\ObjectTools::convertType` используется вместо `\ddTools::encodedStringToArray`.
 
 
 ## Версия 2.6 (2021-01-18)
+
 * \* Внимание! Требуется (MODX)EvolutionCMS.libraries.ddTools >= 0.32.
 * \+ Параметры → `senders`: Также может быть задан, как нативный PHP объект или массив (например, для вызовов через `$modx->runSnippet`).
 * \+ REAMDE:
@@ -46,6 +50,7 @@
 
 
 ## Версия 2.5 (2019-12-15)
+
 * \* Внимание! Требуется (MODX)EvolutionCMS.libraries.ddTools >= 0.25.
 * \+ Параметры → `senders->customhttprequest`: Новый сендер.
 * \* Параметры → `senders->telegram->textMarkupSyntax`: Переименован из `senders->telegram->messageMarkupSyntax` с обратной совместимостью.
@@ -59,20 +64,24 @@
 
 
 ## Версия 2.4 (2019-06-21)
+
 * \* Внимание! Требуется (MODX)EvolutionCMS.snippets.ddMakeHttpRequest >= 1.4.
 * \+ Senders → Telegram: Добавлена возможность работы через прокси сервер (см. параметр `proxy`).
 
 
 ## Версия 2.3 (2018-10-09)
+
 * \* Внимание! Требуется (MODX)EvolutionCMS.libraries.ddTools >= 0.23.
 * \+ Сендеры → Sms.ru: Добавлен параметр  `from`.
 
 
 ## Версия 2.2 (2018-03-22)
+
 * \+ Сендеры → Telegram: Добавлены параметры  `messageMarkupSyntax` и `disableWebPagePreview`.
 
 
 ## Версия 2.1 (2018-03-21)
+
 * \* Внимание! Требуется (MODX)EvolutionCMS.libraries.ddTools >= 0.21.
 * \* Сендеры → Email: Исправлены проблемы с отправкой на несколько ящиков.
 * \+ Добавлена возможность отправки сообщения в канал Telegram.
@@ -80,6 +89,7 @@
 
 
 ## Версия 2.0 (2017-02-06)
+
 * \* Внимание! Обратная совместимость нарушена!
 * \* Внимание! Требуется (MODX)EvolutionCMS.snippets.ddMakeHttpRequest >= 1.3.
 * \+ Добавлена возможность отправки сообщений в канал Slack.
@@ -87,6 +97,7 @@
 
 
 ## Версия 1.11 (2016-10-30)
+
 * \* Внимание! Требуется (MODX)EvolutionCMS >= 1.1.
 * \* Внимание! Требуется (MODX)EvolutionCMS.libraries.ddTools >= 0.16.
 * \+ Добавлена поддержка указания шаблона письма без чанка, через префикс `@CODE:`.
@@ -94,6 +105,7 @@
 
 
 ## Версия 1.5 (2011-08-18)
+
 * \+ Параметры → `fromField`: Новый параметр. Из него берётся элемент массива `$_POST` с именем отправителя, перекрывает параметр `from`.
 
 
