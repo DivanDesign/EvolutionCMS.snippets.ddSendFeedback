@@ -391,18 +391,20 @@ require_once(
 
 ## Examples
 
+All examples are written using [HJSON](https://hjson.github.io/), but if you want you can use vanilla JSON instead.
+
 
 ### Send to email
 
 ```
 [!ddSendFeedback?
 	&senders=`{
-		"email": {
-			"to": "robert@awesome.org",
-			"tpl": "@CODE: Message from document with ID [+docId+].",
-			"subject": "Example sending feedback",
-			"from": "sitebot@awesome.org",
-			"filesInputNames": "file"
+		email: {
+			to: robert@awesome.org
+			tpl: "@CODE: Message from document with ID [+docId+]."
+			subject: Example sending feedback
+			from: sitebot@awesome.org
+			filesInputNames: file
 		}
 	}`
 	&result_titleSuccess=`All successfully! Message send!`
@@ -418,11 +420,11 @@ require_once(
 ```
 [!ddSendFeedback?
 	&senders=`{
-	 	"telegram": {
-	 		"botToken": "123:AAAAAA",
-			"chatId": "-11111",
-			"tpl": "@CODE:Test message from [(site_url)]!",
-			"proxy": "http://asan:gd324ukl@11.22.33.44:5555"
+	 	telegram: {
+	 		botToken: 123:AAAAAA
+			chatId: -11111
+			tpl: "@CODE:Test message from [(site_url)]!"
+			proxy: http://asan:gd324ukl@11.22.33.44:5555
 	 	}
 	}`
 !]
@@ -434,9 +436,9 @@ require_once(
 ```
 [!ddSendFeedback?
 	&senders=`{
-	 	"slack": {
-	 		"url": "https://hooks.slack.com/services/WEBHOOK",
-			"tpl": "@CODE: Message from document with id [+docId+]."
+	 	slack: {
+	 		url: https://hooks.slack.com/services/WEBHOOK
+			tpl: "@CODE: Message from document with id [+docId+]."
 	 	}
 	}`
 !]
@@ -448,10 +450,10 @@ require_once(
 ```
 [!ddSendFeedback?
 	&senders=`{
-	 	"smsRu": {
-	 		"apiId": "00000000-0000-0000-0000-000000000000",
-			"to": "89999999999",
-			"tpl": "general_letters_feedbackToSMS"
+	 	smsRu: {
+	 		apiId: 00000000-0000-0000-0000-000000000000
+			to: 89999999999
+			tpl: general_letters_feedbackToSMS
 	 	}
 	}`
 !]
