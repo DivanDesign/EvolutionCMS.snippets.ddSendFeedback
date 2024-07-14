@@ -14,6 +14,7 @@ abstract class Sender extends \DDTools\Base\Base {
 		$text = '',
 		$textMarkupSyntax = 'html',
 		$isFailDisplayedToUser = true,
+		$isFailRequiredParamsDisplayedToLog = true,
 		
 		$requiredProps = ['tpl'],
 		$canSend = true,
@@ -176,7 +177,7 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * send
-	 * @version 1.7.5 (2024-07-13)
+	 * @version 1.8 (2024-07-14)
 	 * 
 	 * @desc Sends a message.
 	 * 
@@ -187,13 +188,19 @@ abstract class Sender extends \DDTools\Base\Base {
 		$errorData = (object) [
 			'isError' => true,
 			//Only 19 signs are allowed here in MODX event log :|
-			'title' => 'Check required parameters',
+			'title' => '',
 			'message' => '',
 		];
 		
 		$requestResult = null;
 		
-		if ($this->canSend){
+		if (!$this->canSend){
+			$errorData->title = 'Check required parameters';
+			
+			if (!$this->isFailRequiredParamsDisplayedToLog){
+				$errorData->isError = false;
+			}
+		}else{
 			$errorData->title = 'Unexpected API error';
 			
 			if (!$this->send_auth()){

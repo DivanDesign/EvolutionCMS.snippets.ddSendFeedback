@@ -156,6 +156,11 @@ require_once(
 	* Description: Display a failure message to user when sending is failed, or just log it.
 	* Valid values: `boolean`
 	* Default value: `true`
+	
+* `senders->{$senderName}->isFailRequiredParamsDisplayedToLog`
+	* Description: Display a failure message to the CMS log when required parameters are not set.
+	* Valid values: `boolean`
+	* Default value: `true`
 
 
 #### Senders → Email
