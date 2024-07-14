@@ -34,36 +34,12 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * __construct
-	 * @version 1.7 (2024-07-13)
+	 * @version 1.7.1 (2024-07-14)
 	 */
 	public function __construct($params = []){
 		$this->setExistingProps($params);
 		
-		$this->requestResultParams = (object) $this->requestResultParams;
-		
-		if (!\ddTools::isEmpty($this->requestResultParams->checkPropName)){
-			$this->requestResultParams->isObject = true;
-		}
-		
-		//$this->tpl is always required in all senders
-		array_unshift(
-			$this->requiredProps,
-			'tpl'
-		);
-		
-		//Check required props
-		foreach (
-			$this->requiredProps
-			as $requiredPropName
-		){
-			//If one of required properties is not set
-			if (\ddTools::isEmpty($this->{$requiredPropName})){
-				//We can't send
-				$this->canSend = false;
-				
-				break;
-			}
-		}
+		$this->construct_prepareProps();
 		
 		//If all required properties are set
 		if ($this->canSend){
@@ -118,6 +94,40 @@ abstract class Sender extends \DDTools\Base\Base {
 			//Text must not be empty for sending
 			if (\ddTools::isEmpty($this->text)){
 				$this->canSend = false;
+			}
+		}
+	}
+	
+	/**
+	 * construct_prepareProps
+	 * @version 1.0 (2024-07-14)
+	 * 
+	 * @return {void}
+	 */
+	protected function construct_prepareProps(){
+		$this->requestResultParams = (object) $this->requestResultParams;
+		
+		if (!\ddTools::isEmpty($this->requestResultParams->checkPropName)){
+			$this->requestResultParams->isObject = true;
+		}
+		
+		//$this->tpl is always required in all senders
+		array_unshift(
+			$this->requiredProps,
+			'tpl'
+		);
+		
+		//Check required props
+		foreach (
+			$this->requiredProps
+			as $requiredPropName
+		){
+			//If one of required properties is not set
+			if (\ddTools::isEmpty($this->{$requiredPropName})){
+				//We can't send
+				$this->canSend = false;
+				
+				break;
 			}
 		}
 	}

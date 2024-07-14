@@ -12,13 +12,12 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	;
 	
 	/**
-	 * __construct
-	 * @version 1.0.1 (2019-12-14)
+	 * construct_prepareProps
+	 * @version 1.0 (2024-07-14)
+	 *
+	 * @return {void}
 	 */
-	public function __construct($params = []){
-		//Call base constructor
-		parent::__construct($params);
-		
+	protected function construct_prepareProps(){
 		//Comma separated string support
 		if (is_string($this->to)){
 			$this->to = explode(
@@ -26,6 +25,24 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 				$this->to
 			);
 		}
+		
+		//Delete invalid emails
+		foreach(
+			$this->to
+			as $itemIndex
+			=> $itemlValue
+		){
+			if (
+				!filter_var(
+					$itemlValue,
+					FILTER_VALIDATE_EMAIL
+				)
+			){
+				unset($this->to[$itemIndex]);
+			}
+		}
+		
+		parent::construct_prepareProps();
 	}
 	
 	/**
