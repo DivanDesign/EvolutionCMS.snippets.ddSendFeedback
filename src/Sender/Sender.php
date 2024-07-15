@@ -14,6 +14,7 @@ abstract class Sender extends \DDTools\Base\Base {
 		$text = '',
 		$textMarkupSyntax = 'html',
 		$isFailDisplayedToUser = true,
+		$isFailRequiredParamsDisplayedToLog = true,
 		
 		$requiredProps = ['tpl'],
 		$canSend = true,
@@ -34,36 +35,12 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * __construct
-	 * @version 1.7 (2024-07-13)
+	 * @version 1.7.1 (2024-07-14)
 	 */
 	public function __construct($params = []){
 		$this->setExistingProps($params);
 		
-		$this->requestResultParams = (object) $this->requestResultParams;
-		
-		if (!\ddTools::isEmpty($this->requestResultParams->checkPropName)){
-			$this->requestResultParams->isObject = true;
-		}
-		
-		//$this->tpl is always required in all senders
-		array_unshift(
-			$this->requiredProps,
-			'tpl'
-		);
-		
-		//Check required props
-		foreach (
-			$this->requiredProps
-			as $requiredPropName
-		){
-			//If one of required properties is not set
-			if (\ddTools::isEmpty($this->{$requiredPropName})){
-				//We can't send
-				$this->canSend = false;
-				
-				break;
-			}
-		}
+		$this->construct_prepareProps();
 		
 		//If all required properties are set
 		if ($this->canSend){
@@ -123,6 +100,40 @@ abstract class Sender extends \DDTools\Base\Base {
 	}
 	
 	/**
+	 * construct_prepareProps
+	 * @version 1.0 (2024-07-14)
+	 * 
+	 * @return {void}
+	 */
+	protected function construct_prepareProps(){
+		$this->requestResultParams = (object) $this->requestResultParams;
+		
+		if (!\ddTools::isEmpty($this->requestResultParams->checkPropName)){
+			$this->requestResultParams->isObject = true;
+		}
+		
+		//$this->tpl is always required in all senders
+		array_unshift(
+			$this->requiredProps,
+			'tpl'
+		);
+		
+		//Check required props
+		foreach (
+			$this->requiredProps
+			as $requiredPropName
+		){
+			//If one of required properties is not set
+			if (\ddTools::isEmpty($this->{$requiredPropName})){
+				//We can't send
+				$this->canSend = false;
+				
+				break;
+			}
+		}
+	}
+	
+	/**
 	 * initPostPlaceholders
 	 * @version 1.2.1 (2024-07-13)
 	 * 
@@ -166,7 +177,7 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * send
-	 * @version 1.7.5 (2024-07-13)
+	 * @version 1.8 (2024-07-14)
 	 * 
 	 * @desc Sends a message.
 	 * 
@@ -177,13 +188,19 @@ abstract class Sender extends \DDTools\Base\Base {
 		$errorData = (object) [
 			'isError' => true,
 			//Only 19 signs are allowed here in MODX event log :|
-			'title' => 'Check required parameters',
+			'title' => '',
 			'message' => '',
 		];
 		
 		$requestResult = null;
 		
-		if ($this->canSend){
+		if (!$this->canSend){
+			$errorData->title = 'Check required parameters';
+			
+			if (!$this->isFailRequiredParamsDisplayedToLog){
+				$errorData->isError = false;
+			}
+		}else{
 			$errorData->title = 'Unexpected API error';
 			
 			if (!$this->send_auth()){

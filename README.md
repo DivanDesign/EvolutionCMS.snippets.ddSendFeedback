@@ -65,7 +65,7 @@ require_once(
 #### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddSendFeedback`.
-2. Description: `<b>2.8</b> A snippet for sending users' feedback messages to you. It is very useful along with ajax technology.`.
+2. Description: `<b>2.9</b> A snippet for sending users' feedback messages to you. It is very useful along with ajax technology.`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddSendFeedback_snippet.php` file from the archive.
@@ -154,6 +154,11 @@ require_once(
 	
 * `senders->{$senderName}->isFailDisplayedToUser`
 	* Description: Display a failure message to user when sending is failed, or just log it.
+	* Valid values: `boolean`
+	* Default value: `true`
+	
+* `senders->{$senderName}->isFailRequiredParamsDisplayedToLog`
+	* Description: Display a failure message to the CMS log when required parameters are not set.
 	* Valid values: `boolean`
 	* Default value: `true`
 
