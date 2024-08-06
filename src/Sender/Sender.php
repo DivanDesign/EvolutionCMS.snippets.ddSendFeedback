@@ -35,21 +35,21 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * __construct
-	 * @version 1.7.1 (2024-07-14)
+	 * @version 1.7.2 (2024-08-06)
 	 */
 	public function __construct($params = []){
 		$this->setExistingProps($params);
 		
 		$this->construct_prepareProps();
 		
-		//If all required properties are set
+		// If all required properties are set
 		if ($this->canSend){
-			//If POST-placeholders is not initialized
+			// If POST-placeholders is not initialized
 			if (is_null($this->tpl_placeholdersFromPost)){
 				$this->initPostPlaceholders();
 			}
 			
-			//Prepare “textMarkupSyntax”
+			// Prepare “textMarkupSyntax”
 			$this->textMarkupSyntax = trim(strtolower($this->textMarkupSyntax));
 			
 			$text_data = \DDTools\ObjectTools::extend([
@@ -82,7 +82,7 @@ abstract class Sender extends \DDTools\Base\Base {
 					'type' => 'stringJsonAuto',
 				]);
 			}else{
-				//Prepare text to send
+				// Prepare text to send
 				$this->text = \ddTools::parseText([
 					'text' => \ddTools::getTpl($this->tpl),
 					'data' => $text_data,
@@ -92,7 +92,7 @@ abstract class Sender extends \DDTools\Base\Base {
 				$this->text = trim($this->text);
 			}
 			
-			//Text must not be empty for sending
+			// Text must not be empty for sending
 			if (\ddTools::isEmpty($this->text)){
 				$this->canSend = false;
 			}
@@ -101,7 +101,7 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * construct_prepareProps
-	 * @version 1.0 (2024-07-14)
+	 * @version 1.0.1 (2024-08-06)
 	 * 
 	 * @return {void}
 	 */
@@ -112,20 +112,20 @@ abstract class Sender extends \DDTools\Base\Base {
 			$this->requestResultParams->isObject = true;
 		}
 		
-		//$this->tpl is always required in all senders
+		// $this->tpl is always required in all senders
 		array_unshift(
 			$this->requiredProps,
 			'tpl'
 		);
 		
-		//Check required props
+		// Check required props
 		foreach (
 			$this->requiredProps
 			as $requiredPropName
 		){
-			//If one of required properties is not set
+			// If one of required properties is not set
 			if (\ddTools::isEmpty($this->{$requiredPropName})){
-				//We can't send
+				// We can't send
 				$this->canSend = false;
 				
 				break;
@@ -135,17 +135,17 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * initPostPlaceholders
-	 * @version 1.2.1 (2024-07-13)
+	 * @version 1.2.2 (2024-08-06)
 	 * 
 	 * @desc Init placeholders to $this->tpl_placeholdersFromPost from $_POST.
 	 * 
 	 * @return {void}
 	 */
 	private final function initPostPlaceholders(){
-		//Подготавливаем плэйсхолдеры
+		// Подготавливаем плэйсхолдеры
 		$this->tpl_placeholdersFromPost = [];
 		
-		//Перебираем пост, записываем в массив значения полей
+		// Перебираем пост, записываем в массив значения полей
 		foreach (
 			$_POST
 			as $key
@@ -159,7 +159,7 @@ abstract class Sender extends \DDTools\Base\Base {
 			}
 			
 			if (
-				//Если это строка или число (может быть массив, например, в случае с файлами)
+				// Если это строка или число (может быть массив, например, в случае с файлами)
 				is_string($_POST[$key])
 				|| is_numeric($_POST[$key])
 			){
@@ -171,13 +171,13 @@ abstract class Sender extends \DDTools\Base\Base {
 			}
 		}
 		
-		//Добавим адрес страницы, с которой пришёл запрос
+		// Добавим адрес страницы, с которой пришёл запрос
 		$this->tpl_placeholdersFromPost['docId'] = \ddTools::getDocumentIdByUrl($_SERVER['HTTP_REFERER']);
 	}
 	
 	/**
 	 * send
-	 * @version 1.8 (2024-07-14)
+	 * @version 1.8.1 (2024-08-06)
 	 * 
 	 * @desc Sends a message.
 	 * 
@@ -187,7 +187,7 @@ abstract class Sender extends \DDTools\Base\Base {
 	public function send(){
 		$errorData = (object) [
 			'isError' => true,
-			//Only 19 signs are allowed here in MODX event log :|
+			// Only 19 signs are allowed here in MODX event log :|
 			'title' => '',
 			'message' => '',
 		];
@@ -219,7 +219,7 @@ abstract class Sender extends \DDTools\Base\Base {
 			}
 		}
 		
-		//Log errors
+		// Log errors
 		if ($errorData->isError){
 			$errorData->message .=
 				'<p>$this:</p><pre><code>'
@@ -245,7 +245,7 @@ abstract class Sender extends \DDTools\Base\Base {
 		return \DDTools\ObjectTools::getPropValue([
 			'object' => $requestResult,
 			'propName' => 'sendSuccessStatuses',
-			//No need to return sending error if required parameters were not set
+			// No need to return sending error if required parameters were not set
 			'notFoundResult' => [],
 		]);
 	}
@@ -286,7 +286,7 @@ abstract class Sender extends \DDTools\Base\Base {
 	
 	/**
 	 * send_parseRequestResults
-	 * @version 4.2 (2024-06-20)
+	 * @version 4.2.1 (2024-08-06)
 	 * 
 	 * @param $rawResults {array} — An array of raw request results (some senders can do several requests).
 	 * @param $rawResults[$i] {mixed} — A raw request result.
@@ -309,13 +309,13 @@ abstract class Sender extends \DDTools\Base\Base {
 			],
 		];
 		
-		//For each request result (some senders can do several requests)
+		// For each request result (some senders can do several requests)
 		foreach (
 			$rawResults
 			as $rawResults_requestIndex
 			=> $rawResults_requestResult
 		){
-			//Check successful status by raw result by default
+			// Check successful status by raw result by default
 			$requestResult_checkValue = $rawResults_requestResult;
 			
 			if ($this->requestResultParams->isObject){
@@ -324,36 +324,36 @@ abstract class Sender extends \DDTools\Base\Base {
 					'type' => 'objectStdClass',
 				]);
 				
-				//Get required property value for checking successful status
+				// Get required property value for checking successful status
 				$requestResult_checkValue = \DDTools\ObjectTools::getPropValue([
 					'object' => $rawResults_requestResult,
 					'propName' => $this->requestResultParams->checkPropName,
 				]);
 			}
 			
-			//Is the request successful?
+			// Is the request successful?
 			$isRequestSuccess =
 				$this->requestResultParams->isCheckTypeSuccess
-				//Check if it's a success
+				// Check if it's a success
 				? $requestResult_checkValue == $this->requestResultParams->checkValue
-				//Check if it's not a fail
+				// Check if it's not a fail
 				: $requestResult_checkValue != $this->requestResultParams->checkValue
 			;
 			
 			if (
 				$isRequestSuccess
-				//Return unsuccessful status only it's need to be displayed to user
+				// Return unsuccessful status only it's need to be displayed to user
 				|| $this->isFailDisplayedToUser
 			){
 				$result->sendSuccessStatuses[$rawResults_requestIndex] = $isRequestSuccess;
 			}
 			
-			//If error
+			// If error
 			if (!$isRequestSuccess){
 				$result->errorData->isError = true;
 				
 				if (!\ddTools::isEmpty($this->requestResultParams->errorMessagePropName)){
-					//Try to get error title from request result
+					// Try to get error title from request result
 					$result->errorData->title[$rawResults_requestIndex] = \DDTools\ObjectTools::getPropValue([
 						'object' => $rawResults_requestResult,
 						'propName' => $this->requestResultParams->errorMessagePropName,

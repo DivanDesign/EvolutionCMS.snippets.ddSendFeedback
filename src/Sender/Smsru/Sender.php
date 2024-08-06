@@ -15,7 +15,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		$requestResultParams = [
 			'checkValue' => 'OK',
 			'isCheckTypeSuccess' => true,
-			//Just something, a real values will be set in every call of `$this->send_request_prepareParams`
+			// Just something, a real values will be set in every call of `$this->send_request_prepareParams`
 			'checkPropName' => 'sms.[+phoneNumber+].status',
 			'errorMessagePropName' => 'sms.[+phoneNumber+].status_text',
 			

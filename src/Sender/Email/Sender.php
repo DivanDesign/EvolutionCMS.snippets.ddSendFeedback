@@ -13,12 +13,12 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * construct_prepareProps
-	 * @version 1.0 (2024-07-14)
+	 * @version 1.0.1 (2024-08-06)
 	 *
 	 * @return {void}
 	 */
 	protected function construct_prepareProps(){
-		//Comma separated string support
+		// Comma separated string support
 		if (is_string($this->to)){
 			$this->to = explode(
 				',',
@@ -26,7 +26,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			);
 		}
 		
-		//Delete invalid emails
+		// Delete invalid emails
 		foreach(
 			$this->to
 			as $itemIndex

@@ -16,9 +16,9 @@ The snippet returns a JSON string with the following fields:
 		"code": 200,
 		"success": true,
 		"message": {
-			//Message content (from “result_messageSuccess” / “result_messageFail” respectively).
+			// Message content (from “result_messageSuccess” / “result_messageFail” respectively).
 			"content": "We will contact you later.",
-			//Message title (from “result_titleSuccess” / “result_titleFail” respectively).
+			// Message title (from “result_titleSuccess” / “result_titleFail” respectively).
 			"title": "Message sent successfully"
 		}
 	}
@@ -42,13 +42,13 @@ The snippet returns a JSON string with the following fields:
 Just run the following PHP code in your sources or [Console](https://github.com/vanchelo/MODX-Evolution-Ajax-Console):
 
 ```php
-//Include (MODX)EvolutionCMS.libraries.ddInstaller
+// Include (MODX)EvolutionCMS.libraries.ddInstaller
 require_once(
 	$modx->getConfig('base_path') .
 	'assets/libs/ddInstaller/require.php'
 );
 
-//Install (MODX)EvolutionCMS.snippets.ddSendFeedback
+// Install (MODX)EvolutionCMS.snippets.ddSendFeedback
 \DDInstaller::install([
 	'url' => 'https://github.com/DivanDesign/EvolutionCMS.snippets.ddSendFeedback',
 	'type' => 'snippet'
@@ -468,13 +468,13 @@ All examples are written using [HJSON](https://hjson.github.io/), but if you wan
 ### Run the snippet through `\DDTools\Snippet::runSnippet` without DB and eval
 
 ```php
-//Include (MODX)EvolutionCMS.libraries.ddTools
+// Include (MODX)EvolutionCMS.libraries.ddTools
 require_once(
 	$modx->getConfig('base_path') .
 	'assets/libs/ddTools/modx.ddtools.class.php'
 );
 
-//Run (MODX)EvolutionCMS.snippets.ddSendFeedback
+// Run (MODX)EvolutionCMS.snippets.ddSendFeedback
 \DDTools\Snippet::runSnippet([
 	'name' => 'ddSendFeedback',
 	'params' => [

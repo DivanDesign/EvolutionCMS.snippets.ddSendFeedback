@@ -16,7 +16,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send_request_prepareParams
-	 * @version 1.0.3 (2024-07-13)
+	 * @version 1.0.4 (2024-08-06)
 	 * 
 	 * @return $result {\stdClass}
 	 */
@@ -25,7 +25,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			'url' => $this->url,
 		];
 		
-		//If method == 'get' need to append url. Else need to set postData
+		// If method == 'get' need to append url. Else need to set postData
 		if ($this->method == 'get'){
 			$result->url .=
 				'?' . 

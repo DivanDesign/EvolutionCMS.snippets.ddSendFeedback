@@ -6,7 +6,7 @@ class Snippet extends \DDTools\Snippet {
 		$version = '2.9.0',
 		
 		$params = [
-			//Defaults
+			// Defaults
 			'result_titleSuccess' => null,
 			'result_titleFail' => null,
 			'result_messageSuccess' => null,
@@ -21,20 +21,20 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * prepareParams
-	 * @version 1.0.1 (2024-07-13)
+	 * @version 1.0.2 (2024-08-06)
 	 * 
 	 * @param $params {stdClass|arrayAssociative|stringJsonObject|stringQueryFormatted}
 	 * 
 	 * @return {void}
 	 */
 	protected function prepareParams($params = []){
-		//Call base method
+		// Call base method
 		parent::prepareParams($params);
 		
-		//Получаем язык админки
+		// Получаем язык админки
 		$lang = \ddTools::$modx->getConfig('manager_language');
 		
-		//Если язык русский
+		// Если язык русский
 		if(
 			$lang == 'russian-UTF8'
 			|| $lang == 'russian'
@@ -70,14 +70,14 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0.3 (2024-07-13)
+	 * @version 1.0.4 (2024-08-06)
 	 * 
 	 * @return {string}
 	 */
 	public function run(){
 		$result = new \DDTools\Response();
 		
-		//Senders is required parameter
+		// Senders is required parameter
 		if (\ddTools::isEmpty($this->params->senders)){
 			$result->setMeta([
 				'success' => false,
@@ -96,7 +96,7 @@ class Snippet extends \DDTools\Snippet {
 			
 			$sendResults = [];
 			
-			//Iterate through all senders to create their instances
+			// Iterate through all senders to create their instances
 			foreach(
 				$this->params->senders
 				as $senderName
@@ -107,25 +107,25 @@ class Snippet extends \DDTools\Snippet {
 					'params' => $senderParams,
 				]);
 				
-				//Send message (items with integer keys are not overwritten)
+				// Send message (items with integer keys are not overwritten)
 				$sendResults = array_merge(
 					$sendResults,
 					$sender->send()
 				);
 			}
 			
-			//Fail by default
+			// Fail by default
 			$sendResults_status = 0;
 			
-			//Перебираем все статусы отправки
+			// Перебираем все статусы отправки
 			foreach (
 				$sendResults
 				as $sendResults_item
 			){
-				//Запоминаем
+				// Запоминаем
 				$sendResults_status = intval($sendResults_item);
 				
-				//Если не отправлось хоть на один адрес, считаем, что всё плохо
+				// Если не отправлось хоть на один адрес, считаем, что всё плохо
 				if ($sendResults_status == 0){
 					break;
 				}

@@ -41,10 +41,10 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * __construct
-	 * @version 1.0.3 (2024-07-13)
+	 * @version 1.0.4 (2024-08-06)
 	 */
 	public function __construct($params = []){
-		//Backward compatibility
+		// Backward compatibility
 		$params = \ddTools::verifyRenamedParams([
 			'params' => $params,
 			'compliance' => [
@@ -53,13 +53,13 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			'returnCorrectedOnly' => false,
 		]);
 		
-		//Call base constructor
+		// Call base constructor
 		parent::__construct($params);
 		
-		//Prepare “textMarkupSyntax”
+		// Prepare “textMarkupSyntax”
 		if (!in_array(
 			$this->textMarkupSyntax,
-			//Allowable values
+			// Allowable values
 			[
 				'markdown',
 				'html',
@@ -69,13 +69,13 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			$this->textMarkupSyntax = '';
 		}
 		
-		//Prepare “disableWebPagePreview”
+		// Prepare “disableWebPagePreview”
 		$this->disableWebPagePreview = boolval($this->disableWebPagePreview);
 	}
 	
 	/**
 	 * send_request_prepareParams
-	 * @version 1.0.2 (2024-07-13)
+	 * @version 1.0.3 (2024-08-06)
 	 * 
 	 * @return $result {\stdClass}
 	 */
@@ -90,7 +90,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 					'textMarkupSyntax' => $this->textMarkupSyntax,
 					'disableWebPagePreview' => intval($this->disableWebPagePreview),
 				],
-				//TODO: Why is it disabled? Add a comment or enable.
+				// TODO: Why is it disabled? Add a comment or enable.
 				'isCompletelyParsingEnabled' => false,
 			]),
 			'proxy' => $this->proxy,
