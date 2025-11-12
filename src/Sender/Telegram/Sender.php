@@ -9,35 +9,31 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	 * @property $disableWebPagePreview {boolean} — Disables link previews for links in this message. Default: false.
 	 * @property $proxy {string} — Proxy server in format 'protocol://user:password@ip:port'. E. g. 'asan:gd324ukl@11.22.33.44:5555' or 'socks5://asan:gd324ukl@11.22.33.44:5555'. Default: —.
 	 */
-	protected
-		$botToken = '',
-		$chatId = '',
-		$disableWebPagePreview = false,
-		$proxy = '',
-		$textMarkupSyntax = '',
-		
-		$requiredProps = [
-			'botToken',
-			'chatId',
-		],
-		
-		/**
-		 * @property $requestResultParams {stdClass}
-		 * @property $requestResultParams->isObject {boolean} — Is the result of the request an object or not? It is needed to check if the request is successful. If `false`, the response will be checked as a boolean. It is computed automatically from the siblings values.
-		 */
-		$requestResultParams = [
-			'checkValue' => true,
-			'isCheckTypeSuccess' => true,
-			'checkPropName' => 'ok',
-			'errorMessagePropName' => 'description',
-			
-			'isObject' => true,
-		]
-	;
+	protected $botToken = '';
+	protected $chatId = '';
+	protected $disableWebPagePreview = false;
+	protected $proxy = '';
+	protected $textMarkupSyntax = '';
 	
-	private
-		$url = 'https://api.telegram.org/bot[+botToken+]/sendMessage?chat_id=[+chatId+]&text=[+text+]&parse_mode=[+textMarkupSyntax+]&disable_web_page_preview=[+disableWebPagePreview+]'
-	;
+	protected $requiredProps = [
+		'botToken',
+		'chatId',
+	];
+	
+	/**
+	 * @property $requestResultParams {stdClass}
+	 * @property $requestResultParams->isObject {boolean} — Is the result of the request an object or not? It is needed to check if the request is successful. If `false`, the response will be checked as a boolean. It is computed automatically from the siblings values.
+	 */
+	protected $requestResultParams = [
+		'checkValue' => true,
+		'isCheckTypeSuccess' => true,
+		'checkPropName' => 'ok',
+		'errorMessagePropName' => 'description',
+		
+		'isObject' => true,
+	];
+	
+	private $url = 'https://api.telegram.org/bot[+botToken+]/sendMessage?chat_id=[+chatId+]&text=[+text+]&parse_mode=[+textMarkupSyntax+]&disable_web_page_preview=[+disableWebPagePreview+]';
 	
 	/**
 	 * __construct

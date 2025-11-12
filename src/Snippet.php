@@ -2,22 +2,20 @@
 namespace ddSendFeedback;
 
 class Snippet extends \DDTools\Snippet {
-	protected
-		$version = '2.9.0',
+	protected $version = '2.9.0';
 		
-		$params = [
-			// Defaults
-			'result_titleSuccess' => null,
-			'result_titleFail' => null,
-			'result_messageSuccess' => null,
-			'result_messageFail' => null,
-			'senders' => null,
-		],
-		
-		$paramsTypes = [
-			'senders' => 'objectArray',
-		]
-	;
+	protected $params = [
+		// Defaults
+		'result_titleSuccess' => null,
+		'result_titleFail' => null,
+		'result_messageSuccess' => null,
+		'result_messageFail' => null,
+		'senders' => null,
+	];
+	
+	protected $paramsTypes = [
+		'senders' => 'objectArray',
+	];
 	
 	/**
 	 * prepareParams

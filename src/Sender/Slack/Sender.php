@@ -2,23 +2,19 @@
 namespace ddSendFeedback\Sender\Slack;
 
 class Sender extends \ddSendFeedback\Sender\Sender {
-	protected
-		$url = '',
-		$channel = '',
-		$botName = 'ddSendFeedback',
-		$botIcon = ':ghost:',
+	protected $url = '';
+	protected $channel = '';
+	protected $botName = 'ddSendFeedback';
+	protected $botIcon = ':ghost:';
+	protected $requiredProps = ['url'];
+	protected $requestResultParams = [
+		'checkValue' => 'ok',
+		'isCheckTypeSuccess' => true,
+		'checkPropName' => null,
+		'errorMessagePropName' => null,
 		
-		$requiredProps = ['url'],
-		
-		$requestResultParams = [
-			'checkValue' => 'ok',
-			'isCheckTypeSuccess' => true,
-			'checkPropName' => null,
-			'errorMessagePropName' => null,
-			
-			'isObject' => false,
-		]
-	;
+		'isObject' => false,
+	];
 	
 	/**
 	 * send_request_prepareParams

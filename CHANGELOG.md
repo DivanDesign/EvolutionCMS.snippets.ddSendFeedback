@@ -2,6 +2,7 @@
 
 
 ## Version 2.9 (2024-07-15)
+
 * \+ SenderEmail → Parameters → `senders->email->to`: Addresses validation has been added. So if you specify only invalid emails, you will receive an error in the CMS log that not all required parameters have been set.
 * \+ Sender → Parameters → `senders->{$senderName}->isFailRequiredParamsDisplayedToLog`: The new optional parameter. Allows you do disable a failure message to the CMS log when required parameters are not set.
 

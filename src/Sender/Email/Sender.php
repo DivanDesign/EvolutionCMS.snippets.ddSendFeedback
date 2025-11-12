@@ -2,14 +2,11 @@
 namespace ddSendFeedback\Sender\Email;
 
 class Sender extends \ddSendFeedback\Sender\Sender {
-	protected
-		$to = [],
-		$from = '',
-		$subject = '',
-		$fileInputNames = [],
-		
-		$requiredProps = ['to']
-	;
+	protected $to = [];
+	protected $from = '';
+	protected $subject = '';
+	protected $fileInputNames = [];
+	protected $requiredProps = ['to'];
 	
 	/**
 	 * construct_prepareProps

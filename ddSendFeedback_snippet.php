@@ -7,7 +7,7 @@
  * 
  * @link https://code.divandesign.ru/modx/ddsendfeedback
  * 
- * @copyright 2010–2024 Ronef {@link https://Ronef.ru }
+ * @copyright 2010–2024 Ronef {@link https://Ronef.me }
  */
 
 // Include (MODX)EvolutionCMS.libraries.ddTools
@@ -18,6 +18,6 @@ require_once(
 
 return \DDTools\Snippet::runSnippet([
 	'name' => 'ddSendFeedback',
-	'params' => $params
+	'params' => $params,
 ]);
 ?>

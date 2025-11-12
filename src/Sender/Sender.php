@@ -4,34 +4,28 @@ namespace ddSendFeedback\Sender;
 abstract class Sender extends \DDTools\Base\Base {
 	use \DDTools\Base\AncestorTrait;
 	
-	private
-		$tpl = '',
-		$tpl_placeholders = [],
-		$tpl_placeholdersFromPost = NULL
-	;
+	private $tpl = '';
+	private $tpl_placeholders = [];
+	private $tpl_placeholdersFromPost = NULL;
 	
-	protected
-		$text = '',
-		$textMarkupSyntax = 'html',
-		$isFailDisplayedToUser = true,
-		$isFailRequiredParamsDisplayedToLog = true,
-		
-		$requiredProps = ['tpl'],
-		$canSend = true,
-		
-		/**
-		 * @property $requestResultParams {stdClass}
-		 * @property $requestResultParams->isObject {boolean} — Is the result of the request an object or not? It is needed to check if the request is successful. If `false`, the response will be checked as a boolean. It is computed automatically from the siblings values.
-		 */
-		$requestResultParams = [
-			'checkValue' => true,
-			'isCheckTypeSuccess' => true,
-			'checkPropName' => null,
-			'errorMessagePropName' => null,
-			
-			'isObject' => false,
-		]
-	;
+	protected $text = '';
+	protected $textMarkupSyntax = 'html';
+	protected $isFailDisplayedToUser = true;
+	protected $isFailRequiredParamsDisplayedToLog = true;
+	protected $requiredProps = ['tpl'];
+	protected $canSend = true;
+	
+	/**
+	 * @property $requestResultParams {stdClass}
+	 * @property $requestResultParams->isObject {boolean} — Is the result of the request an object or not? It is needed to check if the request is successful. If `false`, the response will be checked as a boolean. It is computed automatically from the siblings values.
+	 */
+	protected $requestResultParams = [
+		'checkValue' => true,
+		'isCheckTypeSuccess' => true,
+		'checkPropName' => null,
+		'errorMessagePropName' => null,
+		'isObject' => false,
+	];
 	
 	/**
 	 * __construct

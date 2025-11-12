@@ -2,17 +2,14 @@
 namespace ddSendFeedback\Sender\Customhttprequest;
 
 class Sender extends \ddSendFeedback\Sender\Sender {
-	protected
-		$url = '',
-		$method = 'post',
-		$sendRawPostData = false,
-		$headers = '',
-		$userAgent = '',
-		$timeout = '',
-		$proxy = '',
-		
-		$requiredProps = ['url']
-	;
+	protected $url = '';
+	protected $method = 'post';
+	protected $sendRawPostData = false;
+	protected $headers = '';
+	protected $userAgent = '';
+	protected $timeout = '';
+	protected $proxy = '';
+	protected $requiredProps = ['url'];
 	
 	/**
 	 * send_request_prepareParams
