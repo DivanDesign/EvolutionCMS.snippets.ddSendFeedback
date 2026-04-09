@@ -8,12 +8,14 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	 * @property $textMarkupSyntax {'markdown'|'html'|''} — Синтаксис, в котором написано сообщение. Default: ''.
 	 * @property $disableWebPagePreview {boolean} — Disables link previews for links in this message. Default: false.
 	 * @property $proxy {string} — Proxy server in format 'protocol://user:password@ip:port'. E. g. 'asan:gd324ukl@11.22.33.44:5555' or 'socks5://asan:gd324ukl@11.22.33.44:5555'. Default: —.
+	 * @property $apiBaseUrl {string} — Base URL of the Telegram Bot API server. Useful when a direct connection to api.telegram.org is blocked (e. g. use a Cloudflare Worker proxy). Default: 'https://api.telegram.org'.
 	 */
 	protected $botToken = '';
 	protected $chatId = '';
 	protected $disableWebPagePreview = false;
 	protected $proxy = '';
 	protected $textMarkupSyntax = '';
+	protected $apiBaseUrl = 'https://api.telegram.org';
 	
 	protected $requiredProps = [
 		'botToken',
@@ -33,7 +35,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 		'isObject' => true,
 	];
 	
-	private $url = 'https://api.telegram.org/bot[+botToken+]/sendMessage?chat_id=[+chatId+]&text=[+text+]&parse_mode=[+textMarkupSyntax+]&disable_web_page_preview=[+disableWebPagePreview+]';
+	private $url = '[+apiBaseUrl+]/bot[+botToken+]/sendMessage?chat_id=[+chatId+]&text=[+text+]&parse_mode=[+textMarkupSyntax+]&disable_web_page_preview=[+disableWebPagePreview+]';
 	
 	/**
 	 * __construct
@@ -71,7 +73,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * send_request_prepareParams
-	 * @version 1.0.3 (2024-08-06)
+	 * @version 1.1 (2026-04-09)
 	 * 
 	 * @return $result {\stdClass}
 	 */
@@ -80,6 +82,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			'url' => \ddTools::parseText([
 				'text' => $this->url,
 				'data' => [
+					'apiBaseUrl' => rtrim($this->apiBaseUrl, '/'),
 					'botToken' => $this->botToken,
 					'chatId' => $this->chatId,
 					'text' => urlencode($this->text),

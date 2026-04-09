@@ -231,6 +231,14 @@ require_once(
 	* Valid values: `boolean`
 	* Default value: `false`
 	
+* `senders->telegram->apiBaseUrl`
+	* Description: Base URL of the Telegram Bot API (without path and trailing slash).
+		* Use this when `https://api.telegram.org` is unreachable from your server (e. g. blocked).
+		* Point it to a reverse proxy such as a Cloudflare Worker that forwards requests to the official API.
+		* Requests are built as `[apiBaseUrl]/bot[botToken]/sendMessage?`… — the same path scheme as the official API.
+	* Valid values: `string` (URL), e. g. `https://prtg.example.com`
+	* Default value: `https://api.telegram.org`
+	
 * `senders->telegram->proxy`
 	* Description: Proxy server in format `'protocol://user:password@ip:port'`.
 		* E. g. `'theuser:qwerty123@11.22.33.44:5555'` or `'socks5://someuser:somepassword@11.22.33.44:5555'`.
@@ -428,6 +436,7 @@ All examples are written using [HJSON](https://hjson.github.io/), but if you wan
 	 		botToken: 123:AAAAAA
 			chatId: -11111
 			tpl: "@CODE:Test message from [(site_url)]!"
+			// apiBaseUrl: https://prtg.example.com
 			proxy: http://asan:gd324ukl@11.22.33.44:5555
 	 	}
 	}`
@@ -482,6 +491,7 @@ require_once(
 		 		'botToken' => '123:AAAAAA',
 				'chatId' => '-11111',
 				'tpl' => '@CODE:Test message from [(site_url)]!',
+				// 'apiBaseUrl' => 'https://prtg.example.com',
 		 	],
 	 	],
 	],
