@@ -3,11 +3,11 @@ namespace ddSendFeedback\Sender\Telegram;
 
 class Sender extends \ddSendFeedback\Sender\Sender {
 	/**
-	 * @property $botToken {string} — Токен бота в вида 'botId:HASH'. @required
-	 * @property $chatId {string_numeric} — ID чата, в который слать сообщение. @required
-	 * @property $textMarkupSyntax {'markdown'|'html'|''} — Синтаксис, в котором написано сообщение. Default: ''.
-	 * @property $disableWebPagePreview {boolean} — Disables link previews for links in this message. Default: false.
-	 * @property $proxy {string} — Proxy server in format 'protocol://user:password@ip:port'. E. g. 'asan:gd324ukl@11.22.33.44:5555' or 'socks5://asan:gd324ukl@11.22.33.44:5555'. Default: —.
+	 * @property $botToken {string} — Токен бота в вида 'botId:HASH'. @required
+	 * @property $chatId {string_numeric} — ID чата, в который слать сообщение. @required
+	 * @property $textMarkupSyntax {'markdown'|'html'|''} — Синтаксис, в котором написано сообщение. Default: ''.
+	 * @property $disableWebPagePreview {boolean} — Disables link previews for links in this message. Default: false.
+	 * @property $proxy {string} — Proxy server in format 'protocol://user:password@ip:port'. E. g. 'asan:gd324ukl@11.22.33.44:5555' or 'socks5://asan:gd324ukl@11.22.33.44:5555'. Default: —.
 	 */
 	protected $botToken = '';
 	protected $chatId = '';
@@ -22,7 +22,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 	
 	/**
 	 * @property $requestResultParams {stdClass}
-	 * @property $requestResultParams->isObject {boolean} — Is the result of the request an object or not? It is needed to check if the request is successful. If `false`, the response will be checked as a boolean. It is computed automatically from the siblings values.
+	 * @property $requestResultParams->isObject {boolean} — Is the result of the request an object or not? It is needed to check if the request is successful. If `false`, the response will be checked as a boolean. It is computed automatically from the siblings values.
 	 */
 	protected $requestResultParams = [
 		'checkValue' => true,
