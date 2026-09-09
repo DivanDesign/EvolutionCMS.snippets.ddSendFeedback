@@ -3,48 +3,46 @@ namespace ddSendFeedback\Sender\Telegram;
 
 class Sender extends \ddSendFeedback\Sender\Sender {
 	/**
-	 * @property $botToken {string} — Токен бота в вида 'botId:HASH'. @required
-	 * @property $chatId {string_numeric} — ID чата, в который слать сообщение. @required
-	 * @property $textMarkupSyntax {'markdown'|'html'|''} — Синтаксис, в котором написано сообщение. Default: ''.
-	 * @property $disableWebPagePreview {boolean} — Disables link previews for links in this message. Default: false.
-	 * @property $proxy {string} — Proxy server in format 'protocol://user:password@ip:port'. E. g. 'asan:gd324ukl@11.22.33.44:5555' or 'socks5://asan:gd324ukl@11.22.33.44:5555'. Default: —.
+	 * @property $botToken {string} — Токен бота в вида 'botId:HASH'. @required
+	 * @property $chatId {string_numeric} — ID чата, в который слать сообщение. @required
+	 * @property $textMarkupSyntax {'markdown'|'html'|''} — Синтаксис, в котором написано сообщение. Default: ''.
+	 * @property $disableWebPagePreview {boolean} — Disables link previews for links in this message. Default: false.
+	 * @property $proxy {string} — Proxy server in format 'protocol://user:password@ip:port'. E. g. 'asan:gd324ukl@11.22.33.44:5555' or 'socks5://asan:gd324ukl@11.22.33.44:5555'. Default: —.
+	 * @property $apiBaseUrl {string} — Base URL of the Telegram Bot API server. Useful when a direct connection to api.telegram.org is blocked (e. g. use a Cloudflare Worker proxy). Default: 'https://api.telegram.org'.
 	 */
-	protected
-		$botToken = '',
-		$chatId = '',
-		$disableWebPagePreview = false,
-		$proxy = '',
-		$textMarkupSyntax = '',
-		
-		$requiredProps = [
-			'botToken',
-			'chatId',
-		],
-		
-		/**
-		 * @property $requestResultParams {stdClass}
-		 * @property $requestResultParams->isObject {boolean} — Is the result of the request an object or not? It is needed to check if the request is successful. If `false`, the response will be checked as a boolean. It is computed automatically from the siblings values.
-		 */
-		$requestResultParams = [
-			'checkValue' => true,
-			'isCheckTypeSuccess' => true,
-			'checkPropName' => 'ok',
-			'errorMessagePropName' => 'description',
-			
-			'isObject' => true,
-		]
-	;
+	protected $botToken = '';
+	protected $chatId = '';
+	protected $disableWebPagePreview = false;
+	protected $proxy = '';
+	protected $textMarkupSyntax = '';
+	protected $apiBaseUrl = 'https://api.telegram.org';
 	
-	private
-		$url = 'https://api.telegram.org/bot[+botToken+]/sendMessage?chat_id=[+chatId+]&text=[+text+]&parse_mode=[+textMarkupSyntax+]&disable_web_page_preview=[+disableWebPagePreview+]'
-	;
+	protected $requiredProps = [
+		'botToken',
+		'chatId',
+	];
+	
+	/**
+	 * @property $requestResultParams {stdClass}
+	 * @property $requestResultParams->isObject {boolean} — Is the result of the request an object or not? It is needed to check if the request is successful. If `false`, the response will be checked as a boolean. It is computed automatically from the siblings values.
+	 */
+	protected $requestResultParams = [
+		'checkValue' => true,
+		'isCheckTypeSuccess' => true,
+		'checkPropName' => 'ok',
+		'errorMessagePropName' => 'description',
+		
+		'isObject' => true,
+	];
+	
+	private $url = '[+apiBaseUrl+]/bot[+botToken+]/sendMessage?chat_id=[+chatId+]&text=[+text+]&parse_mode=[+textMarkupSyntax+]&disable_web_page_preview=[+disableWebPagePreview+]';
 	
 	/**
 	 * __construct
-	 * @version 1.0.3 (2024-07-13)
+	 * @version 1.0.4 (2024-08-06)
 	 */
 	public function __construct($params = []){
-		//Backward compatibility
+		// Backward compatibility
 		$params = \ddTools::verifyRenamedParams([
 			'params' => $params,
 			'compliance' => [
@@ -53,13 +51,13 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			'returnCorrectedOnly' => false,
 		]);
 		
-		//Call base constructor
+		// Call base constructor
 		parent::__construct($params);
 		
-		//Prepare “textMarkupSyntax”
+		// Prepare “textMarkupSyntax”
 		if (!in_array(
 			$this->textMarkupSyntax,
-			//Allowable values
+			// Allowable values
 			[
 				'markdown',
 				'html',
@@ -69,13 +67,13 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			$this->textMarkupSyntax = '';
 		}
 		
-		//Prepare “disableWebPagePreview”
+		// Prepare “disableWebPagePreview”
 		$this->disableWebPagePreview = boolval($this->disableWebPagePreview);
 	}
 	
 	/**
 	 * send_request_prepareParams
-	 * @version 1.0.2 (2024-07-13)
+	 * @version 1.1 (2026-04-09)
 	 * 
 	 * @return $result {\stdClass}
 	 */
@@ -84,13 +82,14 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			'url' => \ddTools::parseText([
 				'text' => $this->url,
 				'data' => [
+					'apiBaseUrl' => rtrim($this->apiBaseUrl, '/'),
 					'botToken' => $this->botToken,
 					'chatId' => $this->chatId,
 					'text' => urlencode($this->text),
 					'textMarkupSyntax' => $this->textMarkupSyntax,
 					'disableWebPagePreview' => intval($this->disableWebPagePreview),
 				],
-				//TODO: Why is it disabled? Add a comment or enable.
+				// TODO: Why is it disabled? Add a comment or enable.
 				'isCompletelyParsingEnabled' => false,
 			]),
 			'proxy' => $this->proxy,

@@ -2,53 +2,48 @@
 namespace ddSendFeedback\Sender\Crmlivesklad;
 
 class Sender extends \ddSendFeedback\Sender\Sender {
-	protected
-		$login = '',
-		$password = '',
-		$shopId = '',
+	protected $login = '';
+	protected $password = '';
+	protected $shopId = '';
+	protected $requiredProps = [
+		'login',
+		'password',
+		'shopId',
+	];
+	protected $requestResultParams = [
+		// LiveSklad API returns an object like `{"error": {"statusCode": 401, name: "Error",  message: "Access denied"}}` but any object will equal `true`
+		'checkValue' => true,
+		'isCheckTypeSuccess' => false,
+		'checkPropName' => 'error',
+		'errorMessagePropName' => 'error.message',
 		
-		$requiredProps = [
-			'login',
-			'password',
-			'shopId',
-		],
-		
-		$requestResultParams = [
-			//LiveSklad API returns an object like `{"error": {"statusCode": 401, name: "Error",  message: "Access denied"}}` but any object will equal `true`
-			'checkValue' => true,
-			'isCheckTypeSuccess' => false,
-			'checkPropName' => 'error',
-			'errorMessagePropName' => 'error.message',
-			
-			'isObject' => true,
-		]
-	;
-	private
-		/**
-		 * @property $urls {stdClass}
-		 */
-		$urls = [
-			'auth' => 'https://api.livesklad.com/auth',
-			'orders' => 'https://api.livesklad.com/shops/[+shopId+]/orders',
-		],
-		
-		/**
-		 * @property $authTokenData {stdClass}
-		 * @property $authTokenData->token {string}
-		 * @property $authTokenData->expireDate {integer}
-		 */
-		$authTokenData = [
-			'token' => '',
-			'expireDate' => 0,
-		]
-	;
+		'isObject' => true,
+	];
+	
+	/**
+	 * @property $urls {stdClass}
+	 */
+	private $urls = [
+		'auth' => 'https://api.livesklad.com/auth',
+		'orders' => 'https://api.livesklad.com/shops/[+shopId+]/orders',
+	];
+	
+	/**
+	 * @property $authTokenData {stdClass}
+	 * @property $authTokenData->token {string}
+	 * @property $authTokenData->expireDate {integer}
+	 */
+	private $authTokenData = [
+		'token' => '',
+		'expireDate' => 0,
+	];
 	
 	/**
 	 * __construct
-	 * @version 1.0 (2024-06-04)
+	 * @version 1.0.1 (2024-08-06)
 	 */
 	public function __construct($params = []){
-		//Call base constructor
+		// Call base constructor
 		parent::__construct($params);
 		
 		$this->urls = (object) $this->urls;

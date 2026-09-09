@@ -2,30 +2,26 @@
 namespace ddSendFeedback\Sender\Smsru;
 
 class Sender extends \ddSendFeedback\Sender\Sender {
-	protected 
-		$apiId = '',
-		$to = '',
-		$from = '',
-		
-		$requiredProps = [
-			'apiId',
-			'to',
-		],
-		
-		$requestResultParams = [
-			'checkValue' => 'OK',
-			'isCheckTypeSuccess' => true,
-			//Just something, a real values will be set in every call of `$this->send_request_prepareParams`
-			'checkPropName' => 'sms.[+phoneNumber+].status',
-			'errorMessagePropName' => 'sms.[+phoneNumber+].status_text',
-			
-			'isObject' => true,
-		]
-	;
+	protected $apiId = '';
+	protected $to = '';
+	protected $from = '';
 	
-	private
-		$url = 'https://sms.ru/sms/send?json=1'
-	;
+	protected $requiredProps = [
+		'apiId',
+		'to',
+	];
+	
+	protected $requestResultParams = [
+		'checkValue' => 'OK',
+		'isCheckTypeSuccess' => true,
+		// Just something, a real values will be set in every call of `$this->send_request_prepareParams`
+		'checkPropName' => 'sms.[+phoneNumber+].status',
+		'errorMessagePropName' => 'sms.[+phoneNumber+].status_text',
+		
+		'isObject' => true,
+	];
+	
+	private $url = 'https://sms.ru/sms/send?json=1';
 	
 	/**
 	 * send_request_prepareParams

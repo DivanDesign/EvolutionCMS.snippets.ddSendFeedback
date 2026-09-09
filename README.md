@@ -16,9 +16,9 @@ The snippet returns a JSON string with the following fields:
 		"code": 200,
 		"success": true,
 		"message": {
-			//Message content (from “result_messageSuccess” / “result_messageFail” respectively).
+			// Message content (from “result_messageSuccess” / “result_messageFail” respectively).
 			"content": "We will contact you later.",
-			//Message title (from “result_titleSuccess” / “result_titleFail” respectively).
+			// Message title (from “result_titleSuccess” / “result_titleFail” respectively).
 			"title": "Message sent successfully"
 		}
 	}
@@ -28,7 +28,7 @@ The snippet returns a JSON string with the following fields:
 
 ## Requires
 
-* PHP >= 5.6
+* PHP >= 7.4
 * [(MODX)EvolutionCMS](https://github.com/evolution-cms/evolution) >= 1.1
 * [(MODX)EvolutionCMS.libraries.ddTools](https://code.divandesign.ru/modx/ddtools) >= 0.62
 * [(MODX)EvolutionCMS.snippets.ddMakeHttpRequest](https://code.divandesign.ru/modx/ddmakehttprequest) >= 2.3.1
@@ -42,16 +42,15 @@ The snippet returns a JSON string with the following fields:
 Just run the following PHP code in your sources or [Console](https://github.com/vanchelo/MODX-Evolution-Ajax-Console):
 
 ```php
-//Include (MODX)EvolutionCMS.libraries.ddInstaller
+// Include (MODX)EvolutionCMS.libraries.ddInstaller
 require_once(
-	$modx->getConfig('base_path') .
-	'assets/libs/ddInstaller/require.php'
+	$modx->getConfig('base_path')
+	. 'assets/libs/ddInstaller/require.php'
 );
 
-//Install (MODX)EvolutionCMS.snippets.ddSendFeedback
+// Install (MODX)EvolutionCMS.snippets.ddSendFeedback
 \DDInstaller::install([
 	'url' => 'https://github.com/DivanDesign/EvolutionCMS.snippets.ddSendFeedback',
-	'type' => 'snippet'
 ]);
 ```
 
@@ -65,7 +64,7 @@ require_once(
 #### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddSendFeedback`.
-2. Description: `<b>2.9</b> A snippet for sending users' feedback messages to you. It is very useful along with ajax technology.`.
+2. Description: `<b>2.10</b> A snippet for sending users' feedback messages to you. It is very useful along with ajax technology.`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddSendFeedback_snippet.php` file from the archive.
@@ -231,6 +230,14 @@ require_once(
 	* Description: Disables link previews for links in this message.
 	* Valid values: `boolean`
 	* Default value: `false`
+	
+* `senders->telegram->apiBaseUrl`
+	* Description: Base URL of the Telegram Bot API (without path and trailing slash).
+		* Use this when `https://api.telegram.org` is unreachable from your server (e. g. blocked).
+		* Point it to a reverse proxy such as a Cloudflare Worker that forwards requests to the official API.
+		* Requests are built as `[apiBaseUrl]/bot[botToken]/sendMessage?`… — the same path scheme as the official API.
+	* Valid values: `string` (URL), e. g. `https://prtg.example.com`
+	* Default value: `https://api.telegram.org`
 	
 * `senders->telegram->proxy`
 	* Description: Proxy server in format `'protocol://user:password@ip:port'`.
@@ -429,6 +436,7 @@ All examples are written using [HJSON](https://hjson.github.io/), but if you wan
 	 		botToken: 123:AAAAAA
 			chatId: -11111
 			tpl: "@CODE:Test message from [(site_url)]!"
+			// apiBaseUrl: https://prtg.example.com
 			proxy: http://asan:gd324ukl@11.22.33.44:5555
 	 	}
 	}`
@@ -468,13 +476,13 @@ All examples are written using [HJSON](https://hjson.github.io/), but if you wan
 ### Run the snippet through `\DDTools\Snippet::runSnippet` without DB and eval
 
 ```php
-//Include (MODX)EvolutionCMS.libraries.ddTools
+// Include (MODX)EvolutionCMS.libraries.ddTools
 require_once(
 	$modx->getConfig('base_path') .
 	'assets/libs/ddTools/modx.ddtools.class.php'
 );
 
-//Run (MODX)EvolutionCMS.snippets.ddSendFeedback
+// Run (MODX)EvolutionCMS.snippets.ddSendFeedback
 \DDTools\Snippet::runSnippet([
 	'name' => 'ddSendFeedback',
 	'params' => [
@@ -483,6 +491,7 @@ require_once(
 		 		'botToken' => '123:AAAAAA',
 				'chatId' => '-11111',
 				'tpl' => '@CODE:Test message from [(site_url)]!',
+				// 'apiBaseUrl' => 'https://prtg.example.com',
 		 	],
 	 	],
 	],

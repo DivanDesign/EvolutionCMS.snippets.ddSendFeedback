@@ -2,21 +2,18 @@
 namespace ddSendFeedback\Sender\Customhttprequest;
 
 class Sender extends \ddSendFeedback\Sender\Sender {
-	protected
-		$url = '',
-		$method = 'post',
-		$sendRawPostData = false,
-		$headers = '',
-		$userAgent = '',
-		$timeout = '',
-		$proxy = '',
-		
-		$requiredProps = ['url']
-	;
+	protected $url = '';
+	protected $method = 'post';
+	protected $sendRawPostData = false;
+	protected $headers = '';
+	protected $userAgent = '';
+	protected $timeout = '';
+	protected $proxy = '';
+	protected $requiredProps = ['url'];
 	
 	/**
 	 * send_request_prepareParams
-	 * @version 1.0.3 (2024-07-13)
+	 * @version 1.0.4 (2024-08-06)
 	 * 
 	 * @return $result {\stdClass}
 	 */
@@ -25,7 +22,7 @@ class Sender extends \ddSendFeedback\Sender\Sender {
 			'url' => $this->url,
 		];
 		
-		//If method == 'get' need to append url. Else need to set postData
+		// If method == 'get' need to append url. Else need to set postData
 		if ($this->method == 'get'){
 			$result->url .=
 				'?' . 
