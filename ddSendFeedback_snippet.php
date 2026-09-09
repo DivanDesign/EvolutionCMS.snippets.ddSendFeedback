@@ -1,13 +1,13 @@
 <?php
 /**
  * ddSendFeedback
- * @version 2.9 (2024-07-15)
+ * @version 2.10 (2026-09-10)
  * 
  * @see README.md
  * 
  * @link https://code.divandesign.ru/modx/ddsendfeedback
  * 
- * @copyright 2010–2024 https://Ronef.me
+ * @copyright 2010–2026 https://Ronef.me
  */
 
 // Include (MODX)EvolutionCMS.libraries.ddTools

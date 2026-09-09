@@ -1,6 +1,12 @@
 # (MODX)EvolutionCMS.snippets.ddSendFeedback changelog
 
 
+## Version 2.10 (2026-09-10)
+
+* \+ SenderTelegram → Parameters → `senders->telegram->apiBaseUrl`: New optional parameter. Allows specifying a custom Telegram Bot API base URL (e. g. a Cloudflare Worker proxy) instead of the default `api.telegram.org`.
+* \* Attention! PHP >= 7.4 is required (not tested with older versions).
+
+
 ## Version 2.9 (2024-07-15)
 
 * \+ SenderEmail → Parameters → `senders->email->to`: Addresses validation has been added. So if you specify only invalid emails, you will receive an error in the CMS log that not all required parameters have been set.
