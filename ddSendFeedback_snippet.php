@@ -7,13 +7,13 @@
  * 
  * @link https://code.divandesign.ru/modx/ddsendfeedback
  * 
- * @copyright 2010–2024 Ronef {@link https://Ronef.me }
+ * @copyright 2010–2024 https://Ronef.me
  */
 
 // Include (MODX)EvolutionCMS.libraries.ddTools
 require_once(
-	$modx->getConfig('base_path') .
-	'assets/libs/ddTools/modx.ddtools.class.php'
+	$modx->getConfig('base_path')
+	. 'assets/libs/ddTools/modx.ddtools.class.php'
 );
 
 return \DDTools\Snippet::runSnippet([
